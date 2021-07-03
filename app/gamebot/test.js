@@ -15,7 +15,20 @@ async function testIt() {
         return false
     }
 
+    resp = await bot.actions([{
+        type: 'travel',
+        properties: {
+            steamID: '76561198058320009',
+            target: '#Teleport -111670 -71516 37535',
+            stations: [
+                [-117565,-67795,20,20]
+            ]
+        }
+    }])
 
+    console.log(resp.cc)
+
+    /*
     resp = await bot.messages([{
         scope: 'local',
         message: '・'

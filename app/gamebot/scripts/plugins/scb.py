@@ -105,12 +105,12 @@ def safeMouse():
 
 def safeClick(coords, double=False, button='left'):
     pyautogui.moveTo(coords)
-    pyautogui.move(-5, -2, duration=0.001)
-    pyautogui.move(10, 0, duration=0.001)
-    pyautogui.move(0, 4, duration=0.001)
-    pyautogui.move(-10, 0, duration=0.001)
-    pyautogui.move(0, -4, duration=0.001)
-    pyautogui.move(5, 2, duration=0.001)
+    pyautogui.move(-5, -2, duration=0.0005)
+    pyautogui.move(10, 0, duration=0.0005)
+    pyautogui.move(0, 4, duration=0.0005)
+    pyautogui.move(-10, 0, duration=0.0005)
+    pyautogui.move(0, -4, duration=0.0005)
+    pyautogui.move(5, 2, duration=0.0005)
     pyautogui.click(button=button)
     if(double):
         pyautogui.click(button=button)
@@ -146,7 +146,8 @@ def loading():
 
 def getPosition():
     sendMessage('#Location')
-    p = readMessage()['message'].split()
+    location = readMessage()
+    p = (location[(location.find(':')+1):]).strip().split()
     return {
         'x': p[0][2:],
         'y': p[1][2:],
@@ -182,29 +183,22 @@ def isTeleport():
 def sendMessage(msg):
     pyautogui.hotkey('ctrl','a')
     pyautogui.press('backspace')
+    sleep(0.5 - (props['failSafe']*4))
     keyboard.write(msg.encode('utf-8').decode('utf-8'))
     pyautogui.press('enter')
-    sleep(0.5 - (props['failSafe']*4))
     if(msg.lower().startswith('#teleport')):
         isTeleport()
         
 
-
 def readMessage():
-    chatPos = onScreen('img/chat/stumm.png', region=getRegion('chat'))
-    safeClick((chatPos.x, (chatPos.y - 20)))
+    safeClick(getPoint(85, 470))
     pyautogui.hotkey('ctrl','a')
     pyautogui.hotkey('ctrl', 'c')
-    safeClick(((chatPos.x + 100), chatPos.y))
+    safeClick(getPoint(140, 500))
     win32clipboard.OpenClipboard()
     data = win32clipboard.GetClipboardData()
     win32clipboard.CloseClipboard()
-    user = (data[0:(data.find(':'))]).strip()
-    message = (data[(data.find(':')+1):]).strip()
-    return {
-        'user': user, 
-        'message': message
-    }
+    return data
 
 
 def onScreen(img, bw=False, sure=0.98, region=False):

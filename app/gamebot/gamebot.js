@@ -1,5 +1,5 @@
-const sn = global.chalk.bgMagenta('[GAMEBOT] -> ')
-//const sn = '[GAMEBOT] -> '
+//const sn = global.chalk.bgMagenta('[GAMEBOT] -> ')
+const sn = '[GAMEBOT] -> '
 const cp = require('child_process')
 
 let bot = false

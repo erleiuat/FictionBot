@@ -96,9 +96,7 @@ def getReady():
     scb.safeMouse()
     return True
 
-
-def joinServer():
-    scb.sleep()
+def goFortsetzen():
     needOK = scb.onScreen('img/scb/ok.png', bw=True)
     if(needOK):
         scb.safeClick(needOK)
@@ -108,12 +106,21 @@ def joinServer():
     scb.sleep()
     while(scb.onScreen('img/scb/main_fortsetzen.png', bw=True, sure=0.8)):
         scb.safeClick(scb.getPoint(230, 645))
+        scb.sleep(0.05)
+        scb.safeMouse()
         scb.sleep(1)
 
+
+def joinServer():
+    scb.sleep()
+    scb.safeMouse()
+    goFortsetzen()
     while(not scb.onScreen('img/scb/fortsetzen.png', bw=True, region=scb.getRegion('inventory'))):
         scb.sleep(1)
         pyautogui.press('esc')
         scb.sleep(1)
+        if(scb.onScreen('img/scb/main_fortsetzen.png', bw=True, sure=0.8)):
+            goFortsetzen()
         i = i + 1
         if(i > 90):
             raise Exception('Unable to join')

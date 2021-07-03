@@ -51,6 +51,8 @@ def process():
             control.mapshot()
         elif(actType == 'restart'):
             scb.restart()
+        elif(actType == 'travel'):
+            travel(action['properties'])
         elif(actType == 'awake'):
             botstate = scb.goReadyState()
             scb.doPrint({
@@ -65,6 +67,58 @@ def process():
                 'error': True,
                 'errorMessage': 'Unknown action'
             })
+
+
+
+
+def travel(props):
+    scb.sendMessage('#ListPlayers')
+    listPlayers = scb.readMessage().split('\r\n')
+    listPlayers.remove(listPlayers[0])
+
+    playerList = []
+    for pTmp in listPlayers:
+        player = {}
+        pTmp = pTmp[4:]
+        player['steamID'] = pTmp[:17]
+        pTmp = pTmp[17:].strip()
+        pTmp = pTmp.split('    ')
+        i = 0
+        for el in pTmp:
+            if(i > 2):
+                continue
+            elif(len(el) > 1):
+                i = i + 1
+                if(i == 1):
+                    player['steamName'] = el.strip()
+                elif(i == 2):
+                    player['charName'] = el.strip()
+                elif(i == 3):
+                    player['fame'] = el.strip()
+        playerList.append(player)
+
+    user = False
+    for u in playerList:
+        if(u['steamID'] == props['steamID']):
+            user = u
+            break
+
+    scb.sendMessage('#Location '+user['steamID'])
+    p = scb.readMessage()
+    playerLoc = (p[(p.find(':')+1):]).strip().split()
+
+    for station in props['stations']:
+        if(float(playerLoc[0][2:]) > (station[0] - station[2]) and float(playerLoc[0][2:]) < (station[0] + station[2])):
+            if(float(playerLoc[1][2:]) > (station[1] - station[3]) and float(playerLoc[1][2:]) < (station[1] + station[3])):
+                scb.sendMessage(props['target'] + ' ' + user['steamID'])
+
+
+    scb.doPrint({
+        'cc': playerLoc,
+    })
+    
+
+
 
 
 def repair(teleports):

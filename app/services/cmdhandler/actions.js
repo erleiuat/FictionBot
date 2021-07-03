@@ -82,12 +82,6 @@ exports.doAct = async function doAct(action, force = false) {
                 "#Teleport -111760 -71896 36634", //Einfahrt 1.2    
                 "#Teleport -112427 -71106 36729", //Einfahrt 1.3    
                 "#Teleport -111833 -71113 36741", //Einfahrt 1.4
-                "#Teleport -112095 -63900 38061", //Turm 2.1
-                "#Teleport -111026 -64267 38056", //Turm 2.2
-                "#Teleport -111708 -63749 37264", //Einfahrt 2.1
-                "#Teleport -111199 -63872 37276", //Einfahrt 2.2
-                "#Teleport -111898 -64515 37156", //Einfahrt 2.3
-                "#Teleport -111306 -64654 37146", //Einfahrt 2.4
                 "#Teleport -111795 -68849 36999", //Tanke 1
                 "#Teleport -111646 -67682 36999", //Tanke 2
                 "#Teleport -111520 -66718 36999", //Tanke 3
@@ -96,6 +90,12 @@ exports.doAct = async function doAct(action, force = false) {
                 "#Teleport -113655 -67707 36997", //Tanke 6
                 "#Teleport -112593 -67862 36997", //Tanke 7
                 "#Teleport -110138 -66370 37031", //Tanke 8
+                "#Teleport -112095 -63900 38061", //Turm 2.1
+                "#Teleport -111026 -64267 38056", //Turm 2.2
+                "#Teleport -111708 -63749 37264", //Einfahrt 2.1
+                "#Teleport -111199 -63872 37276", //Einfahrt 2.2
+                "#Teleport -111898 -64515 37156", //Einfahrt 2.3
+                "#Teleport -111306 -64654 37146", //Einfahrt 2.4
                 "#Teleport -116818 -65894 37065", //Haus 1
                 "#Teleport -117260 -66462 37065", //Haus 2
                 "#Teleport -117259 -67017 37065", //Haus 3

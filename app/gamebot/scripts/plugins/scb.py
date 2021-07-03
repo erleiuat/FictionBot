@@ -168,6 +168,7 @@ def openTab():
         sleep(0.05)
         pyautogui.press('1')
         i = i + 1
+        sleep(0.1)
         if(i > 5):
             return False
     return True

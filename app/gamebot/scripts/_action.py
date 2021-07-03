@@ -92,9 +92,9 @@ def light(teleports):
         scb.sendMessage(teleport)
         scb.sendMessage('#SpawnItem Wooden_Plank 1')
         control.act([
-            ('img/light/fackel.png', 'img/light/schueren.png', 2),
-            ('img/light/fackel.png', 'img/light/anzuenden.png', 1.6),
-            ('img/light/fackel.png', 'img/light/instand.png', 0.1)
+            ('img/light/fackel.png', 'img/light/schueren.png', 1.9),
+            ('img/light/fackel.png', 'img/light/anzuenden.png', 1.5),
+            ('img/light/fackel.png', 'img/light/instand.png', 0.01)
         ])
 
     scb.sendMessage(

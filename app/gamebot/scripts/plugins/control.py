@@ -66,13 +66,14 @@ def sitDown():
 
 def act(acts):
     pyautogui.press('esc')
-    scb.sleep(0.1)
+    scb.sleep(0.2)
     for act in acts:
         scb.safeMouse()
+        scb.sleep(0.2)
         itemLoc = scb.onScreen(act[0], sure=0.75, bw=True, region=scb.getRegion('inventory'))
         if(itemLoc):
             scb.safeClick(itemLoc, button='right')
-            scb.sleep(0.2)
+            scb.sleep(0.3)
             actionLoc = scb.onScreen(act[1], sure=0.75, bw=True, region=scb.getRegion('inventory'))
             if(actionLoc):
                 scb.safeClick(actionLoc)

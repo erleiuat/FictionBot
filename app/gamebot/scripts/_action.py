@@ -131,6 +131,7 @@ def dress():
 
 def eat():
     scb.sendMessage('#SpawnItem Ganoderma_Lucidum')
+    scb.sleep(0.05)
     control.act([
         ('img/act/mushroom.png', 'img/act/eatAll.png', 0.005)
     ])

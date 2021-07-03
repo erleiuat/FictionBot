@@ -1,0 +1,38 @@
+{
+  "name": "scum-pp-dc",
+  "version": "1.0.0",
+  "description": "Discord-Bot for Scum Servers on Pingperfect",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/erleiuat/scum-pp-dc.git"
+  },
+  "author": "Elia Reutlinger",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/erleiuat/scum-pp-dc/issues"
+  },
+  "homepage": "https://github.com/erleiuat/scum-pp-dc#readme",
+  "dependencies": {
+    "@pm2/io": "^5.0.0",
+    "basic-ftp": "^4.6.6",
+    "canvas": "^2.8.0",
+    "chalk": "^4.1.1",
+    "discord.js": "^12.5.3",
+    "dotenv": "^9.0.2",
+    "gif-encoder-2": "^1.0.5",
+    "iconv-lite": "^0.6.2",
+    "minimist": "^1.2.5",
+    "python-shell": "^3.0.0",
+    "request": "^2.88.2"
+  },
+  "nodemonConfig": {
+    "ignore": [
+      "app/storage/*"
+    ],
+    "delay": 2000
+  }
+}

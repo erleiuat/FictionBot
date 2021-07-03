@@ -58,10 +58,14 @@ def getState():
 
     parts['onServer'] = True
 
+    if(scb.onScreen('img/scb/inventar.png', region=scb.getRegion('inventory'))):
+        if(scb.onScreen('img/chat/stumm.png', region=scb.getRegion('chat'))):
+            return parts
+            
     i = 0
     while(not scb.onScreen('img/scb/fortsetzen.png', bw=True, sure=0.8, region=scb.getRegion('inventory'))):
         pyautogui.press('esc')
-        scb.sleep(1)
+        scb.sleep(0.5)
         i = i + 1
         if(i > 10):
             parts['onServer'] = False

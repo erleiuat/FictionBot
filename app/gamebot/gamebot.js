@@ -1,5 +1,5 @@
-const sn = global.chalk.bgMagenta('[GAMEBOT] -> ')
-//const sn = '[GAMEBOT] -> '
+//const sn = global.chalk.bgMagenta('[GAMEBOT] -> ')
+const sn = '[GAMEBOT] -> '
 const cp = require('child_process')
 
 let bot = false
@@ -54,9 +54,9 @@ async function resOutput(resolve, logTxt) {
 exports.start = async function start() {
     return new Promise(resolve => {
         bot = cp.spawn('py', ['./app/gamebot/scripts/gamebot.py'])
+        //bot.stdin.setEncoding('utf-8')
         console.log(sn + 'Starting Bot')
         resOutput(resolve, 'Bot running')
-        //bot.stdin.setEncoding('utf-8')
         bot.stderr.on('data', (data) => {
             console.log(sn + 'Error: ' + `${data}`)
         })
@@ -68,8 +68,8 @@ exports.messages = async function messages(msgs) {
     return new Promise(resolve => {
         console.log(sn + 'Sending messages')
         resOutput(resolve, 'Messages sent')
-        bot.stdin.write('MESSAGES\n')
-        bot.stdin.write(JSON.stringify(msgs) + '\n')
+        bot.stdin.write(encodeURI('MESSAGES') + '\n')
+        bot.stdin.write(encodeURI(JSON.stringify(msgs)) + '\n')
     })
 }
 
@@ -78,7 +78,7 @@ exports.actions = async function actions(action) {
     return new Promise(resolve => {
         console.log(sn + 'Doing actions')
         resOutput(resolve, 'Actions done')
-        bot.stdin.write('ACTION\n')
-        bot.stdin.write(JSON.stringify(action) + '\n')
+        bot.stdin.write(encodeURI('ACTION') + '\n')
+        bot.stdin.write(encodeURI(JSON.stringify(action)) + '\n')
     })
 }

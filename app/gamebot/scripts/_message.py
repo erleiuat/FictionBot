@@ -1,9 +1,10 @@
+from urllib.parse import unquote
 from plugins import scb
 import json
 
 def process():
 
-    msgs = json.loads(input())
+    msgs = json.loads(unquote(input()))
     scb.doPrint({'messages': msgs})
 
     for msg in msgs:

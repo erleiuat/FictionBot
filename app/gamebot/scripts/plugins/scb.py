@@ -181,7 +181,7 @@ def isTeleport():
 def sendMessage(msg):
     pyautogui.hotkey('ctrl','a')
     pyautogui.press('backspace')
-    keyboard.write(msg)
+    keyboard.write(msg.encode('utf-8').decode('utf-8'))
     pyautogui.press('enter')
     sleep(0.5 - (props['failSafe']*4))
     if(msg.lower().startswith('#teleport')):

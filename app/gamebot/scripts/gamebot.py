@@ -1,3 +1,4 @@
+from urllib.parse import unquote
 from plugins import procControl
 from plugins import scb
 import pyautogui
@@ -58,7 +59,7 @@ if(startup):
 
 while (True):
     try:
-        cmd = input()
+        cmd = unquote(input())
         scb.doPrint({'command': cmd})
 
         procControl.focus()

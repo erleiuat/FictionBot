@@ -1,3 +1,4 @@
+from urllib.parse import unquote
 from plugins import control
 from plugins import scb
 import pyautogui
@@ -27,7 +28,7 @@ def startup():
 
 def process():
 
-    actions = json.loads(input())
+    actions = json.loads(unquote(input()))
     scb.doPrint({'actions': actions})
 
     for action in actions:

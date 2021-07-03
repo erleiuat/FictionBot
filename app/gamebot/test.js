@@ -15,55 +15,53 @@ async function testIt() {
         return false
     }
 
+
+    resp = await bot.messages([{
+        scope: 'local',
+        message: '・'
+    },{
+        scope: 'local',
+        message: ' ・ '
+    },{
+        scope: 'local',
+        message: 'ä'
+    },{
+        scope: 'local',
+        message: 'ü'
+    },{
+        scope: 'local',
+        message: 'ö'
+    },{
+        scope: 'local',
+        message: 'Test'
+    },{
+        scope: 'local',
+        message: '1'
+    },{
+        scope: 'local',
+        message: '2'
+    },{
+        scope: 'local',
+        message: '3'
+    },{
+        scope: 'local',
+        message: '3'
+    },{
+        scope: 'local',
+        message: '2'
+    },{
+        scope: 'local',
+        message: '1'
+    }])
+    
+    console.log(resp)
+    /*
     
     resp = await bot.actions([{
         type: 'dress',
         properties: null
     }])
     console.log(resp)
-
-    resp = await bot.messages([{
-        scope: 'local',
-        message: '1'
-    },{
-        scope: 'local',
-        message: '2'
-    },{
-        scope: 'local',
-        message: '3'
-    },{
-        scope: 'local',
-        message: '3'
-    },{
-        scope: 'local',
-        message: '2'
-    },{
-        scope: 'local',
-        message: '1'
-    },{
-        scope: 'local',
-        message: '1'
-    },{
-        scope: 'local',
-        message: '2'
-    },{
-        scope: 'local',
-        message: '3'
-    },{
-        scope: 'local',
-        message: '3'
-    },{
-        scope: 'local',
-        message: '2'
-    },{
-        scope: 'local',
-        message: '1'
-    }])
-    
-    console.log(resp)
-/*
-    
-    
     
     
     resp = await bot.actions([{

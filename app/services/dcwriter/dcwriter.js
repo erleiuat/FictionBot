@@ -128,7 +128,7 @@ async function sendAdmins(dcClient) {
         aList = await global.admins.list()
 
         if (aList[line.steamID].useFakeNames) {
-            if (msgCmd.includes('setfakename')) fakeNameCache[line.steamID] = line.message.split(' ')[1]
+            if (msgCmd.includes('setfakename')) fakeNameCache[line.steamID] = line.message.split(': ')[1]
             else if (msgCmd.includes('clearfakename')) fakeNameCache[line.steamID] = false
         }
 

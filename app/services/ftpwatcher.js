@@ -25,7 +25,6 @@ exports.start = async function start() {
     }
 
     console.log(sn + 'FTP-Connection established')
-    let fileCache = {}
     let listCache = fs.readdirSync('./app/storage/raw_logs/').filter(e => {
         if (e == 'new') return false
         return true
@@ -35,13 +34,11 @@ exports.start = async function start() {
             size: fs.statSync('./app/storage/raw_logs/' + e).size
         }
     })
-
-    if (listCache.length >= 1) {
-        for (const file of listCache) fileCache[file.name] = file
-        listCache = JSON.stringify(listCache)
-    }
-
+    
     let i = 1
+    let fileCache = {}
+    if (listCache.length >= 1) for (const file of listCache) fileCache[file.name] = file
+
     do {
         await global.sleep.timer(0.01)
         if (global.updates) continue
@@ -51,6 +48,7 @@ exports.start = async function start() {
 
         let files = await (await ftp.list(process.env.PP_FTP_LOG_DIR)).filter(e => {
             if (e['name'].startsWith('violations')) return false
+            if (fileCache[file.name] && fileCache[file.name].size == file.size) return false
             return true
         }).map(e => {
             return {
@@ -61,17 +59,15 @@ exports.start = async function start() {
 
         ioTotalReq.inc()
         ioCheckSec.mark()
-        if (JSON.stringify(files) == listCache) continue
-        console.log(sn + 'New Updates found! (#' + i + ') Downloading files...')
+        if (!files.length) continue
+        console.log(sn + 'New Updates found! (#' + i + ') Downloading ' + files.length + ' files...')
 
         for (const file of files) {
-            if (fileCache[file.name] && fileCache[file.name].size == file.size) continue
             await ftp.downloadTo('./app/storage/raw_logs/new/' + file.name, process.env.PP_FTP_LOG_DIR + '/' + file.name)
             fileCache[file.name] = file
             ioTotalReq.inc()
         }
 
-        listCache = JSON.stringify(files)
         console.log(sn + 'File-Download complete!')
         global.updates = true
     } while (true)

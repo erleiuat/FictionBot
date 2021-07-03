@@ -16,7 +16,7 @@ const channels = {
     playerActivity: process.env.DISCORD_CH_PLAYERACTIVITY
 }
 
-async function iterate(logFunction, dcClient, seconds = 0.01) {
+async function iterate(logFunction, dcClient, seconds = 0.005) {
     do {
         await global.sleep.timer(seconds)
         if (global.updates) continue
@@ -34,7 +34,6 @@ exports.start = async function start(dcClient) {
     iterate(sendLogins, dcClient)
     iterate(sendDump, dcClient)
     iterate(sendMaps, dcClient, 5)
-    // iterate(generateGif, dcClient, 60)
 }
 
 async function sendMaps(dcClient) {
@@ -94,16 +93,16 @@ async function sendChats(dcClient) {
     let channel = dcClient.channels.cache.find(channel => channel.id === channels.chat)
 
     for (const el in global.newEntries.chat) {
+        if (global.newEntries.chat[el].message.trim().substring(0, 1) == '/') {
+            console.log(sn + 'Command detected!')
+            global.commands[el] = {...global.newEntries.chat[el]}
+        }
         if (global.newEntries.chat[el].type == 'Global') {
             let msg = await format.chat(global.newEntries.chat[el])
             if (msg.fields[0].value.match(/(?:admin|support)/gmi))
                 await channel.send(' <@&' + process.env.DISCORD_ROLE_SUPPORT + '> ')
             await channel.send(new Discord.MessageEmbed(msg))
             console.log(sn + 'Chat sent: ' + el)
-        }
-        if (global.newEntries.chat[el].message.trim().substring(0, 1) == '/') {
-            console.log(sn + 'Command detected!')
-            global.commands[el] = global.newEntries.chat[el]
         }
         dump[el] = {
             dump: 'chat',

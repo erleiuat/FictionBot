@@ -102,7 +102,6 @@ def goFortsetzen():
         scb.safeClick(needOK)
         scb.sleep(1)
 
-    i = 0
     scb.sleep()
     while(scb.onScreen('img/scb/main_fortsetzen.png', bw=True, sure=0.8)):
         scb.safeClick(scb.getPoint(230, 645))
@@ -112,6 +111,7 @@ def goFortsetzen():
 
 
 def joinServer():
+    i = 0
     scb.sleep()
     scb.safeMouse()
     goFortsetzen()

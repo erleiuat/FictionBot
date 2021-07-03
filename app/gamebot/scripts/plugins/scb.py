@@ -157,6 +157,7 @@ def getPosition():
 def openTab():
     i = 0
     while(not onScreen('img/scb/inventar.png', bw=True, region=getRegion('inventory'))):
+        sleep(0.05)
         pyautogui.keyDown('tab')
         sleep(0.01)
         pyautogui.keyUp('tab')
@@ -166,7 +167,6 @@ def openTab():
         pyautogui.keyUp('tab')
         sleep(0.05)
         pyautogui.press('1')
-        sleep(0.5)
         i = i + 1
         if(i > 5):
             return False

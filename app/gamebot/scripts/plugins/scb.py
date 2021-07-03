@@ -238,6 +238,7 @@ def goReadyState(repeat=0):
     safeMouse()
     parts = isReady()
     if (parts['chat'] and parts['inventory']):
+        sendMessage('#SetFakeName ・ :[FiBo]')
         sendMessage('#ListZombies')
         sendMessage('#SetHairLength 0')
         sendMessage('#SetFacialHairLength 0')

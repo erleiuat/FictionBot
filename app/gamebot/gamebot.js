@@ -56,7 +56,7 @@ exports.start = async function start() {
         bot = cp.spawn('py', ['./app/gamebot/scripts/gamebot.py'])
         console.log(sn + 'Starting Bot')
         resOutput(resolve, 'Bot running')
-        bot.stdin.setEncoding('utf-8')
+        //bot.stdin.setEncoding('utf-8')
         bot.stderr.on('data', (data) => {
             console.log(sn + 'Error: ' + `${data}`)
         })

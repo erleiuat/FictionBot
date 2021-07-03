@@ -5,7 +5,7 @@ import json
 
 
 def startup():
-    scb.sendMessage('#SetFakeName [SF-BOT]')
+    scb.sendMessage('#SetFakeName ・ :[FiBo]')
     scb.goScope('global')
     scb.sendMessage('I\'m getting prepared...')
     scb.sendMessage('#ListZombies')

@@ -161,13 +161,19 @@ exports.kill = async function kill(entry, dump = false) {
 
 exports.chat = async function chat(entry) {
     let color = 'ffffff'
-    if (entry.user.startsWith('・ :[FiBo]')) color = '00FFFF'
-    else if (entry.user.startsWith('[DC]')) color = '7289DA'
-    else if (entry.message.trim().startsWith('/')) color = 'FFCC00'
+    let uName = entry.user
+    if (entry.message.trim().startsWith('/')) color = 'FFCC00'
+    else if (uName.startsWith('・ :[FiBo]')) {
+        color = '00FFFF'
+        uName = '[FiBo] (FictionBot)'
+    } else if (uName.startsWith('[DC]')) {
+        color = '7289DA'
+        uName = uName.replace('[DC]', '[Discord]')
+    }
     return {
         'color': color,
         'fields': [{
-            'name': entry.user,
+            'name': uName,
             'value': entry.message
         }],
         'footer': {

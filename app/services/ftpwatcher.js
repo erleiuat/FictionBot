@@ -40,7 +40,7 @@ exports.start = async function start() {
     if (listCache.length >= 1) for (const file of listCache) fileCache[file.name] = file
 
     do {
-        await global.sleep.timer(0.01)
+        await global.sleep.timer(0.005)
         if (global.updates) continue
         if (global.updatingFTP) continue
         if (i % 10 == 0) console.log(sn + 'Checking for new updates (#' + i + ')')

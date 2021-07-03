@@ -24,7 +24,7 @@ async function chatMsg(msg) {
         console.log(sn + 'Chat message detected!')
         global.commands[msg.id] = {
             message: 'console_msg',
-            user: ' ・ :[DISCORD]: ・ ' + msg.author.username,
+            user: '[DC] ' + msg.author.username,
             content: msg.content
         }
         await msg.delete()

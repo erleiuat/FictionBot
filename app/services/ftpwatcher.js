@@ -48,7 +48,7 @@ exports.start = async function start() {
 
         let files = await (await ftp.list(process.env.PP_FTP_LOG_DIR)).filter(e => {
             if (e['name'].startsWith('violations')) return false
-            if (fileCache[file.name] && fileCache[file.name].size == file.size) return false
+            if (fileCache[e['name']] && fileCache[e['name']].size == e['size']) return false
             return true
         }).map(e => {
             return {

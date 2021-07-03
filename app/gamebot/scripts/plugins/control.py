@@ -69,7 +69,7 @@ def act(acts):
     scb.sleep(0.2)
     for act in acts:
         scb.safeMouse()
-        scb.sleep(0.2)
+        scb.sleep(0.4)
         itemLoc = scb.onScreen(act[0], sure=0.75, bw=True, region=scb.getRegion('inventory'))
         if(itemLoc):
             scb.safeClick(itemLoc, button='right')
@@ -77,8 +77,10 @@ def act(acts):
             actionLoc = scb.onScreen(act[1], sure=0.75, bw=True, region=scb.getRegion('inventory'))
             if(actionLoc):
                 scb.safeClick(actionLoc)
+                scb.safeMouse()
                 scb.sleep(act[2])
             else:
+                scb.safeMouse()
                 pyautogui.press('esc')
     
     pyautogui.press('t')

@@ -132,7 +132,6 @@ def joinServer():
         i = i + 1
         if(i > 120):
             raise Exception('Unable to open tab')
-
     getReady()
     scb.sleep()
     pyautogui.press('t')

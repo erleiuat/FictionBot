@@ -10,7 +10,7 @@ exports.doAct = async function doAct(action, force = false) {
     switch (action) {
 
         case 'startup':
-            cmdBuilder.addMessage('global', 'I will be unavailable for a minute.')
+            cmdBuilder.addMessage('global', ' ・ I will be unavailable for a minute.')
             cmdBuilder.addAction('repair', [
                 '#Teleport -117564.797 -67782.828 36810.059',
                 '#Teleport -107551.336 -67798.992 36856.250'
@@ -20,60 +20,60 @@ exports.doAct = async function doAct(action, force = false) {
             cmdBuilder.addAction('shit')
             cmdBuilder.addAction('piss')
             cmdBuilder.addMessage('global', '#Teleport -116369 -65906 37144')
-            cmdBuilder.addMessage('global', 'I\'m available again.')
+            cmdBuilder.addMessage('global', ' ・ I\'m available again.')
             cmdBuilder.addAction('idle')
             break
 
         case 'business':
-            cmdBuilder.addMessage('global', 'I will be unavailable for a minute.')
+            cmdBuilder.addMessage('global', ' ・ I will be unavailable for a minute.')
             cmdBuilder.addMessage('global', '#Teleport -117331 -66059 37065')
             cmdBuilder.addAction('piss')
             cmdBuilder.addAction('shit')
             cmdBuilder.addMessage('global', '#Teleport -116369 -65906 37144')
-            cmdBuilder.addMessage('global', 'I\'m available again.')
+            cmdBuilder.addMessage('global', ' ・ I\'m available again.')
             cmdBuilder.addAction('idle')
             break
 
         case 'shit':
-            cmdBuilder.addMessage('global', 'I will be unavailable for a minute.')
+            cmdBuilder.addMessage('global', ' ・ I will be unavailable for a minute.')
             cmdBuilder.addMessage('global', '#Teleport -117331 -66059 37065')
             cmdBuilder.addAction('shit')
             cmdBuilder.addMessage('global', '#Teleport -116369 -65906 37144')
-            cmdBuilder.addMessage('global', 'I\'m available again.')
+            cmdBuilder.addMessage('global', ' ・ I\'m available again.')
             cmdBuilder.addAction('idle')
             break
 
         case 'piss':
-            cmdBuilder.addMessage('global', 'I will be unavailable for a minute.')
+            cmdBuilder.addMessage('global', ' ・ I will be unavailable for a minute.')
             cmdBuilder.addMessage('global', '#Teleport -117331 -66059 37065')
             cmdBuilder.addAction('piss')
             cmdBuilder.addMessage('global', '#Teleport -116369 -65906 37144')
-            cmdBuilder.addMessage('global', 'I\'m available again.')
+            cmdBuilder.addMessage('global', ' ・ I\'m available again.')
             cmdBuilder.addAction('idle')
             break
 
         case 'dress':
-            cmdBuilder.addMessage('global', 'I will be unavailable for a minute.')
+            cmdBuilder.addMessage('global', ' ・ I will be unavailable for a minute.')
             cmdBuilder.addMessage('global', '#Teleport -117331 -66059 37065')
             cmdBuilder.addAction('dress')
             cmdBuilder.addMessage('global', '#Teleport -116369 -65906 37144')
-            cmdBuilder.addMessage('global', 'I\'m available again.')
+            cmdBuilder.addMessage('global', ' ・ I\'m available again.')
             cmdBuilder.addAction('idle')
             break
 
         case 'repair':
-            cmdBuilder.addMessage('global', 'I will be unavailable for a minute.')
+            cmdBuilder.addMessage('global', ' ・ I will be unavailable for a minute.')
             cmdBuilder.addAction('repair', [
                 '#Teleport -117564.797 -67786.492 36809.871',
                 '#Teleport -107551.336 -67796.391 36856.379'
             ])
             cmdBuilder.addMessage('global', '#Teleport -116369 -65906 37144')
-            cmdBuilder.addMessage('global', 'I\'m available again.')
+            cmdBuilder.addMessage('global', ' ・ I\'m available again.')
             cmdBuilder.addAction('idle')
             break
 
         case 'light':
-            cmdBuilder.addMessage('global', 'I will be unavailable for 10 minutes.')
+            cmdBuilder.addMessage('global', ' ・ I will be unavailable for 10 minutes.')
             cmdBuilder.addMessage('global', '#Teleport -117331 -66059 37065')
             cmdBuilder.addAction('light', [
                 "#Teleport -112656 -71595 37542", //Turm 1.1        
@@ -112,7 +112,7 @@ exports.doAct = async function doAct(action, force = false) {
                 "#Teleport -114378 -63300 37302" //Aussen 6
             ])
             cmdBuilder.addMessage('global', '#Teleport -116369 -65906 37144')
-            cmdBuilder.addMessage('global', 'I\'m available again.')
+            cmdBuilder.addMessage('global', ' ・ I\'m available again.')
             cmdBuilder.addAction('idle')
             break
 

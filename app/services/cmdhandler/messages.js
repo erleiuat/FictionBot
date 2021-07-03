@@ -4,7 +4,7 @@ exports.list = {
         done: false
     },
     '5:57': {
-        text: 'RESTART-INFO: Don\'t drive and make sure there are no valuable items on the floor!',
+        text: ' ・ RESTART-INFO: Don\'t drive and make sure there are no valuable items on the floor!',
         done: false
     },
     '5:59': {
@@ -16,7 +16,7 @@ exports.list = {
         done: false
     },
     '11:57': {
-        text: 'RESTART-INFO: Don\'t drive and make sure there are no valuable items on the floor!',
+        text: ' ・ RESTART-INFO: Don\'t drive and make sure there are no valuable items on the floor!',
         done: false
     },
     '11:59': {
@@ -28,7 +28,7 @@ exports.list = {
         done: false
     },
     '17:57': {
-        text: 'RESTART-INFO: Don\'t drive and make sure there are no valuable items on the floor!',
+        text: ' ・ RESTART-INFO: Don\'t drive and make sure there are no valuable items on the floor!',
         done: false
     },
     '17:59': {
@@ -40,7 +40,7 @@ exports.list = {
         done: false
     },
     '23:57': {
-        text: 'RESTART-INFO: Don\'t drive and make sure there are no valuable items on the floor!',
+        text: ' ・ RESTART-INFO: Don\'t drive and make sure there are no valuable items on the floor!',
         done: false
     },
     '23:59': {

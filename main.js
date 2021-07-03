@@ -2,7 +2,7 @@ global.chalk = require('chalk')
 const sn = global.chalk.inverse('[MAIN] -> ')
 
 console.log('\n\n' + sn + '----------------------------------------------------------')
-console.log(sn + 'Welcome to SDP-Bot 1.0!')
+console.log(sn + 'Welcome to FictionBot 2.0!')
 console.log(sn + '----------------------------------------------------------')
 
 console.log(sn + 'Starting directory: ' + process.cwd())

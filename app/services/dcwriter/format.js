@@ -160,8 +160,12 @@ exports.kill = async function kill(entry, dump = false) {
 }
 
 exports.chat = async function chat(entry) {
+    let color = 'ffffff'
+    if (entry.user.startsWith('・ :[FiBo]')) color = '00FFFF'
+    else if (entry.user.startsWith('[DC]')) color = '7289DA'
+    else if (entry.message.trim().startsWith('/')) color = 'FFCC00'
     return {
-        'color': 'ffffff',
+        'color': color,
         'fields': [{
             'name': entry.user,
             'value': entry.message

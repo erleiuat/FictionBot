@@ -62,13 +62,20 @@ async function mines(file) {
         else if (line.includes(')\' triggered trap ')) {
             actionType = 'triggered'
             global.log.debug(line)
-            let ownInfo = line.split(') from ')[1]
-            let ownSteamID = ownInfo.split(':')[0]
-            let ownUserID = ownInfo.split(':')[1].match(regexname)
-            let ownUser = ownInfo.split(':')[1].replace(ownUserID, '')
-            owner = {
-                steamID: ownSteamID,
-                user: ownUser
+            if(line.includes(') from')) {
+                let ownInfo = line.split(') from ')[1]
+                let ownSteamID = ownInfo.split(':')[0]
+                let ownUserID = ownInfo.split(':')[1].match(regexname)
+                let ownUser = ownInfo.split(':')[1].replace(ownUserID, '')
+                owner = {
+                    steamID: ownSteamID,
+                    user: ownUser
+                }
+            } else {
+                owner = {
+                    steamID: 'unknown',
+                    user: 'unknown'
+                }
             }
         }
 

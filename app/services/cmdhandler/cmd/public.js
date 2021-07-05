@@ -47,7 +47,26 @@ exports.travel = async function travel(cmd) {
         cmdBuilder.addMessage('global', ':[Travel]: ・ Please make sure to be at an Fasttravel-Station and use this command in LOCAL-Chat like this: /travel STATIONNAME')
         return cmdBuilder.fullCommand(cmd)
     } else if (cmdBuilder.begin(cmd, 'local')) {
-        console.log(cmd)
+        let target = false
+        let station = cmd.message.replace('/travel').trim().toLowerCase()
+        if(station == 'd0') target = '#Teleport -669327 387796 72675'
+        else if(station == 'b0') target = '#Teleport -111659 -61028 37385'
+        else if(station == 'd0') target = ''
+        else if(station == 'd0') target = ''
+        else {
+            cmdBuilder.addMessage('global', ':[Travel]: ・ @'+cmd.user+': I couldn\'t recognize the station you want to go to.')
+            return cmdBuilder.fullCommand(cmd)
+        }
+
+        cmdBuilder.addAction('travel', {
+            steamID: cmd.steamID,
+            target: target,
+            stations: [
+                [-111738,-61338, 500, 500],
+                [-669617, 387690, 500, 500]
+            ]
+        })
+        return cmdBuilder.fullCommand(cmd)
     }
 }
 

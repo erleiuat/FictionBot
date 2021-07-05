@@ -31,7 +31,6 @@ function formDate(dateStr) {
 
 async function repairBot() {
 
-
     global.log.debug(sn + 'Recreating existing files')
 
     if (fs.existsSync('./app/storage/raw_logs/')) fs.rmdirSync('./app/storage/raw_logs/', {
@@ -69,7 +68,6 @@ async function repairBot() {
 
 
     global.log.debug(sn + 'Getting Log-Files')
-
     try {
         let files = await (await ftp_pp.list(process.env.PP_FTP_LOG_DIR)).filter(e => {
             if (e['name'].startsWith('violations')) return false
@@ -91,8 +89,9 @@ async function repairBot() {
         global.log.debug(sn + error)
         throw new Error(error)
     }
-
     global.log.debug(sn + 'Log-Files downloaded')
+
+
     global.log.debug(sn + 'Getting Log-Cache from RM_LOG_FTP')
     global.log.debug(sn + 'Connecting to RM_LOG_FTP')
     try {
@@ -123,8 +122,17 @@ async function repairBot() {
         throw new Error(sn + 'Error: ' + error)
     }
 
-    global.log.debug(sn + 'Files processed')
+    for (const key in lines.login) {
+        if (key.split('_')[0].length <= 2) {
+            let newKey = formKey(lines.login[key].time, lines.login[key].userID)
+            lines.login[newKey] = {
+                ...lines.login[key]
+            }
+            delete lines.login[key]
+        }
+    }
 
+    global.log.debug(sn + 'Files processed')
     global.log.debug(sn + 'Merging Cache with PP-Data')
     for (const key in lines) lines[key] = {
         ...lines[key],
@@ -133,44 +141,52 @@ async function repairBot() {
 
 
     global.log.debug(sn + 'Fixing login-logs')
+    lines.login = Object.keys(lines.login).sort().reduce(
+        (obj, key) => {
+            obj[key] = lines.login[key]
+            return obj
+        }, {}
+    )
 
     onlineLines = {}
     for (const line in lines.login) {
-        if (lines.login[line].type == 'login') onlineLines[line.userID] = {
+        if (lines.login[line].type == 'login') onlineLines[lines.login[line].userID] = {
             ...lines.login[line]
         }
-        else if (onlineLines[line.userID]) delete onlineLines[line.userID]
+        else if (onlineLines[lines.login[line].userID]) delete onlineLines[lines.login[line].userID]
     }
 
     let lastRestart = new Date()
     let curHour = lastRestart.getHours()
     if (curHour < 6) lastRestart.setHours(0, 1, 0, 0)
-    else if (curHour < 12) lastRestart.setHours(6, 1, 0, 0)
-    else if (curHour < 18) lastRestart.setHours(12, 1, 0, 0)
-    else if (curHour > 18) lastRestart.setHours(18, 1, 0, 0)
+    else if (curHour < 12) lastRestart.setHours(6, 0, 0, 0)
+    else if (curHour < 18) lastRestart.setHours(12, 0, 0, 0)
+    else if (curHour > 18) lastRestart.setHours(18, 0, 0, 0)
+
     restartTime = lastRestart.getTime()
-    for (const el in global.playerlist) {
-        if (global.playerlist[el].online) {
+    for (const el in onlineLines) {
+        loginDate = formDate(onlineLines[el].time)
+        if (loginDate.getTime() > restartTime) continue
 
-            loginDate = formDate(global.playerlist[el].time)
-            if (loginDate.getTime() > restartTime) continue
+        console.log(onlineLines[el])
+        loginDate.setSeconds(loginDate.getSeconds() + 5)
+        newEntryTime = global.nZero.form(loginDate.getHours()) + ':' + global.nZero.form(loginDate.getMinutes()) + ':' + global.nZero.form(loginDate.getSeconds())
+        newEntryKey = formKey({
+            date: onlineLines[el].time.date,
+            time: newEntryTime
+        }, onlineLines[el].userID)
 
-            loginDate.setSeconds(loginDate.getSeconds() + 5)
-            newEntryTime = loginDate.getHours() + ':' + loginDate.getMinutes() + ':' + loginDate.getSeconds()
-            newEntryKey = formKey({
-                date: global.playerlist[el].time.date,
-                time: newEntryTime
-            }, global.playerlist[el].userID)
-
-            lines.login[newEntryKey] = {
-                ...global.playerlist[el]
-            }
-            lines.login[newEntryKey].type = 'logout'
-            lines.login[newEntryKey].online = false
-            lines.login[newEntryKey].time.time = newEntryTime
-
+        lines.login[newEntryKey] = {
+            ...onlineLines[el]
         }
+        lines.login[newEntryKey].type = 'logout'
+        lines.login[newEntryKey].online = false
+        lines.login[newEntryKey].time.time = newEntryTime
+        delete onlineLines[el]
+
     }
+
+    console.log(onlineLines)
 
     global.log.debug(sn + 'Login-logs fixed')
 

@@ -115,7 +115,7 @@ def joinServer():
     scb.sleep()
     scb.safeMouse()
     goFortsetzen()
-    while(not scb.onScreen('img/scb/fortsetzen.png', bw=True, region=scb.getRegion('inventory'))):
+    while(not scb.onScreen('img/scb/fortsetzen.png', bw=True, sure=0.8, region=scb.getRegion('inventory'))):
         scb.sleep(1)
         pyautogui.press('esc')
         scb.sleep(1)

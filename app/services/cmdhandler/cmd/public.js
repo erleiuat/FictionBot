@@ -65,8 +65,11 @@ exports.travel = async function travel(cmd) {
             target: target,
             costs: 10,
             stations: [
-                [-111738, -61338, 500, 500],
-                [-669617, 387690, 500, 500]
+                [-669327, 387796, 500, 500],
+                [-111659, -61028, 500, 500],
+                [-829491, -837658, 500, 500],
+                [101034, -492350, 500, 500],
+                [430079, 477843, 500, 500]
             ],
             message: {
                 notEnough: ':[Travel]: ・ @' + cmd.user + ': You need to have 10 famepoints for this trip.',

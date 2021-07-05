@@ -123,7 +123,7 @@ def actF(action, duration=1):
     pyautogui.press('esc')
     pyautogui.press('esc')
     pyautogui.keyDown('f')
-    scb.sleep(0.8)
+    scb.sleep(1)
     actionLoc = scb.onScreen(action, sure=0.8, bw=True,region=scb.getRegion('inventory'))
     if (actionLoc):
         scb.safeClick(actionLoc)

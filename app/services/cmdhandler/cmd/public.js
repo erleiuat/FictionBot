@@ -62,10 +62,17 @@ exports.travel = async function travel(cmd) {
         cmdBuilder.addAction('travel', {
             steamID: cmd.steamID,
             target: target,
+            costs: 10,
             stations: [
                 [-111738,-61338, 500, 500],
                 [-669617, 387690, 500, 500]
-            ]
+            ],
+            message: {
+                notEnough: ':[Travel]: ・ @'+cmd.user+': You need to have 10 famepoints for this trip.',
+                noStation: ':[Travel]: ・ @'+cmd.user+': You aren\'t near any Fasttravel station.',
+                good: ':[Travel]: ・ @'+cmd.user+': Your trip will start shortly. It will cost you 10 famepoints.',
+                smthWrong: ':[Travel]: ・ @'+cmd.user+': Something went wrong. Please try again.'
+            }
         })
         return cmdBuilder.fullCommand(cmd)
     }

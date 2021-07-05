@@ -103,19 +103,34 @@ def travel(props):
             user = u
             break
 
+    if(not user):
+        scb.sendMessage(props['message']['smthWrong'])
+        return False
+
+    if(user['fame'] < props['costs']):
+        scb.sendMessage(props['message']['notEnough'])
+        return False
+
     scb.sendMessage('#Location '+user['steamID'])
     p = scb.readMessage()
     playerLoc = (p[(p.find(':')+1):]).strip().split()
 
+    nearStation = False
     for station in props['stations']:
         if(float(playerLoc[0][2:]) > (station[0] - station[2]) and float(playerLoc[0][2:]) < (station[0] + station[2])):
             if(float(playerLoc[1][2:]) > (station[1] - station[3]) and float(playerLoc[1][2:]) < (station[1] + station[3])):
-                scb.sendMessage(props['target'] + ' ' + user['steamID'])
+                nearStation = True
+    
+    if(nearStation):
+        scb.goScope('global')
+        scb.sendMessage(props['message']['good'])
+        scb.sendMessage('#SetFamePoints ' + (user['fame'] - props['costs']) + ' ' + user['steamID'])
+        scb.sendMessage(props['target'] + ' ' + user['steamID'])
+    else:
+        scb.sendMessage(props['message']['noStation'])
+        return False
 
-
-    scb.doPrint({
-        'cc': playerLoc,
-    })
+    return True
     
 
 

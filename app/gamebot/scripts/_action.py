@@ -94,14 +94,18 @@ def travel(props):
                 elif(i == 2):
                     player['charName'] = el.strip()
                 elif(i == 3):
-                    player['fame'] = int(el.strip())
+                    player['fame'] = el.strip()
         playerList.append(player)
 
     user = False
     for u in playerList:
         if(u['steamID'] == props['steamID']):
+            if(not isinstance(u['fame'], int)):
+                u['fame'] = int(u['fame'])
             user = u
             break
+
+    scb.doPrint({'userInfo': user})
 
     if(not user):
         scb.sendMessage(props['message']['smthWrong'])
@@ -124,7 +128,7 @@ def travel(props):
     if(nearStation):
         scb.goScope('global')
         scb.sendMessage(props['message']['good'])
-        scb.sendMessage('#SetFamePoints ' + (user['fame'] - props['costs']) + ' ' + user['steamID'])
+        scb.sendMessage('#SetFamePoints ' + str(user['fame'] - props['costs']) + ' ' + user['steamID'])
         scb.sendMessage(props['target'] + ' ' + user['steamID'])
     else:
         scb.sendMessage(props['message']['noStation'])

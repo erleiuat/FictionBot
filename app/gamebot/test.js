@@ -19,11 +19,18 @@ async function testIt() {
         type: 'travel',
         properties: {
             steamID: '76561198058320009',
-            target: '#Teleport -111738 -61338 0',
+            target: '#Teleport -669327 387796 72675',
+            costs: 10,
             stations: [
                 [-111738,-61338, 500, 500],
                 [-669617, 387690, 500, 500]
-            ]
+            ],
+            message: {
+                notEnough: ':[Travel]: ・ @Test: You need to have 10 famepoints for this trip.',
+                noStation: ':[Travel]: ・ @Test: You aren\'t near any Fasttravel station.',
+                good: ':[Travel]: ・ @Test: Your trip will start shortly. It will cost you 10 famepoints.',
+                smthWrong: ':[Travel]: ・ @Test: Something went wrong. Please try again.'
+            }
         }
     }])
 

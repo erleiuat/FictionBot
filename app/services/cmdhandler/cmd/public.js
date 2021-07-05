@@ -48,11 +48,12 @@ exports.travel = async function travel(cmd) {
         return cmdBuilder.fullCommand(cmd)
     } else if (cmdBuilder.begin(cmd, 'local')) {
         let target = false
-        let station = cmd.message.replace('/travel').trim().toLowerCase()
+        let station = cmd.message.replace('/travel', '').trim().toLowerCase()
+        console.log(station)
         if(station == 'd0') target = '#Teleport -669327 387796 72675'
-        else if(station == 'b0') target = '#Teleport -111659 -61028 37385'
-        else if(station == 'd0') target = ''
-        else if(station == 'd0') target = ''
+        else if(station == 'b2') target = '#Teleport -111659 -61028 37385'
+        else if(station == '') target = ''
+        else if(station == '') target = ''
         else {
             cmdBuilder.addMessage('global', ':[Travel]: ・ @'+cmd.user+': I couldn\'t recognize the station you want to go to.')
             return cmdBuilder.fullCommand(cmd)

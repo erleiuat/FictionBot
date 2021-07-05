@@ -94,7 +94,7 @@ def travel(props):
                 elif(i == 2):
                     player['charName'] = el.strip()
                 elif(i == 3):
-                    player['fame'] = el.strip()
+                    player['fame'] = int(el.strip())
         playerList.append(player)
 
     user = False

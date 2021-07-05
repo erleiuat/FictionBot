@@ -168,7 +168,6 @@ async function repairBot() {
         loginDate = formDate(onlineLines[el].time)
         if (loginDate.getTime() > restartTime) continue
 
-        console.log(onlineLines[el])
         loginDate.setSeconds(loginDate.getSeconds() + 5)
         newEntryTime = global.nZero.form(loginDate.getHours()) + ':' + global.nZero.form(loginDate.getMinutes()) + ':' + global.nZero.form(loginDate.getSeconds())
         newEntryKey = formKey({
@@ -185,8 +184,6 @@ async function repairBot() {
         delete onlineLines[el]
 
     }
-
-    console.log(onlineLines)
 
     global.log.debug(sn + 'Login-logs fixed')
 

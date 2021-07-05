@@ -103,7 +103,7 @@ def goFortsetzen():
         scb.sleep(1)
 
     scb.sleep()
-    while(scb.onScreen('img/scb/main_fortsetzen.png', bw=True, sure=0.8)):
+    if(scb.onScreen('img/scb/mehrspieler.png', bw=True, sure=0.8)):
         scb.safeClick(scb.getPoint(230, 645))
         scb.sleep(0.05)
         scb.safeMouse()
@@ -119,7 +119,7 @@ def joinServer():
         scb.sleep(1)
         pyautogui.press('esc')
         scb.sleep(1)
-        if(scb.onScreen('img/scb/main_fortsetzen.png', bw=True, sure=0.8)):
+        if(scb.onScreen('img/scb/mehrspieler.png', bw=True, sure=0.8)):
             goFortsetzen()
         i = i + 1
         if(i > 90):
@@ -142,7 +142,7 @@ def startGame():
     scb.sleep(30)
     while(not focus('scum')):
         scb.sleep(1)
-    while(not scb.onScreen('img/scb/main_fortsetzen.png', bw=True, sure=0.8)):
+    while(not scb.onScreen('img/scb/mehrspieler.png', bw=True, sure=0.8)):
         scb.sleep(1)
     scb.sleep(1)
     joinServer()

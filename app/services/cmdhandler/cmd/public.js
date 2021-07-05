@@ -43,10 +43,10 @@ async function getJoke() {
 }
 
 exports.travel = async function travel(cmd) {
-    if (cmdBuilder.begin(cmd, 'local')) {
+    if (cmdBuilder.begin(cmd, 'global')) {
         cmdBuilder.addMessage('global', ':[Travel]: ・ Please make sure to be at an Fasttravel-Station and use this command in LOCAL-Chat like this: /travel STATIONNAME')
         return cmdBuilder.fullCommand(cmd)
-    } else if (!cmdBuilder.begin(cmd, 'local')) {
+    } else if (cmdBuilder.begin(cmd, 'local')) {
         console.log(cmd)
     }
 }

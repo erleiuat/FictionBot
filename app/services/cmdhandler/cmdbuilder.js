@@ -15,7 +15,7 @@ exports.getTmpCmd = function getTmpCmd() {
 
 exports.begin = function begin(cmd, allowScope) {
     actCmds = []
-    if (allowScope && cmd.type.toLowerCase() != allowScope) return false
+    if (allowScope && cmd.type.toLowerCase() != allowScope.toLowerCase()) return false
     return true
 }
 

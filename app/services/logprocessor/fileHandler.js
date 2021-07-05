@@ -61,6 +61,7 @@ async function mines(file) {
         else if (line.includes(')\' crafted trap ')) actionType = 'crafted'
         else if (line.includes(')\' triggered trap ')) {
             actionType = 'triggered'
+            console.log(line)
             let ownInfo = line.split(') from ')[1]
             let ownSteamID = ownInfo.split(':')[0]
             let ownUserID = ownInfo.split(':')[1].match(regexname)

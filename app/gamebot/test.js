@@ -1,4 +1,12 @@
 const bot = require('./gamebot')
+const winston = require('winston')
+global.log = winston.createLogger({
+  level: 'debug',
+  format: winston.format.cli(),
+  transports: [
+    new winston.transports.Console()
+  ],
+})
 
 function timer(seconds) {
     return new Promise((resolve) => {
@@ -22,8 +30,11 @@ async function testIt() {
             target: '#Teleport -669327 387796 72675',
             costs: 10,
             stations: [
-                [-111738,-61338, 500, 500],
-                [-669617, 387690, 500, 500]
+                [-669327, 387796, 500, 500],
+                [-111659, -61028, 500, 500],
+                [-829491, -837658, 500, 500],
+                [101034, -492350, 500, 500],
+                [430079, 477843, 500, 500]
             ],
             message: {
                 notEnough: ':[Travel]: ・ @Test: You need to have 10 famepoints for this trip.',
@@ -34,7 +45,7 @@ async function testIt() {
         }
     }])
 
-    global.log.debug(resp.cc)
+    global.log.debug(JSON.parse(resp))
 
     /*
     resp = await bot.messages([{

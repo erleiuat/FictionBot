@@ -73,9 +73,11 @@ while (True):
         else:
             scb.doPrint({'Error': 'Command not recognized'})
     except Exception as e:
+        exception_type, exception_object, exception_traceback = sys.exc_info()
         scb.doPrint({
             'error': True,
-            'errorMessage': str(e)
+            'errorMessage': str(e),
+            'errorType': str(exception_type)
         })
         if (not procControl.focus()):
             procControl.solveProblems()

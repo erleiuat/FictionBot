@@ -15,23 +15,22 @@ def getListPlayers():
         player['steamID'] = pTmp[:17]
         pTmp = pTmp[17:].strip()
         pTmp = pTmp.split('    ')
-
+        
         i = 0
         for el in pTmp:
             if(i > 2):
                 continue
-            elif(len(el) > 1):
+            elif(len(el) >= 1):
                 i = i + 1
                 if(i == 1):
                     player['steamName'] = el.strip()
                 elif(i == 2):
                     player['charName'] = el.strip()
                 elif(i == 3):
-                    fame = el.strip()
-                    if(not isinstance(fame, int)):
-                        player['fame'] = int(fame)
-                    else:
-                        player['fame'] = fame
+                    player['fame'] = el.strip()
+                    if(not isinstance(player['fame'], int)):
+                        player['fame'] = int(player['fame'])
+                    break
 
         playerList.append(player)
         

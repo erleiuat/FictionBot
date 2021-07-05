@@ -1,5 +1,5 @@
-const winston = require('winston')
 let logTS = new Date().getTime()
+const winston = require('winston')
 global.log = winston.createLogger({
   level: 'debug',
   format: winston.format.json(),

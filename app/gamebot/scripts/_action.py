@@ -12,8 +12,8 @@ def startup():
     scb.sendMessage('#ListZombies')
     scb.sendMessage('#ShowOtherPlayerInfo true')
     repair([
-        '#Teleport -117564.797 -67794.680 36809.430',
-        '#Teleport -107551.336 -67783.750 36857.059'
+        '#Teleport -117564.797 -67786.492 36809.871',
+        '#Teleport -107551.336 -67796.391 36856.379'
     ])
     scb.sendMessage('#Teleport -117331 -66059 37065')
     control.takeA('shit')

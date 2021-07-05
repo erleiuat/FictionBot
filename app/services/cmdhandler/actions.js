@@ -12,8 +12,8 @@ exports.doAct = async function doAct(action, force = false) {
         case 'startup':
             cmdBuilder.addMessage('global', ' ・ I will be unavailable for a minute.')
             cmdBuilder.addAction('repair', [
-                '#Teleport -117564.797 -67782.828 36810.059',
-                '#Teleport -107551.336 -67798.992 36856.250'
+                '#Teleport -117564.797 -67786.492 36809.871',
+                '#Teleport -107551.336 -67796.391 36856.379'
             ])
             cmdBuilder.addMessage('global', '#Teleport -117331 -66059 37065')
             cmdBuilder.addAction('shit')

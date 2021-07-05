@@ -53,7 +53,7 @@ exports.travel = async function travel(cmd) {
         if (station == 'd0') target = '#Teleport -669327 387796 72675'
         else if (station == 'b2') target = '#Teleport -111659 -61028 37385'
         else if (station == 'z0') target = '#Teleport -829491 -837658 5690'
-        else if (station == 'a3') target = '#Teleport 101034 -492350 Z=9982'
+        else if (station == 'a3') target = '#Teleport 101034 -492350 9982'
         else if (station == 'd4') target = '#Teleport 430079 477843 10546'
         else {
             cmdBuilder.addMessage('global', ':[Travel]: ・ @' + cmd.user + ': I couldn\'t recognize the station you want to go to.')

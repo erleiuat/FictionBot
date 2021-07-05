@@ -1,5 +1,5 @@
+const sn = '[LOGProcessor] -> '
 const fs = require('fs')
-const sn = global.chalk.magenta('[LOGProcessor] -> ')
 const ftp = new(require('basic-ftp')).Client()
 const fileHandler = require('./fileHandler')
 //ftp.ftp.verbose = true

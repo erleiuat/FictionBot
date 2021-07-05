@@ -1,6 +1,6 @@
+const sn = '[CMD-Handler] -> '
 const fs = require('fs')
 const ftp = new(require('basic-ftp')).Client()
-const sn = global.chalk.magenta('[CMD-Handler] -> ')
 const messages = require('./messages').list
 const cmdsPublic = require('./cmd/public')
 const cmdsInternal = require('./cmd/internal')

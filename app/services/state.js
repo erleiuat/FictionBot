@@ -1,5 +1,5 @@
+const sn = '[State] -> '
 const request = require('request')
-const sn = global.chalk.green('[State] -> ')
 
 let updateTimer = 300
 let serverTime = false

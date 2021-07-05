@@ -1,4 +1,4 @@
-const sn = global.chalk.bgRed('[BOT] -> ')
+const sn = '[BOT] -> '
 
 const Discord = require('discord.js')
 const dcClient = new Discord.Client({ partials: ['MESSAGE', 'CHANNEL', 'REACTION'] })

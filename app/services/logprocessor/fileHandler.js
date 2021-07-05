@@ -1,7 +1,7 @@
+const sn = '[LOGProcessor] -> '
 const fs = require('fs')
 const iconv = require('iconv-lite')
 const regexname = /\(([^)]+)\).*/gm
-const sn = global.chalk.magenta('[LOGProcessor] -> ')
 const playerlist = {}
 
 exports.getLines = async function getLines(type) {

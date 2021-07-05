@@ -1,4 +1,4 @@
-const sn = global.chalk.red('[DISCORD-BOT] -> ')
+const sn = '[DISCORD-BOT] -> '
 const fetch = require('node-fetch')
 const dadJokes = false
 

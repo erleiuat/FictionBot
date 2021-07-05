@@ -4,6 +4,40 @@ from pathlib import Path
 import pyautogui
 
 
+def getListPlayers():
+    playerList = []
+    listPlayers = scb.sendMessage('#ListPlayers', read=True).split('\r\n')
+    listPlayers.remove(listPlayers[0])
+
+    for pTmp in listPlayers:
+        player = {}
+        pTmp = pTmp[4:]
+        player['steamID'] = pTmp[:17]
+        pTmp = pTmp[17:].strip()
+        pTmp = pTmp.split('    ')
+
+        i = 0
+        for el in pTmp:
+            if(i > 2):
+                continue
+            elif(len(el) > 1):
+                i = i + 1
+                if(i == 1):
+                    player['steamName'] = el.strip()
+                elif(i == 2):
+                    player['charName'] = el.strip()
+                elif(i == 3):
+                    fame = el.strip()
+                    if(not isinstance(fame, int)):
+                        player['fame'] = int(fame)
+                    else:
+                        player['fame'] = fame
+
+        playerList.append(player)
+        
+    return playerList
+
+
 def mapshot():
     pyautogui.press('esc')
     pyautogui.press('m')

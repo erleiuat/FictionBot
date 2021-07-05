@@ -1,7 +1,7 @@
+const sn = '[DCWriter] -> [Format] -> '
 const fetch = require('node-fetch')
 const Discord = require('discord.js')
 const fs = require('fs')
-const sn = global.chalk.cyan('[DCWriter] -> [Format] -> ')
 let weaponImg = null
 
 function hasImg(weapon) {

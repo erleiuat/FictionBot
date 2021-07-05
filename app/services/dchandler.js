@@ -1,4 +1,4 @@
-const sn = global.chalk.red('[DISCORD-HANDLER] -> ')
+const sn = '[DISCORD-HANDLER] -> '
 
 async function consoleMsg(msg) {
     if (

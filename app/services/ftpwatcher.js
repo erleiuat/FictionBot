@@ -1,5 +1,5 @@
+const sn = '[FTPWatcher] -> '
 const fs = require('fs')
-const sn = global.chalk.blue('[FTPWatcher] -> ')
 const ftp = new(require('basic-ftp')).Client()
 const ioCheckSec = global.io.meter({
     name: 'FTP-Checks/Second',

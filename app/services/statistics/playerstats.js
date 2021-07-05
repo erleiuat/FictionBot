@@ -1,5 +1,5 @@
+const sn = '[STATISTICS] -> '
 const Discord = require('discord.js')
-const sn = global.chalk.green('[STATISTICS] -> ')
 
 exports.online = async function online(statesOrg) {
     let statesTmp = {}

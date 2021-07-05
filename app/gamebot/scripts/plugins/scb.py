@@ -90,7 +90,7 @@ def getRegion(name):
 
 
 def restartPC():
-    #subprocess.call([fullBatPath + '\\restart.bat'])
+    subprocess.call('shutdown /r /t 2')
     raise Exception('I WOULD RESTART NOW')
 
 
@@ -170,14 +170,15 @@ def openTab():
         pyautogui.press('1')
         i = i + 1
         sleep(0.1)
-        if(i > 5):
+        if(i > 30):
             return False
     return True
 
 
 def isTeleport():
     loading()
-    openTab()
+    if(not openTab()):
+        raise Exception('Unable to open tab')
     pyautogui.press('t')
 
 def sendMessage(msg, read=False):

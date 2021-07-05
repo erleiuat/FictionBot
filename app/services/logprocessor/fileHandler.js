@@ -2,11 +2,10 @@ const sn = '[LOGProcessor] -> '
 const fs = require('fs')
 const iconv = require('iconv-lite')
 const regexname = /\(([^)]+)\).*/gm
-const playerlist = {}
 
 exports.getLines = async function getLines(type) {
 
-    let files = fs.readdirSync('./app/storage/raw_logs/new/')
+    let files = fs.readdirSync('./app/storage/raw_logs/new/').sort()
     let lines = {}
 
     for (const file of files) {
@@ -61,8 +60,7 @@ async function mines(file) {
         else if (line.includes(')\' crafted trap ')) actionType = 'crafted'
         else if (line.includes(')\' triggered trap ')) {
             actionType = 'triggered'
-            global.log.debug(line)
-            if(line.includes(') from')) {
+            if (line.includes(') from')) {
                 let ownInfo = line.split(') from ')[1]
                 let ownSteamID = ownInfo.split(':')[0]
                 let ownUserID = ownInfo.split(':')[1].match(regexname)
@@ -170,12 +168,11 @@ async function login(file) {
         i++
 
         if (line.includes('logged in')) {
-
             let ip = line.slice(22, line.substring(22).indexOf(' ') + 22)
             let steamID = line.slice(line.indexOf(ip) + ip.length + 1, line.indexOf(ip) + ip.length + 18)
             let userID = line.substring(line.indexOf(ip) + ip.length + 19).match(regexname)
             let user = line.substring(line.indexOf(ip) + ip.length + 19).replace(userID, '')
-            userID = userID[0].slice(userID[0].indexOf('(') + 1, userID[0].indexOf(')'))
+            userID = userID[0].slice(userID[0].indexOf('(', userID[0].indexOf(')\' logged in') - 5) + 1, userID[0].indexOf(')\' logged in'))
             let key = formKey(t, userID) + '.' + i
 
             formatted[key] = {
@@ -194,6 +191,7 @@ async function login(file) {
         } else {
 
             let userID = line.slice(22, line.indexOf('\' logging out'))
+            if (!global.playerlist[userID]) continue
             let key = formKey(t, userID) + '.' + i
             formatted[key] = {
                 type: 'logout',

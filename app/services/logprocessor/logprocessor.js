@@ -108,11 +108,9 @@ async function updateFTPCache() {
 }
 
 async function getCurrentCache(logTypes) {
-
     global.log.debug(sn + 'Getting Log-Cache')
 
     try {
-
         await ftp.access({
             host: process.env.RM_LOG_FTP_HOST,
             port: process.env.RM_LOG_FTP_PORT,
@@ -120,9 +118,7 @@ async function getCurrentCache(logTypes) {
             password: process.env.RM_LOG_FTP_PASSWORD,
             secure: true
         })
-
         for (const key in logTypes) await ftp.downloadTo('./app/storage/logs/' + key + '.json', process.env.RM_LOG_FTP_DIR + key + '.json')
-
     } catch (error) {
         global.log.debug(sn + error)
         throw new Error(sn + 'Error: ' + error)

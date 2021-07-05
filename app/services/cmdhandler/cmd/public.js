@@ -50,12 +50,13 @@ exports.travel = async function travel(cmd) {
         let target = false
         let station = cmd.message.replace('/travel', '').trim().toLowerCase()
         global.log.debug(station)
-        if(station == 'd0') target = '#Teleport -669327 387796 72675'
-        else if(station == 'b2') target = '#Teleport -111659 -61028 37385'
-        else if(station == '') target = ''
-        else if(station == '') target = ''
+        if (station == 'd0') target = '#Teleport -669327 387796 72675'
+        else if (station == 'b2') target = '#Teleport -111659 -61028 37385'
+        else if (station == 'z0') target = '#Teleport -829491 -837658 5690'
+        else if (station == 'a3') target = '#Teleport 101034 -492350 Z=9982'
+        else if (station == 'd4') target = '#Teleport 430079 477843 10546'
         else {
-            cmdBuilder.addMessage('global', ':[Travel]: ・ @'+cmd.user+': I couldn\'t recognize the station you want to go to.')
+            cmdBuilder.addMessage('global', ':[Travel]: ・ @' + cmd.user + ': I couldn\'t recognize the station you want to go to.')
             return cmdBuilder.fullCommand(cmd)
         }
 
@@ -64,14 +65,14 @@ exports.travel = async function travel(cmd) {
             target: target,
             costs: 10,
             stations: [
-                [-111738,-61338, 500, 500],
+                [-111738, -61338, 500, 500],
                 [-669617, 387690, 500, 500]
             ],
             message: {
-                notEnough: ':[Travel]: ・ @'+cmd.user+': You need to have 10 famepoints for this trip.',
-                noStation: ':[Travel]: ・ @'+cmd.user+': You aren\'t near any Fasttravel station.',
-                good: ':[Travel]: ・ @'+cmd.user+': Your trip will start shortly. It will cost you 10 famepoints.',
-                smthWrong: ':[Travel]: ・ @'+cmd.user+': Something went wrong. Please try again.'
+                notEnough: ':[Travel]: ・ @' + cmd.user + ': You need to have 10 famepoints for this trip.',
+                noStation: ':[Travel]: ・ @' + cmd.user + ': You aren\'t near any Fasttravel station.',
+                good: ':[Travel]: ・ @' + cmd.user + ': Your trip will start shortly. It will cost you 10 famepoints.',
+                smthWrong: ':[Travel]: ・ @' + cmd.user + ': Something went wrong. Please try again.'
             }
         })
         return cmdBuilder.fullCommand(cmd)

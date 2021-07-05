@@ -49,7 +49,7 @@ async function iterateLists(dcClient) {
             let rankingPlaytime = await playerstats.rankingPlaytime(logins)
             if (JSON.stringify(rankingPlaytime) != JSON.stringify(cache.rankingPlaytime)) {
                 rankingMsgs = rankingMsgs.concat(rankingPlaytime)
-                console.log(sn + 'Updated playtime ranking')
+                global.log.debug(sn + 'Updated playtime ranking')
                 cache.rankingPlaytime = rankingPlaytime
             } else {
                 rankingMsgs = rankingMsgs.concat(cache.rankingPlaytime)
@@ -60,7 +60,7 @@ async function iterateLists(dcClient) {
             let rankingKills = await playerstats.rankingKills(kills)
             if (JSON.stringify(rankingKills) != JSON.stringify(cache.rankingKills)) {
                 rankingMsgs = rankingMsgs.concat(rankingKills)
-                console.log(sn + 'Updated kills ranking')
+                global.log.debug(sn + 'Updated kills ranking')
                 cache.rankingKills = rankingKills
             } else {
                 rankingMsgs = rankingMsgs.concat(cache.rankingKills)
@@ -78,7 +78,7 @@ async function iterateLists(dcClient) {
                 let msgs = formMsgs(admPlayerstats)
                 msgs.push('\n-----\n\n**TOTAL: ' + admPlayerstats.length + '**')
                 await dcSend(msgs, chStats)
-                console.log(sn + 'Updated player-stats')
+                global.log.debug(sn + 'Updated player-stats')
                 cache.admPlayerstats = admPlayerstats
             }
         }
@@ -98,7 +98,7 @@ async function iterateOnline(dcClient) {
         list.push('\n-----\n\n**Currently: ' + list.length + '**\n\n**Highscore: ' + await statList.highscore(list.length) + '**\n')
         if (JSON.stringify(list) != JSON.stringify(cache.list3)) {
             await dcSend(formMsgs(list), chOnline)
-            console.log(sn + 'Updated players-online')
+            global.log.debug(sn + 'Updated players-online')
             cache.list3 = list
         }
     } while (true)
@@ -116,7 +116,7 @@ async function iterateNewPlayers(dcClient) {
         let list = await newPlayers.get()
         if (JSON.stringify(list) != JSON.stringify(cache.list4)) {
             await dcSend(list, chNew)
-            console.log(sn + 'Updated new-players')
+            global.log.debug(sn + 'Updated new-players')
             cache.list4 = list
         }
 

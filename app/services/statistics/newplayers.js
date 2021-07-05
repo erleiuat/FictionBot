@@ -33,7 +33,7 @@ exports.get = async function get() {
     }
 
     if (stateArr.length == cache.length + 1) {
-        console.log(sn + 'New Player detected!')
+        global.log.debug(sn + 'New Player detected!')
         let newUser = stateArr[stateArr.length - 1]
         let now = new Date().getTime()
         if (newUser.joined.getTime() > now - (2 * 60 * 1000)) {

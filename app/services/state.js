@@ -28,7 +28,7 @@ async function checkTime() {
         request({
             'url': process.env.BATTLEMETRICS_URL
         }, (error, response) => {
-            if (error) console.log(sn + 'Error: ' + error)
+            if (error) global.log.debug(sn + 'Error: ' + error)
             else {
                 try {
                     let data = (JSON.parse(response.body))
@@ -37,11 +37,11 @@ async function checkTime() {
                         global.playersOnline = data.data.attributes.players
                         timeCache = data.data.attributes.details.time
                         serverTime = data.data.attributes.details.time
-                        console.log(sn + 'Server-time updated')
+                        global.log.debug(sn + 'Server-time updated')
                     }
                 } catch (e) {
                     serverTime = false
-                    console.log(sn + 'Unable to read Server-Status: ' + e)
+                    global.log.debug(sn + 'Unable to read Server-Status: ' + e)
                 }
             }
         })
@@ -67,7 +67,7 @@ async function incrementTime() {
             if (parseInt(parts[0]) >= 24) parts[0] = 0
             serverTime = global.nZero.form(parseInt(parts[0])) + ':' + global.nZero.form(parseInt(parts[1])) + ':' + global.nZero.form(parseInt(parts[2]))
         } catch (error) {
-            console.log(sn + 'Error: ' + error)
+            global.log.debug(sn + 'Error: ' + error)
         }
     } while (true)
 }

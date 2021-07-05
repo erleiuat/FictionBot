@@ -32,7 +32,7 @@ exports.start = async function start() {
             kill: {}
         }
 
-        console.log(sn + 'Processing new Data')
+        global.log.debug(sn + 'Processing new Data')
 
         for (const logtype in logs) {
 
@@ -41,7 +41,7 @@ exports.start = async function start() {
                 if (!(key in logCache[logtype])) {
                     updateCounter = 0
                     global.newEntries[logtype][key] = logs[logtype][key]
-                    console.log(sn + 'Added new Entry for processing. (' + logtype + ')')
+                    global.log.debug(sn + 'Added new Entry for processing. (' + logtype + ')')
                 } else delete logs[logtype][key]
             }
 
@@ -54,7 +54,7 @@ exports.start = async function start() {
 
         }
 
-        console.log(sn + 'Processing done')
+        global.log.debug(sn + 'Processing done')
 
         global.updates = false
     } while (true)
@@ -73,9 +73,9 @@ async function updateFTPCache() {
         global.updatingFTP = true
         updateCounter = 0
 
-        console.log(sn + 'Updating FTP-Log-Cache')
+        global.log.debug(sn + 'Updating FTP-Log-Cache')
         if (JSON.stringify(logCache) == lastCache) {
-            console.log(sn + 'Nothing to update')
+            global.log.debug(sn + 'Nothing to update')
             global.updatingFTP = false
             continue
         }
@@ -95,12 +95,12 @@ async function updateFTPCache() {
             lastCache = JSON.stringify(logCache)
 
         } catch (error) {
-            console.log(sn + error)
+            global.log.debug(sn + error)
         }
 
         ftp.close()
 
-        console.log(sn + 'FTP-Log-Cache update complete')
+        global.log.debug(sn + 'FTP-Log-Cache update complete')
         global.updatingFTP = false
     } while (true)
 
@@ -109,7 +109,7 @@ async function updateFTPCache() {
 
 async function getCurrentCache(logTypes) {
 
-    console.log(sn + 'Getting Log-Cache')
+    global.log.debug(sn + 'Getting Log-Cache')
 
     try {
 
@@ -124,14 +124,14 @@ async function getCurrentCache(logTypes) {
         for (const key in logTypes) await ftp.downloadTo('./app/storage/logs/' + key + '.json', process.env.RM_LOG_FTP_DIR + key + '.json')
 
     } catch (error) {
-        console.log(sn + error)
+        global.log.debug(sn + error)
         throw new Error(sn + 'Error: ' + error)
     }
 
     ftp.close()
     let cacheContent = {}
     for (const key in logTypes) cacheContent[key] = JSON.parse(fs.readFileSync('./app/storage/logs/' + key + '.json'))
-    console.log(sn + 'Log-Cache loaded')
+    global.log.debug(sn + 'Log-Cache loaded')
     return cacheContent
 
 }

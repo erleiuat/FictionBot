@@ -61,7 +61,7 @@ async function mines(file) {
         else if (line.includes(')\' crafted trap ')) actionType = 'crafted'
         else if (line.includes(')\' triggered trap ')) {
             actionType = 'triggered'
-            console.log(line)
+            global.log.debug(line)
             let ownInfo = line.split(') from ')[1]
             let ownSteamID = ownInfo.split(':')[0]
             let ownUserID = ownInfo.split(':')[1].match(regexname)
@@ -242,7 +242,7 @@ async function kill(file) {
 async function getContent(file) {
     let content = fs.readFileSync('./app/storage/raw_logs/new/' + file)
     await fs.rename('./app/storage/raw_logs/new/' + file, './app/storage/raw_logs/' + file, (error) => {
-        if (error) console.log(sn + 'Error: ' + error)
+        if (error) global.log.debug(sn + 'Error: ' + error)
     })
     return iconv.decode(new Buffer.from(content), 'utf16le')
 }

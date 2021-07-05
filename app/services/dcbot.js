@@ -50,9 +50,9 @@ async function clearChannel(channel) {
 
 async function clearchat(msg) {
     if (msg.member.hasPermission('ADMINISTRATOR')) {
-        console.log(sn + '"!clearchat" detected! Clearing channel...')
+        global.log.debug(sn + '"!clearchat" detected! Clearing channel...')
         await clearChannel(msg.channel)
-        console.log(sn + 'Channel cleaned.')
+        global.log.debug(sn + 'Channel cleaned.')
     }
 }
 
@@ -70,7 +70,7 @@ async function setLang(msg) {
         msg.member.roles.add(rPlayer)
         msg.member.roles.add(rGerman)
     } else {
-        console.log(msg)
+        global.log.debug(msg)
     }
 
     await msg.delete()

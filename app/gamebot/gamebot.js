@@ -1,5 +1,4 @@
-//const sn = '[GAMEBOT] -> '
-const sn = global.chalk.bgMagenta('[GAMEBOT] -> ')
+const sn = '[GAMEBOT] -> '
 const cp = require('child_process')
 
 let bot = false
@@ -25,8 +24,8 @@ exports.execute = async function execute(cmd) {
             else continue
 
             if (resp.error) {
-                if (resp.errorMessage) console.log(sn + 'Error: ' + resp.errorMessage)
-                else console.log(sn + 'Error while executing (no message)')
+                if (resp.errorMessage) global.log.debug(sn + 'Error: ' + resp.errorMessage)
+                else global.log.debug(sn + 'Error while executing (no message)')
             }
 
         }
@@ -39,12 +38,12 @@ exports.execute = async function execute(cmd) {
 async function resOutput(resolve, logTxt) {
     bot.stdout.once('data', data => {
         data = `${data}`
-        console.log(sn + data)
-        console.log(sn + logTxt)
+        global.log.debug(sn + data)
+        global.log.debug(sn + logTxt)
         try {
             resolve(JSON.parse(data))
         } catch (err) {
-            console.log(err)
+            global.log.debug(err)
             resolve(false)
         }
     })
@@ -55,10 +54,10 @@ exports.start = async function start() {
     return new Promise(resolve => {
         bot = cp.spawn('py', ['./app/gamebot/scripts/gamebot.py'])
         //bot.stdin.setEncoding('utf-8')
-        console.log(sn + 'Starting Bot')
+        global.log.debug(sn + 'Starting Bot')
         resOutput(resolve, 'Bot running')
         bot.stderr.on('data', (data) => {
-            console.log(sn + 'Error: ' + `${data}`)
+            global.log.debug(sn + 'Error: ' + `${data}`)
         })
     })
 }
@@ -66,7 +65,7 @@ exports.start = async function start() {
 
 exports.messages = async function messages(msgs) {
     return new Promise(resolve => {
-        console.log(sn + 'Sending messages')
+        global.log.debug(sn + 'Sending messages')
         resOutput(resolve, 'Messages sent')
         bot.stdin.write(encodeURI('MESSAGES') + '\n')
         bot.stdin.write(encodeURI(JSON.stringify(msgs)) + '\n')
@@ -76,7 +75,7 @@ exports.messages = async function messages(msgs) {
 
 exports.actions = async function actions(action) {
     return new Promise(resolve => {
-        console.log(sn + 'Doing actions')
+        global.log.debug(sn + 'Doing actions')
         resOutput(resolve, 'Actions done')
         bot.stdin.write(encodeURI('ACTION') + '\n')
         bot.stdin.write(encodeURI(JSON.stringify(action)) + '\n')

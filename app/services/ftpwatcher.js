@@ -1,5 +1,5 @@
+const sn = '[FTPWatcher] -> '
 const fs = require('fs')
-const sn = global.chalk.blue('[FTPWatcher] -> ')
 const ftp = new(require('basic-ftp')).Client()
 const ioCheckSec = global.io.meter({
     name: 'FTP-Checks/Second',
@@ -24,7 +24,7 @@ exports.start = async function start() {
         throw new Error(error)
     }
 
-    console.log(sn + 'FTP-Connection established')
+    global.log.debug(sn + 'FTP-Connection established')
     let listCache = fs.readdirSync('./app/storage/raw_logs/').filter(e => {
         if (e == 'new') return false
         return true
@@ -43,7 +43,7 @@ exports.start = async function start() {
         await global.sleep.timer(0.005)
         if (global.updates) continue
         if (global.updatingFTP) continue
-        if (i % 10 == 0) console.log(sn + 'Checking for new updates (#' + i + ')')
+        if (i % 10 == 0) global.log.debug(sn + 'Checking for new updates (#' + i + ')')
         i++
 
         let files = await (await ftp.list(process.env.PP_FTP_LOG_DIR)).filter(e => {
@@ -60,7 +60,7 @@ exports.start = async function start() {
         ioTotalReq.inc()
         ioCheckSec.mark()
         if (!files.length) continue
-        console.log(sn + 'New Updates found! (#' + i + ') Downloading ' + files.length + ' files...')
+        global.log.debug(sn + 'New Updates found! (#' + i + ') Downloading ' + files.length + ' files...')
 
         for (const file of files) {
             await ftp.downloadTo('./app/storage/raw_logs/new/' + file.name, process.env.PP_FTP_LOG_DIR + '/' + file.name)
@@ -68,7 +68,7 @@ exports.start = async function start() {
             ioTotalReq.inc()
         }
 
-        console.log(sn + 'File-Download complete!')
+        global.log.debug(sn + 'File-Download complete!')
         global.updates = true
     } while (true)
 

@@ -10,8 +10,8 @@ function timer(seconds) {
 async function testIt() {
     resp = await bot.start()
     if (resp.error) {
-        console.log('Gambot status in error!')
-        if (resp.data) console.log('Status checked. Chat = ' + resp.data.chat + ', Inventory = ' + resp.data.inventory)
+        global.log.debug('Gambot status in error!')
+        if (resp.data) global.log.debug('Status checked. Chat = ' + resp.data.chat + ', Inventory = ' + resp.data.inventory)
         return false
     }
 
@@ -34,7 +34,7 @@ async function testIt() {
         }
     }])
 
-    console.log(resp.cc)
+    global.log.debug(resp.cc)
 
     /*
     resp = await bot.messages([{
@@ -75,14 +75,14 @@ async function testIt() {
         message: '1'
     }])
     
-    console.log(resp)
+    global.log.debug(resp)
     /*
     
     resp = await bot.actions([{
         type: 'dress',
         properties: null
     }])
-    console.log(resp)
+    global.log.debug(resp)
     
     
     resp = await bot.actions([{
@@ -147,22 +147,22 @@ async function testIt() {
         message: '1'
     }])
     
-    console.log(resp)
+    global.log.debug(resp)
     
     resp = await bot.actions([{
         type: 'awake',
         properties: null
     }])
 
-    console.log(resp)
-    console.log('Status checked. Chat = ' + resp.data.chat + ', Inventory = ' + resp.data.inventory)
+    global.log.debug(resp)
+    global.log.debug('Status checked. Chat = ' + resp.data.chat + ', Inventory = ' + resp.data.inventory)
     
     resp = await bot.actions([{
         type: 'dress',
         properties: null
     }])
 
-    console.log(resp)
+    global.log.debug(resp)
     */
 
 }

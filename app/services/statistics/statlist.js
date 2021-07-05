@@ -1,5 +1,5 @@
+const sn = '[STATISTICS] -> '
 const fs = require('fs')
-const sn = global.chalk.green('[STATISTICS] -> ')
 
 exports.highscore = async function highscore(current) {
 
@@ -55,7 +55,7 @@ exports.getKill = async function getKill(startTime = 0) {
         return state
 
     } catch (error) {
-        console.log(sn + 'Error: ' + error)
+        global.log.debug(sn + 'Error: ' + error)
         return false
     }
 }
@@ -96,7 +96,7 @@ exports.getLogin = async function getLogin(startTime = 0) {
         return state
 
     } catch (error) {
-        console.log(sn + 'Error: ' + error)
+        global.log.debug(sn + 'Error: ' + error)
         return false
     }
 }

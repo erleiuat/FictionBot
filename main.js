@@ -1,16 +1,30 @@
-global.chalk = require('chalk')
-const sn = global.chalk.inverse('[MAIN] -> ')
+const winston = require('winston')
+let logTS = new Date().getTime()
+global.log = winston.createLogger({
+  level: 'debug',
+  format: winston.format.json(),
+  transports: [
+    new winston.transports.Console(),
+    new winston.transports.File({
+      filename: 'app/logs/log_'+logTS+'.log'
+    })
+  ],
+})
 
-console.log('\n\n' + sn + '----------------------------------------------------------')
-console.log(sn + 'Welcome to FictionBot 2.0!')
-console.log(sn + '----------------------------------------------------------')
 
-console.log(sn + 'Starting directory: ' + process.cwd())
+
+const sn = '[MAIN] -> '
+
+global.log.debug('\n\n' + sn + '----------------------------------------------------------')
+global.log.debug(sn + 'Welcome to FictionBot 2.0!')
+global.log.debug(sn + '----------------------------------------------------------')
+
+global.log.debug(sn + 'Starting directory: ' + process.cwd())
 try {
   process.chdir(__dirname)
-  console.log(sn + 'New directory: ' + process.cwd())
+  global.log.debug(sn + 'New directory: ' + process.cwd())
 } catch (err) {
-  console.log(sn + 'chdir: ' + err)
+  global.log.debug(sn + 'chdir: ' + err)
 }
 
 process.on('uncaughtException', err => {
@@ -19,13 +33,13 @@ process.on('uncaughtException', err => {
 })
 
 process.on('unhandledRejection', err => {
-  console.log(sn + 'Unhandled rejection', err)
+  global.log.debug(sn + 'Unhandled rejection', err)
   process.exit(1)
 })
 
-console.log(sn + '----------------------------------------------------------')
-console.log(sn + 'Bot initialized, starting processes')
-console.log(sn + '----------------------------------------------------------\n')
+global.log.debug(sn + '----------------------------------------------------------')
+global.log.debug(sn + 'Bot initialized, starting processes')
+global.log.debug(sn + '----------------------------------------------------------\n')
 
 
 require('dotenv').config()

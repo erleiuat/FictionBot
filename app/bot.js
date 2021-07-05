@@ -1,4 +1,4 @@
-const sn = global.chalk.bgRed('[BOT] -> ')
+const sn = '[BOT] -> '
 
 const Discord = require('discord.js')
 const dcClient = new Discord.Client({ partials: ['MESSAGE', 'CHANNEL', 'REACTION'] })
@@ -24,7 +24,7 @@ exports.start = async function start() {
     let args = process.argv.slice(2).map(el => el.replace('-', '').trim())
     dcClient.on('ready', () => {
 
-        console.log(sn + `Logged in as ${dcClient.user.tag}!`)
+        global.log.debug(sn + `Logged in as ${dcClient.user.tag}!`)
 
         if (args.includes('dcBot'))
             startDCBot(dcClient)
@@ -37,38 +37,38 @@ exports.start = async function start() {
 
     })
 
-    console.log(sn + 'Login on Discord')
+    global.log.debug(sn + 'Login on Discord')
     dcClient.login(process.env.DISCORD_TOKEN)
 
 }
 
 
 async function startDCBot(dcClient) {
-    console.log(sn + 'Starting Discord-Bot')
+    global.log.debug(sn + 'Starting Discord-Bot')
     dcBot.start(dcClient)
 }
 
 async function startLogFunctions(dcClient) {
-    console.log(sn + 'Starting Discord-Handler functionalities')
+    global.log.debug(sn + 'Starting Discord-Handler functionalities')
     dcHandler.start(dcClient)
 
-    console.log(sn + 'Starting Discord-Writer')
+    global.log.debug(sn + 'Starting Discord-Writer')
     dcWriter.start(dcClient)
 
-    console.log(sn + 'Starting State-Display')
+    global.log.debug(sn + 'Starting State-Display')
     state.start(dcClient)
 
-    console.log(sn + 'Starting Statistics')
+    global.log.debug(sn + 'Starting Statistics')
     statistics.start(dcClient)
 
-    console.log(sn + 'Starting FTP-Watcher')
+    global.log.debug(sn + 'Starting FTP-Watcher')
     ftpWatcher.start()
 
-    console.log(sn + 'Starting Log-Processor')
+    global.log.debug(sn + 'Starting Log-Processor')
     logProcessor.start()
 }
 
 async function startIngameBot(dcClient) {
-    console.log(sn + 'Starting Command-handler')
+    global.log.debug(sn + 'Starting Command-handler')
     cmdHandler.start()
 }

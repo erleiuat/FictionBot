@@ -72,41 +72,17 @@ def process():
 
 
 def travel(props):
-    scb.sendMessage('#ListPlayers')
-    listPlayers = scb.readMessage().split('\r\n')
-    listPlayers.remove(listPlayers[0])
-
-    playerList = []
-    for pTmp in listPlayers:
-        player = {}
-        pTmp = pTmp[4:]
-        player['steamID'] = pTmp[:17]
-        pTmp = pTmp[17:].strip()
-        pTmp = pTmp.split('    ')
-        i = 0
-        for el in pTmp:
-            if(i > 2):
-                continue
-            elif(len(el) > 1):
-                i = i + 1
-                if(i == 1):
-                    player['steamName'] = el.strip()
-                elif(i == 2):
-                    player['charName'] = el.strip()
-                elif(i == 3):
-                    player['fame'] = el.strip()
-        playerList.append(player)
+    playerList = control.getListPlayers()
 
     user = False
     for u in playerList:
         if(u['steamID'] == props['steamID']):
-            if(not isinstance(u['fame'], int)):
-                u['fame'] = int(u['fame'])
             user = u
             break
 
     scb.doPrint({'userInfo': user})
-
+    scb.goScope('global')
+    
     if(not user):
         scb.sendMessage(props['message']['smthWrong'])
         return False
@@ -115,8 +91,7 @@ def travel(props):
         scb.sendMessage(props['message']['notEnough'])
         return False
 
-    scb.sendMessage('#Location '+user['steamID'])
-    p = scb.readMessage()
+    p = scb.sendMessage('#Location '+user['steamID'], read=True)
     playerLoc = (p[(p.find(':')+1):]).strip().split()
 
     nearStation = False
@@ -126,7 +101,6 @@ def travel(props):
                 nearStation = True
     
     if(nearStation):
-        scb.goScope('global')
         scb.sendMessage(props['message']['good'])
         scb.sendMessage('#SetFamePoints ' + str(user['fame'] - props['costs']) + ' ' + user['steamID'])
         scb.sendMessage(props['target'] + ' ' + user['steamID'])

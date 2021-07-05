@@ -1,7 +1,7 @@
+const sn = '[LOGProcessor] -> '
 const fs = require('fs')
 const iconv = require('iconv-lite')
 const regexname = /\(([^)]+)\).*/gm
-const sn = global.chalk.magenta('[LOGProcessor] -> ')
 const playerlist = {}
 
 exports.getLines = async function getLines(type) {
@@ -61,14 +61,21 @@ async function mines(file) {
         else if (line.includes(')\' crafted trap ')) actionType = 'crafted'
         else if (line.includes(')\' triggered trap ')) {
             actionType = 'triggered'
-            console.log(line)
-            let ownInfo = line.split(') from ')[1]
-            let ownSteamID = ownInfo.split(':')[0]
-            let ownUserID = ownInfo.split(':')[1].match(regexname)
-            let ownUser = ownInfo.split(':')[1].replace(ownUserID, '')
-            owner = {
-                steamID: ownSteamID,
-                user: ownUser
+            global.log.debug(line)
+            if(line.includes(') from')) {
+                let ownInfo = line.split(') from ')[1]
+                let ownSteamID = ownInfo.split(':')[0]
+                let ownUserID = ownInfo.split(':')[1].match(regexname)
+                let ownUser = ownInfo.split(':')[1].replace(ownUserID, '')
+                owner = {
+                    steamID: ownSteamID,
+                    user: ownUser
+                }
+            } else {
+                owner = {
+                    steamID: 'unknown',
+                    user: 'unknown'
+                }
             }
         }
 
@@ -242,7 +249,7 @@ async function kill(file) {
 async function getContent(file) {
     let content = fs.readFileSync('./app/storage/raw_logs/new/' + file)
     await fs.rename('./app/storage/raw_logs/new/' + file, './app/storage/raw_logs/' + file, (error) => {
-        if (error) console.log(sn + 'Error: ' + error)
+        if (error) global.log.debug(sn + 'Error: ' + error)
     })
     return iconv.decode(new Buffer.from(content), 'utf16le')
 }

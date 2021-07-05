@@ -1,11 +1,11 @@
-const sn = global.chalk.red('[DISCORD-HANDLER] -> ')
+const sn = '[DISCORD-HANDLER] -> '
 
 async function consoleMsg(msg) {
     if (
         msg.member.hasPermission('ADMINISTRATOR') &&
         msg.author.id !== process.env.DISCORD_BOT_ID
     ) {
-        console.log(sn + 'Console message detected!')
+        global.log.debug(sn + 'Console message detected!')
         global.commands[msg.id] = {
             message: 'console_msg',
             user: msg.author.username,
@@ -21,7 +21,7 @@ async function chatMsg(msg) {
             await msg.delete()
             return
         }
-        console.log(sn + 'Chat message detected!')
+        global.log.debug(sn + 'Chat message detected!')
         global.commands[msg.id] = {
             message: 'console_msg',
             user: '[DC] ' + msg.author.username,

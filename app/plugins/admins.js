@@ -1,5 +1,5 @@
+const sn = '[ADMINS] -> '
 const fetch = require('node-fetch')
-const sn = global.chalk.cyan('[ADMINS] -> ')
 
 exports.list = async function list() {
     let url = process.env.DATA_URL + 'permissions.json'

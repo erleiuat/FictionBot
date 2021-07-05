@@ -180,7 +180,7 @@ def isTeleport():
     openTab()
     pyautogui.press('t')
 
-def sendMessage(msg):
+def sendMessage(msg, read=False):
     pyautogui.hotkey('ctrl','a')
     pyautogui.press('backspace')
     sleep(0.5 - (props['failSafe']*4))
@@ -188,6 +188,8 @@ def sendMessage(msg):
     pyautogui.press('enter')
     if(msg.lower().startswith('#teleport')):
         isTeleport()
+    if(read):
+        return readMessage()
         
 
 def readMessage():

@@ -1,6 +1,6 @@
+const sn = '[CMD-Handler] -> '
 const fs = require('fs')
 const ftp = new(require('basic-ftp')).Client()
-const sn = global.chalk.magenta('[CMD-Handler] -> ')
 const messages = require('./messages').list
 const cmdsPublic = require('./cmd/public')
 const cmdsInternal = require('./cmd/internal')
@@ -21,8 +21,8 @@ exports.start = async function start() {
     let botState = await bot.start()
 
     if (botState.error) {
-        console.log('Gambot status in error!')
-        if (botState.data) console.log('Status checked. Chat = ' + resp.data.chat + ', Inventory = ' + resp.data.inventory)
+        global.log.debug('Gambot status in error!')
+        if (botState.data) global.log.debug('Status checked. Chat = ' + resp.data.chat + ', Inventory = ' + resp.data.inventory)
         global.gameReady = false
     } else global.gameReady = true
 
@@ -73,7 +73,7 @@ async function cmdHandler() {
                 else if (cmdStart == '/repair') await bot.execute(await action.doAct('repair'))
                 else if (cmdStart == '/startup') await bot.execute(await action.doAct('startup'))
                 else {
-                    console.log(sn + 'Unknown command: ' + cmdStart)
+                    global.log.debug(sn + 'Unknown command: ' + cmdStart)
                 }
             }
 
@@ -90,12 +90,12 @@ async function getMap() {
         if (!isReady()) continue
         global.newCmds = true
 
-        console.log(sn + 'Getting current player positions')
+        global.log.debug(sn + 'Getting current player positions')
         let imgInfo = await bot.execute(await action.doAct('mapshot', true))
 
         global.newCmds = false
         if (!imgInfo.data) {
-            console.log(sn + 'No image info received')
+            global.log.debug(sn + 'No image info received')
             continue
         }
 
@@ -109,9 +109,9 @@ async function getMap() {
                     time: global.nZero.form(d.getHours()) + ':' + global.nZero.form(d.getMinutes()) + ':' + global.nZero.form(d.getSeconds())
                 }
             }
-            console.log(sn + 'Added map for processing')
+            global.log.debug(sn + 'Added map for processing')
         } catch (error) {
-            console.log(sn + 'Error: ' + error)
+            global.log.debug(sn + 'Error: ' + error)
         }
 
     } while (true)
@@ -183,13 +183,13 @@ async function checkStatus() {
         global.newCmds = true
 
         checkCounter = 0
-        console.log(sn + 'Checking gamebot status')
+        global.log.debug(sn + 'Checking gamebot status')
         resp = await bot.execute(await action.doAct('awake', true))
 
         if (resp.error) {
             global.gameReady = false
-            console.log(sn + 'Gambot status in error!')
-            if (resp.data) console.log(sn + 'Status checked. Chat = ' + resp.data.chat + ', Inventory = ' + resp.data.inventory)
+            global.log.debug(sn + 'Gambot status in error!')
+            if (resp.data) global.log.debug(sn + 'Status checked. Chat = ' + resp.data.chat + ', Inventory = ' + resp.data.inventory)
         } else global.gameReady = true
 
         global.newCmds = false

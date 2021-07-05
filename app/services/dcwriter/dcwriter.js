@@ -1,10 +1,9 @@
+const sn = '[DCWriter] -> '
 const Discord = require('discord.js')
 const format = require('./format')
-const sn = global.chalk.cyan('[DCWriter] -> ')
-//const gifMaker = require('../../plugins/gifmaker')
+
 const dump = {}
 let fakeNameCache = {}
-//let gifCreated = []
 
 const channels = {
     kill: process.env.DISCORD_CH_KILL,
@@ -78,7 +77,7 @@ async function sendKills(dcClient) {
             killer: global.newEntries.kill[e].Killer.ProfileName,
             victim: global.newEntries.kill[e].Victim.ProfileName
         }
-        console.log(sn + 'Kill sent: ' + e)
+        global.log.debug(sn + 'Kill sent: ' + e)
         dump[e] = {
             dump: 'kill',
             ...global.newEntries.kill[e]
@@ -94,7 +93,7 @@ async function sendChats(dcClient) {
 
     for (const el in global.newEntries.chat) {
         if (global.newEntries.chat[el].message.trim().substring(0, 1) == '/') {
-            console.log(sn + 'Command detected!')
+            global.log.debug(sn + 'Command detected!')
             global.commands[el] = {...global.newEntries.chat[el]}
         }
         if (global.newEntries.chat[el].type == 'Global') {
@@ -102,7 +101,7 @@ async function sendChats(dcClient) {
             if (msg.fields[0].value.match(/(?:admin|support)/gmi))
                 await channel.send(' <@&' + process.env.DISCORD_ROLE_SUPPORT + '> ')
             await channel.send(new Discord.MessageEmbed(msg))
-            console.log(sn + 'Chat sent: ' + el)
+            global.log.debug(sn + 'Chat sent: ' + el)
         }
         dump[el] = {
             dump: 'chat',
@@ -150,7 +149,7 @@ async function sendAdmins(dcClient) {
             if (doAlert) abuserID = aList[line.steamID].discord
             if (fakeNameCache[line.steamID]) line.user = fakeNameCache[line.steamID]
             await channel.send(new Discord.MessageEmbed(await format.admin(line, abuserID)))
-            console.log(sn + 'Admin sent: ' + el)
+            global.log.debug(sn + 'Admin sent: ' + el)
         }
 
         dump[el] = {
@@ -169,7 +168,7 @@ async function sendLogins(dcClient) {
     for (const el in global.newEntries.login) {
 
         await channel.send(new Discord.MessageEmbed(await format.login(global.newEntries.login[el])))
-        console.log(sn + 'Login sent: ' + el)
+        global.log.debug(sn + 'Login sent: ' + el)
         aList = await global.admins.list()
 
         if (global.newEntries.login[el].type == 'login') global.playersOnline = global.playersOnline + 1
@@ -232,7 +231,7 @@ async function sendDump(dcClient) {
         }
 
         if (msg) await channel.send(new Discord.MessageEmbed(msg))
-        console.log(sn + 'DUMP sent: ' + el)
+        global.log.debug(sn + 'DUMP sent: ' + el)
         delete dump[el]
 
     }

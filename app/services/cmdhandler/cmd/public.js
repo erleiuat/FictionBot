@@ -49,7 +49,7 @@ exports.travel = async function travel(cmd) {
     } else if (cmdBuilder.begin(cmd, 'local')) {
         let target = false
         let station = cmd.message.replace('/travel', '').trim().toLowerCase()
-        console.log(station)
+        global.log.debug(station)
         if(station == 'd0') target = '#Teleport -669327 387796 72675'
         else if(station == 'b2') target = '#Teleport -111659 -61028 37385'
         else if(station == '') target = ''

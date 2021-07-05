@@ -275,7 +275,8 @@ function formTime(line) {
 }
 
 function formKey(t, id) {
-    return ((t.date).replace(/\./g, '_') + '.' + (t.time).replace(/\:/g, '_') + '.' + id).replace(/\s/g, '')
+    let dP = t.date.split('.')
+    return (dP[2] + '_' + dP[1] + '_' + dP[0] + '.' + (t.time).replace(/\:/g, '_') + '.' + id).replace(/\s/g, '')
 }
 
 /*

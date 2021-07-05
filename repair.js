@@ -20,7 +20,8 @@ global.log = winston.createLogger({
 const fileHandler = require('./app/services/logprocessor/fileHandler')
 
 function formKey(t, id) {
-    return ((t.date).replace(/\./g, '_') + '.' + (t.time).replace(/\:/g, '_') + '.' + id).replace(/\s/g, '')
+    let dP = t.date.split('.')
+    return (dP[2] + '_' + dP[1] + '_' + dP[0] + '.' + (t.time).replace(/\:/g, '_') + '.' + id).replace(/\s/g, '')
 }
 
 function formDate(dateStr) {
@@ -174,8 +175,16 @@ async function repairBot() {
     global.log.debug(sn + 'Login-logs fixed')
 
     global.log.debug(sn + 'Writing logs to files')
-    for (const key in lines)
-        fs.writeFileSync('./app/storage/logs/' + key + '.json', JSON.stringify(lines[key]))
+
+    for (const el in lines) {
+        lines[el] = Object.keys(lines[el]).sort().reduce(
+            (obj, key) => {
+                obj[key] = lines[el][key]
+                return obj
+            }, {}
+        )
+        fs.writeFileSync('./app/storage/logs/' + el + '.json', JSON.stringify(lines[el]))
+    }
 
     global.log.debug(sn + 'Uploading fixed Logs to RM_LOG_FTP')
     for (const key in lines)

@@ -19,9 +19,10 @@ async function testIt() {
         type: 'travel',
         properties: {
             steamID: '76561198058320009',
-            target: '#Teleport -111670 -71516 37535',
+            target: '#Teleport -111738 -61338 0',
             stations: [
-                [-117565,-67795,20,20]
+                [-111738,-61338, 500, 500],
+                [-669617, 387690, 500, 500]
             ]
         }
     }])

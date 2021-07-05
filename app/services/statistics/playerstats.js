@@ -18,6 +18,7 @@ exports.list = async function list(statesOrg) {
     })
 
     states.sort((a, b) => (a.lastLogin.getTime() > b.lastLogin.getTime()) ? 1 : -1)
+    
     for (let i = 0; i < states.length; i++) {
         let formed = getDuration(states[i].playtime)
         msgs.push('\n-----\n**' + states[i].user + '**\tSteamID: ' + states[i].steamID + '\n\tTime: ' + formed.d + 'd ' + formed.h + 'h\tLast Login: ' + states[i].lastLogin.toLocaleString() + '\tTotal Logins: ' + states[i].totalLogins)

@@ -23,7 +23,8 @@ exports.list = {
     '/commands': 'help',
     '/joke': 'joke',
     '/time': 'time',
-    '/what': 'what_is_going_on'
+    '/what': 'what_is_going_on',
+    '/travel': 'travel'
 }
 
 async function getJoke() {
@@ -39,6 +40,15 @@ async function getJoke() {
             else resolve(JSON.parse(body)[0]['joke'])
         })
     })
+}
+
+exports.travel = async function travel(cmd) {
+    if (cmdBuilder.begin(cmd, 'local')) {
+        cmdBuilder.addMessage('global', ':[Travel]: ・ Please make sure to be at an Fasttravel-Station and use this command in LOCAL-Chat like this: /travel STATIONNAME')
+        return cmdBuilder.fullCommand(cmd)
+    } else if (!cmdBuilder.begin(cmd, 'local')) {
+        console.log(cmd)
+    }
 }
 
 exports.vote_night = async function vote_night(cmd) {

@@ -39,6 +39,7 @@ def getListPlayers():
 
 def mapshot():
     pyautogui.press('esc')
+    scb.sleep(0.05)
     pyautogui.press('m')
     pyautogui.keyDown('subtract')
     scb.sleep(0.1)
@@ -64,7 +65,9 @@ def mapshot():
 
 def takeA(action):
     pyautogui.press('esc')
+    scb.sleep(0.05)
     pyautogui.press('esc')
+    scb.sleep(0.4)
     pyautogui.keyDown('tab')
     scb.sleep(0.8)
     scb.safeClick(scb.getPoint(1070, 475))
@@ -80,13 +83,16 @@ def takeA(action):
         scb.sleep(15)
     else:
         pyautogui.keyUp('tab')
+    scb.sleep(0.4)
     scb.openTab()
     pyautogui.press('t')
 
 
 def sitDown():
     pyautogui.press('esc')
+    scb.sleep(0.05)
     pyautogui.press('esc')
+    scb.sleep(0.05)
     pyautogui.keyDown('tab')
     scb.sleep(0.8)
     scb.safeClick(scb.getPoint(850, 600))
@@ -94,6 +100,7 @@ def sitDown():
     scb.sleep(0.05)
     pyautogui.keyUp('tab')
     scb.openTab()
+    scb.sleep(0.4)
     pyautogui.press('t')
 
 
@@ -116,12 +123,15 @@ def act(acts):
                 scb.safeMouse()
                 pyautogui.press('esc')
     
+    scb.sleep(0.4)
     pyautogui.press('t')
 
 
 def actF(action, duration=1):
     pyautogui.press('esc')
+    scb.sleep(0.05)
     pyautogui.press('esc')
+    scb.sleep(0.4)
     pyautogui.keyDown('f')
     scb.sleep(1)
     actionLoc = scb.onScreen(action, sure=0.8, bw=True,region=scb.getRegion('inventory'))
@@ -131,5 +141,7 @@ def actF(action, duration=1):
         pyautogui.keyUp('f')
         scb.sleep(duration)
     pyautogui.keyUp('f')
+    scb.sleep(0.4)
     scb.openTab()
+    scb.sleep(0.05)
     pyautogui.press('t')

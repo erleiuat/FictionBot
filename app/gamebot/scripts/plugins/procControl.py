@@ -102,7 +102,7 @@ def goFortsetzen():
         scb.safeClick(needOK)
         scb.sleep(1)
 
-    scb.sleep()
+    scb.sleep(3)
     if(scb.onScreen('img/scb/mehrspieler.png', bw=True, sure=0.8)):
         scb.safeClick(scb.getPoint(230, 645))
         scb.sleep(0.05)
@@ -123,15 +123,19 @@ def joinServer():
             goFortsetzen()
         i = i + 1
         if(i > 90):
+            scb.restartPC()
             raise Exception('Unable to join')
 
     pyautogui.press('esc')
     scb.sleep(20)
+    i = 0
     while(not scb.openTab()):
         scb.sleep(1)
         i = i + 1
         if(i > 120):
+            scb.restartPC()
             raise Exception('Unable to open tab')
+
     getReady()
     scb.sleep()
     pyautogui.press('t')
@@ -140,10 +144,21 @@ def joinServer():
 def startGame():
     webbrowser.open('steam://rungameid/513710')
     scb.sleep(30)
+
+    i = 0
     while(not focus('scum')):
-        scb.sleep(1)
+        scb.sleep(5)
+        i = i + 1
+        if(i >= 25):
+            scb.restartPC()
+
+    i = 0
     while(not scb.onScreen('img/scb/mehrspieler.png', bw=True, sure=0.8)):
-        scb.sleep(1)
+        scb.sleep(5)
+        i = i + 1
+        if(i >= 25):
+            scb.restartPC()
+
     scb.sleep(1)
     joinServer()
 

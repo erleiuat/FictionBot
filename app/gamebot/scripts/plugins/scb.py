@@ -90,7 +90,7 @@ def getRegion(name):
 
 
 def restartPC():
-    #subprocess.call('shutdown /r /t 2')
+    subprocess.call('shutdown /r /t 2')
     raise Exception('I WOULD RESTART NOW')
 
 
@@ -133,7 +133,7 @@ def goScope(scopeName):
             'img/chat/'+scopeName+'.png',
             region=getRegion('scope')
         )
-        if(i > 10):
+        if(i>10):
             raise Exception('Could not change scope')
     currentScope = scopeName
 
@@ -181,22 +181,21 @@ def isTeleport():
         raise Exception('Unable to open tab')
     pyautogui.press('t')
 
-
 def sendMessage(msg, read=False):
-    pyautogui.hotkey('ctrl', 'a')
+    pyautogui.hotkey('ctrl','a')
     pyautogui.press('backspace')
-    sleep(0.4 - props['failSafe'])
+    sleep(0.5 - (props['failSafe']*4))
     keyboard.write(msg.encode('utf-8').decode('utf-8'))
     pyautogui.press('enter')
     if(msg.lower().startswith('#teleport')):
         isTeleport()
     if(read):
         return readMessage()
-
+        
 
 def readMessage():
     safeClick(getPoint(85, 470))
-    pyautogui.hotkey('ctrl', 'a')
+    pyautogui.hotkey('ctrl','a')
     pyautogui.hotkey('ctrl', 'c')
     safeClick(getPoint(140, 500))
     win32clipboard.OpenClipboard()
@@ -208,8 +207,7 @@ def readMessage():
 def onScreen(img, bw=False, sure=0.98, region=False):
     global path
     if(not region):
-        region = (props['windowPosition']['x'],
-                  props['windowPosition']['y'], 1440, 900)
+        region = (props['windowPosition']['x'], props['windowPosition']['y'], 1440, 900)
     isThere = pyautogui.locateCenterOnScreen(
         path + img,
         grayscale=bw,
@@ -256,3 +254,5 @@ def goReadyState(repeat=0):
 
 def regWindowPos(pos):
     return True
+
+

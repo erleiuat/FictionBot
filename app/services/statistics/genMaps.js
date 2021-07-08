@@ -10,11 +10,18 @@ exports.getList = async function getList() {
 
     for (const e in data) {
         if (data[e].type.includes('Barbed Spike')) continue
-        if (data[e].action == 'armed') {
-            armedTraps[data[e].location.x.toString().slice(0, 4)] = { x: data[e].location.x, y: data[e].location.y, z: data[e].location.z }
-        } else if (data[e].action == 'triggered') {
-            triggeredTraps[data[e].location.x.toString().slice(0, 4)] = { x: data[e].location.x, y: data[e].location.y, z: data[e].location.z }
-        }
+        if (data[e].action == 'armed')
+            armedTraps[data[e].location.x.toString().slice(0, 3) + '-' + data[e].location.y.toString().slice(0, 3)] = {
+                x: data[e].location.x,
+                y: data[e].location.y,
+                z: data[e].location.z
+            }
+        else if (data[e].action == 'triggered')
+            triggeredTraps[data[e].location.x.toString().slice(0, 3) + '-' + data[e].location.y.toString().slice(0, 3)] = {
+                x: data[e].location.x,
+                y: data[e].location.y,
+                z: data[e].location.z
+            }
     }
 
     let activeTraps = []

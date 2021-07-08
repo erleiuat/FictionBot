@@ -1,6 +1,6 @@
 const sn = '[CMD-Handler] -> '
 const fs = require('fs')
-const ftp = new(require('basic-ftp')).Client()
+const ftp = new (require('basic-ftp').Client)()
 const messages = require('./messages').list
 const cmdsPublic = require('./cmd/public')
 const cmdsInternal = require('./cmd/internal')
@@ -35,7 +35,6 @@ exports.start = async function start() {
     global.commands = {}
     global.newCmds = false
     cmdHandler()
-
 }
 
 async function cmdHandler() {
@@ -61,7 +60,7 @@ async function cmdHandler() {
             else if (cmdStart == 'console_msg') await bot.execute(await cmdsInternal['console_msg'](cmd))
             else if (cmdStart == 'kill_feed') await bot.execute(await cmdsInternal['kill_feed'](cmd))
             else if (cmdStart == 'auth_log') await bot.execute(await cmdsInternal['auth_log'](cmd))
-            else if (cmdStart == 'mine_armed') await bot.execute(cmdsInternal['mine_armed'](cmd))
+            else if (cmdStart == 'mine_armed') await bot.execute(await cmdsInternal['mine_armed'](cmd))
             else {
                 if (cmdStart == '/break') await bot.execute(await action.doAct('eat'))
                 else if (cmdStart == '/shit') await bot.execute(await action.doAct('shit'))
@@ -76,11 +75,9 @@ async function cmdHandler() {
                     global.log.debug(sn + 'Unknown command: ' + cmdStart)
                 }
             }
-
         }
 
         global.newCmds = false
-
     } while (true)
 }
 
@@ -100,12 +97,11 @@ async function getMap() {
         }
 
         try {
-
             let d = new Date()
             global.newEntries.maps[imgInfo.fileName] = {
                 ...imgInfo.data,
                 time: {
-                    date: global.nZero.form(d.getDate()) + '.' + global.nZero.form((d.getMonth() + 1)) + '.' + d.getFullYear(),
+                    date: global.nZero.form(d.getDate()) + '.' + global.nZero.form(d.getMonth() + 1) + '.' + d.getFullYear(),
                     time: global.nZero.form(d.getHours()) + ':' + global.nZero.form(d.getMinutes()) + ':' + global.nZero.form(d.getSeconds())
                 }
             }
@@ -113,7 +109,6 @@ async function getMap() {
         } catch (error) {
             global.log.debug(sn + 'Error: ' + error)
         }
-
     } while (true)
 }
 
@@ -140,7 +135,6 @@ async function loadStatus(file) {
     } catch (error) {
         throw new Error(error)
     }
-
 }
 
 async function receivesStarterkit(steamID, name) {
@@ -200,7 +194,7 @@ async function makeBusiness() {
     let bTimes = [1]
     do {
         await global.sleep.timer(30)
-        
+
         now = new Date()
         if (!bTimes.includes(now.getMinutes())) continue
         if (!isReady()) continue
@@ -208,7 +202,6 @@ async function makeBusiness() {
         await bot.execute(await action.doAct('business', true))
         global.newCmds = false
         await global.sleep.timer(60)
-
     } while (true)
 }
 
@@ -216,7 +209,7 @@ async function makeBreak() {
     let bTimes = [30]
     do {
         await global.sleep.timer(30)
-        
+
         now = new Date()
         if (!bTimes.includes(now.getMinutes())) continue
         if (!isReady()) continue
@@ -224,10 +217,8 @@ async function makeBreak() {
         await bot.execute(await action.doAct('eat', true))
         global.newCmds = false
         await global.sleep.timer(60)
-
     } while (true)
 }
-
 
 async function announce() {
     do {
@@ -239,12 +230,16 @@ async function announce() {
             if (messages[time].done) continue
             global.newCmds = true
             await bot.execute({
-                commands: [{
-                    messages: [{
-                        scope: 'global',
-                        message: messages[time].text
-                    }]
-                }]
+                commands: [
+                    {
+                        messages: [
+                            {
+                                scope: 'global',
+                                message: messages[time].text
+                            }
+                        ]
+                    }
+                ]
             })
             global.newCmds = false
             messages[time].done = true
@@ -253,6 +248,5 @@ async function announce() {
                 messages[e].done = false
             }
         }
-
     } while (true)
 }

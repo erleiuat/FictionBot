@@ -1,8 +1,8 @@
 require('dotenv').config()
 const sn = '[REPAIR] -> '
 const fs = require('fs')
-const ftp_rm = new(require('basic-ftp')).Client()
-const ftp_pp = new(require('basic-ftp')).Client()
+const ftp_rm = new (require('basic-ftp').Client)()
+const ftp_pp = new (require('basic-ftp').Client)()
 global.nZero = require('./app/plugins/nzero')
 global.playerlist = {}
 const winston = require('winston')
@@ -15,13 +15,13 @@ global.log = winston.createLogger({
         new winston.transports.File({
             filename: 'app/logs/repair_log_' + logTS + '.log'
         })
-    ],
+    ]
 })
 const fileHandler = require('./app/services/logprocessor/fileHandler')
 
 function formKey(t, id) {
     let dP = t.date.split('.')
-    return (dP[2] + '_' + dP[1] + '_' + dP[0] + '.' + (t.time).replace(/\:/g, '_') + '.' + id).replace(/\s/g, '')
+    return (dP[2] + '_' + dP[1] + '_' + dP[0] + '.' + t.time.replace(/\:/g, '_') + '.' + id).replace(/\s/g, '')
 }
 
 function formDate(dateStr) {
@@ -30,18 +30,19 @@ function formDate(dateStr) {
 }
 
 async function repairBot() {
-
     global.log.debug(sn + 'Recreating existing files')
 
-    if (fs.existsSync('./app/storage/raw_logs/')) fs.rmdirSync('./app/storage/raw_logs/', {
-        recursive: true
-    })
+    if (fs.existsSync('./app/storage/raw_logs/'))
+        fs.rmdirSync('./app/storage/raw_logs/', {
+            recursive: true
+        })
     fs.mkdirSync('./app/storage/raw_logs/')
     fs.mkdirSync('./app/storage/raw_logs/new/')
 
-    if (fs.existsSync('./app/storage/logs/')) fs.rmdirSync('./app/storage/logs/', {
-        recursive: true
-    })
+    if (fs.existsSync('./app/storage/logs/'))
+        fs.rmdirSync('./app/storage/logs/', {
+            recursive: true
+        })
     fs.mkdirSync('./app/storage/logs/')
 
     let lines = {
@@ -49,7 +50,7 @@ async function repairBot() {
         chat: {},
         admin: {},
         kill: {},
-        mines: {},
+        mines: {}
     }
 
     global.log.debug(sn + 'Connecting to PP-FTP')
@@ -66,18 +67,21 @@ async function repairBot() {
         throw new Error(error)
     }
 
-
     global.log.debug(sn + 'Getting Log-Files')
     try {
-        let files = await (await ftp_pp.list(process.env.PP_FTP_LOG_DIR)).filter(e => {
-            if (e['name'].startsWith('violations')) return false
-            return true
-        }).map(e => {
-            return {
-                name: e['name'],
-                size: e['size']
-            }
-        })
+        let files = await (
+            await ftp_pp.list(process.env.PP_FTP_LOG_DIR)
+        )
+            .filter(e => {
+                if (e['name'].startsWith('violations')) return false
+                return true
+            })
+            .map(e => {
+                return {
+                    name: e['name'],
+                    size: e['size']
+                }
+            })
         let fileAmount = files.length
         for (const file of files) {
             await ftp_pp.downloadTo('./app/storage/raw_logs/new/' + file.name, process.env.PP_FTP_LOG_DIR + '/' + file.name)
@@ -91,11 +95,9 @@ async function repairBot() {
     }
     global.log.debug(sn + 'Log-Files downloaded')
 
-
     global.log.debug(sn + 'Getting Log-Cache from RM_LOG_FTP')
     global.log.debug(sn + 'Connecting to RM_LOG_FTP')
     try {
-
         await ftp_rm.access({
             host: process.env.RM_LOG_FTP_HOST,
             port: process.env.RM_LOG_FTP_PORT,
@@ -104,9 +106,7 @@ async function repairBot() {
             secure: true
         })
 
-        for (const key in lines)
-            await ftp_rm.downloadTo('./app/storage/logs/' + key + '.json', process.env.RM_LOG_FTP_DIR + key + '.json')
-
+        for (const key in lines) await ftp_rm.downloadTo('./app/storage/logs/' + key + '.json', process.env.RM_LOG_FTP_DIR + key + '.json')
     } catch (error) {
         global.log.debug(sn + error)
         throw new Error(sn + 'Error: ' + error)
@@ -115,8 +115,7 @@ async function repairBot() {
     global.log.debug(sn + 'Log-Cache downloaded. Processing files...')
 
     try {
-        for (const key in lines)
-            lines[key] = JSON.parse(fs.readFileSync('./app/storage/logs/' + key + '.json'))
+        for (const key in lines) lines[key] = JSON.parse(fs.readFileSync('./app/storage/logs/' + key + '.json'))
     } catch (err) {
         global.log.debug(sn + error)
         throw new Error(sn + 'Error: ' + error)
@@ -134,25 +133,26 @@ async function repairBot() {
 
     global.log.debug(sn + 'Files processed')
     global.log.debug(sn + 'Merging Cache with PP-Data')
-    for (const key in lines) lines[key] = {
-        ...lines[key],
-        ...await fileHandler.getLines(key)
-    }
-
+    for (const key in lines)
+        lines[key] = {
+            ...lines[key],
+            ...(await fileHandler.getLines(key))
+        }
 
     global.log.debug(sn + 'Fixing login-logs')
-    lines.login = Object.keys(lines.login).sort().reduce(
-        (obj, key) => {
+    lines.login = Object.keys(lines.login)
+        .sort()
+        .reduce((obj, key) => {
             obj[key] = lines.login[key]
             return obj
-        }, {}
-    )
+        }, {})
 
     onlineLines = {}
     for (const line in lines.login) {
-        if (lines.login[line].type == 'login') onlineLines[lines.login[line].userID] = {
-            ...lines.login[line]
-        }
+        if (lines.login[line].type == 'login')
+            onlineLines[lines.login[line].userID] = {
+                ...lines.login[line]
+            }
         else if (onlineLines[lines.login[line].userID]) delete onlineLines[lines.login[line].userID]
     }
 
@@ -170,10 +170,13 @@ async function repairBot() {
 
         loginDate.setSeconds(loginDate.getSeconds() + 5)
         newEntryTime = global.nZero.form(loginDate.getHours()) + ':' + global.nZero.form(loginDate.getMinutes()) + ':' + global.nZero.form(loginDate.getSeconds())
-        newEntryKey = formKey({
-            date: onlineLines[el].time.date,
-            time: newEntryTime
-        }, onlineLines[el].userID)
+        newEntryKey = formKey(
+            {
+                date: onlineLines[el].time.date,
+                time: newEntryTime
+            },
+            onlineLines[el].userID
+        )
 
         lines.login[newEntryKey] = {
             ...onlineLines[el]
@@ -182,7 +185,6 @@ async function repairBot() {
         lines.login[newEntryKey].online = false
         lines.login[newEntryKey].time.time = newEntryTime
         delete onlineLines[el]
-
     }
 
     global.log.debug(sn + 'Login-logs fixed')
@@ -190,31 +192,26 @@ async function repairBot() {
     global.log.debug(sn + 'Writing logs to files')
 
     for (const el in lines) {
-        lines[el] = Object.keys(lines[el]).sort().reduce(
-            (obj, key) => {
+        lines[el] = Object.keys(lines[el])
+            .sort()
+            .reduce((obj, key) => {
                 obj[key] = lines[el][key]
                 return obj
-            }, {}
-        )
+            }, {})
         fs.writeFileSync('./app/storage/logs/' + el + '.json', JSON.stringify(lines[el]))
     }
 
     global.log.debug(sn + 'Uploading fixed Logs to RM_LOG_FTP')
-    for (const key in lines)
-        await ftp_rm.uploadFrom('./app/storage/logs/' + key + '.json', process.env.RM_LOG_FTP_DIR + key + '.json')
-
-
+    for (const key in lines) await ftp_rm.uploadFrom('./app/storage/logs/' + key + '.json', process.env.RM_LOG_FTP_DIR + key + '.json')
 
     global.log.debug(sn + 'Uploading backups to RM_LOG_FTP')
     backupDir = 'backup_' + new Date().getTime() + '/'
     await ftp_rm.ensureDir(process.env.RM_LOG_FTP_DIR + backupDir)
-    for (const key in lines)
-        await ftp_rm.uploadFrom('./app/storage/logs/' + key + '.json', process.env.RM_LOG_FTP_DIR + backupDir + key + '.json')
+    for (const key in lines) await ftp_rm.uploadFrom('./app/storage/logs/' + key + '.json', process.env.RM_LOG_FTP_DIR + backupDir + key + '.json')
 
     ftp_rm.close()
 
     return true
 }
-
 
 repairBot()

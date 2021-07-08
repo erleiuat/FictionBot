@@ -3,12 +3,14 @@ const Discord = require('discord.js')
 const statList = require('./statlist')
 const playerstats = require('./playerstats')
 const newPlayers = require('./newplayers')
+const genMaps = require('./genMaps')
 
 const cache = {
     rankingMsgs: [],
     rankingPlaytime: {},
     rankingKills: {},
     admPlayerstats: {},
+    trapList: {},
     list3: {},
     list4: {}
 }
@@ -33,7 +35,6 @@ async function iterateLists(dcClient) {
     let chStats = dcClient.channels.cache.find(channel => channel.id === process.env.DISCORD_CH_PLAYERSTATS)
 
     do {
-
         await global.sleep.timer(5)
         if (global.updates) continue
         if (global.updatingFTP) continue
@@ -67,7 +68,7 @@ async function iterateLists(dcClient) {
             }
         }
 
-        if(JSON.stringify(rankingMsgs) != JSON.stringify(cache.rankingMsgs)){
+        if (JSON.stringify(rankingMsgs) != JSON.stringify(cache.rankingMsgs)) {
             await dcSend(rankingMsgs, chRanking)
             cache.rankingMsgs = rankingMsgs
         }
@@ -95,21 +96,19 @@ async function iterateOnline(dcClient) {
         if (global.updates) continue
         if (global.updatingFTP) continue
         let list = await playerstats.online(await statList.getLogin())
-        list.push('\n-----\n\n**Currently: ' + list.length + '**\n\n**Highscore: ' + await statList.highscore(list.length) + '**\n')
+        list.push('\n-----\n\n**Currently: ' + list.length + '**\n\n**Highscore: ' + (await statList.highscore(list.length)) + '**\n')
         if (JSON.stringify(list) != JSON.stringify(cache.list3)) {
             await dcSend(formMsgs(list), chOnline)
             global.log.debug(sn + 'Updated players-online')
             cache.list3 = list
         }
     } while (true)
-
 }
 
 async function iterateNewPlayers(dcClient) {
     let chNew = dcClient.channels.cache.find(channel => channel.id === process.env.DISCORD_CH_NEWPLAYERS)
 
     do {
-
         await global.sleep.timer(10)
         if (global.updates) continue
         if (global.updatingFTP) continue
@@ -119,15 +118,30 @@ async function iterateNewPlayers(dcClient) {
             global.log.debug(sn + 'Updated new-players')
             cache.list4 = list
         }
-
     } while (true)
+}
 
+async function mapTraps(dcClient) {
+    let chTraps = dcClient.channels.cache.find(channel => channel.id === process.env.DISCORD_CH_MINES)
+
+    do {
+        await global.sleep.timer(10)
+        if (global.updates) continue
+        if (global.updatingFTP) continue
+        let trapList = await genMaps.getList()
+        if (trapList.active.length && JSON.stringify(trapList) != JSON.stringify(cache.trapList)) {
+            await dcSend(await genMaps.buildMap(trapList), chTraps)
+            global.log.debug(sn + 'Updated Trap-Map')
+            cache.trapList = trapList
+        }
+    } while (true)
 }
 
 exports.start = async function start(dcClient) {
     iterateLists(dcClient)
     iterateOnline(dcClient)
     iterateNewPlayers(dcClient)
+    mapTraps(dcClient)
 }
 
 async function dcSend(msgs, channel) {
@@ -138,8 +152,10 @@ async function dcSend(msgs, channel) {
 }
 
 async function clearChannel(channel) {
-    var msg_size = 100;
-    while (msg_size == 100) await channel.bulkDelete(100, true)
-        .then(messages => msg_size = messages.size)
-        .catch(console.error)
+    var msg_size = 100
+    while (msg_size == 100)
+        await channel
+            .bulkDelete(100, true)
+            .then(messages => (msg_size = messages.size))
+            .catch(console.error)
 }

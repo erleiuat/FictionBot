@@ -4,48 +4,33 @@ const iconv = require('iconv-lite')
 const regexname = /\(([^)]+)\).*/gm
 
 exports.getLines = async function getLines(type) {
-
     let files = fs.readdirSync('./app/storage/raw_logs/new/').sort()
-    let lines = {}
+    let lines = []
 
-    for (const file of files) {
-        if (file.startsWith(type)) {
-            if (type == 'kill') lines = {
-                ...lines,
-                ...await kill(file)
-            }
-            else if (type == 'chat') lines = {
-                ...lines,
-                ...await chat(file)
-            }
-            else if (type == 'admin') lines = {
-                ...lines,
-                ...await admin(file)
-            }
-            else if (type == 'login') lines = {
-                ...lines,
-                ...await login(file)
-            }
-            else if (type == 'mines') lines = {
-                ...lines,
-                ...await mines(file)
-            }
-            else return false
-        }
-    }
+    for (const file of files) if (file.startsWith(type)) lines = lines.concat(await mergedLines(file))
 
-    return lines
-
+    if (!lines.length) return
+    if (type == 'kill') return await kill(lines)
+    if (type == 'chat') return await chat(lines)
+    if (type == 'admin') return await admin(lines)
+    if (type == 'login') return await login(lines)
+    if (type == 'mines') return await mines(lines)
+    return false
 }
 
-async function mines(file) {
+async function mergedLines(file) {
     let content = await getContent(file)
     let lines = await formLines(content)
+    return lines
+}
+
+async function mines(lines) {
     let formatted = {}
     let i = 0
 
+    let lastLine
+
     for (const line of lines) {
-        i++
         let t = formTime(line)
         let steamID = line.substring(22, 39)
         let key = formKey(t, steamID) + '.' + i
@@ -53,13 +38,32 @@ async function mines(file) {
         let user = line.slice(40).replace(userID, '')
 
         let owner = null
+        let type = 'unknown'
         let location = 'unknown'
         let actionType = 'unknown'
-        if (line.includes(')\' armed trap ')) actionType = 'armed'
-        else if (line.includes(')\' disarmed trap ')) actionType = 'disarmed'
-        else if (line.includes(')\' crafted trap ')) actionType = 'crafted'
-        else if (line.includes(')\' triggered trap ')) {
+
+        if (line.includes('on location(')) {
+            tmpLoc = line.substring(line.indexOf('on location(') + 12)
+            tmpLoc = tmpLoc.substring(0, tmpLoc.indexOf(')')).trim()
+            loc = tmpLoc.split(' ').map(el => el.slice(0, el.indexOf('.') + 5).trim())
+            location = {
+                x: loc[0],
+                y: loc[1],
+                z: Math.round(loc[2])
+            }
+        }
+
+        if (line.includes('trap (')) {
+            tmpType = line.substring(line.indexOf('trap (') + 6)
+            type = tmpType.substring(0, tmpType.indexOf(')')).trim()
+        }
+
+        if (line.includes(")' armed trap ")) actionType = 'armed'
+        else if (line.includes(")' disarmed trap ")) actionType = 'disarmed'
+        else if (line.includes(")' crafted trap ")) actionType = 'crafted'
+        else if (line.includes(")' triggered trap ")) {
             actionType = 'triggered'
+
             if (line.includes(') from')) {
                 let ownInfo = line.split(') from ')[1]
                 let ownSteamID = ownInfo.split(':')[0]
@@ -77,29 +81,26 @@ async function mines(file) {
             }
         }
 
-        if (line.includes('on location(')) {
-            location = line.substring(line.indexOf('on location(') + 11)
-            location = location.substring(0, location.indexOf(')') + 1).trim()
-        }
-
-        formatted[key] = {
+        let obj = {
             time: t,
             user: user,
+            type: type,
             steamID: steamID,
             action: actionType,
             location: location,
             owner: owner
         }
 
+        if (JSON.stringify(obj) == lastLine) continue
+        lastLine = JSON.stringify(obj)
+        formatted[key] = obj
+        i++
     }
 
     return formatted
-
 }
 
-async function chat(file) {
-    let content = await getContent(file)
-    let lines = await formLines(content)
+async function chat(lines) {
     let formatted = {}
     let i = 0
 
@@ -108,7 +109,7 @@ async function chat(file) {
         let t = formTime(line)
         let steamID = line.substring(22, 39)
         let key = formKey(t, steamID) + '.' + i
-        let msg = line.substring(line.indexOf('\' \'') + 1).slice(2, -1)
+        let msg = line.substring(line.indexOf("' '") + 1).slice(2, -1)
         let msgType = msg.slice(0, msg.indexOf(':'))
         msg = msg.substring(msg.indexOf(':') + 1)
         let userID = line.slice(40).match(regexname)
@@ -121,15 +122,12 @@ async function chat(file) {
             type: msgType.trim(),
             message: msg.trim()
         }
-
     }
 
     return formatted
 }
 
-async function admin(file) {
-    let content = await getContent(file)
-    let lines = await formLines(content)
+async function admin(lines) {
     let formatted = {}
     let i = 0
 
@@ -138,9 +136,9 @@ async function admin(file) {
         let t = formTime(line)
         let steamID = line.substring(22, 39)
         let key = formKey(t, steamID) + '.' + i
-        let msg = line.substring(line.indexOf('\' C')).slice(2, -1)
+        let msg = line.substring(line.indexOf("' C")).slice(2, -1)
         let msgType = msg.slice(0, msg.indexOf(':'))
-        msg = '#' + msg.substring(msg.indexOf(': \'') + 3)
+        msg = '#' + msg.substring(msg.indexOf(": '") + 3)
         let userID = line.slice(40).match(regexname)
         let user = line.slice(40).replace(userID, '')
 
@@ -151,15 +149,12 @@ async function admin(file) {
             type: msgType,
             message: msg
         }
-
     }
 
     return formatted
 }
 
-async function login(file) {
-    let content = await getContent(file)
-    let lines = await formLines(content)
+async function login(lines) {
     let formatted = {}
     let i = 0
 
@@ -172,7 +167,7 @@ async function login(file) {
             let steamID = line.slice(line.indexOf(ip) + ip.length + 1, line.indexOf(ip) + ip.length + 18)
             let userID = line.substring(line.indexOf(ip) + ip.length + 19).match(regexname)
             let user = line.substring(line.indexOf(ip) + ip.length + 19).replace(userID, '')
-            userID = userID[0].slice(userID[0].indexOf('(', userID[0].indexOf(')\' logged in') - 5) + 1, userID[0].indexOf(')\' logged in'))
+            userID = userID[0].slice(userID[0].indexOf('(', userID[0].indexOf(")' logged in") - 5) + 1, userID[0].indexOf(")' logged in"))
             let key = formKey(t, userID) + '.' + i
 
             formatted[key] = {
@@ -187,10 +182,8 @@ async function login(file) {
             }
 
             global.playerlist[userID] = formatted[key]
-
         } else {
-
-            let userID = line.slice(22, line.indexOf('\' logging out'))
+            let userID = line.slice(22, line.indexOf("' logging out"))
             if (!global.playerlist[userID]) continue
             let key = formKey(t, userID) + '.' + i
             formatted[key] = {
@@ -204,21 +197,15 @@ async function login(file) {
             }
 
             global.playerlist[userID] = formatted[key]
-
         }
-
     }
 
     return formatted
 }
 
-async function kill(file) {
-    let content = await getContent(file)
-    let lines = await formLines(content)
+async function kill(lines) {
     let formatted = {}
     let i = 0
-
-
 
     for (const line of lines) {
         if (!line.slice(21, 30).startsWith('{')) continue
@@ -246,9 +233,7 @@ async function kill(file) {
 
 async function getContent(file) {
     let content = fs.readFileSync('./app/storage/raw_logs/new/' + file)
-    await fs.rename('./app/storage/raw_logs/new/' + file, './app/storage/raw_logs/' + file, (error) => {
-        if (error) global.log.debug(sn + 'Error: ' + error)
-    })
+    fs.renameSync('./app/storage/raw_logs/new/' + file, './app/storage/raw_logs/' + file)
     return iconv.decode(new Buffer.from(content), 'utf16le')
 }
 
@@ -269,14 +254,14 @@ function formTime(line) {
     let d = new Date(date + 'T' + time)
     d.setHours(d.getHours() + 2)
     return {
-        date: global.nZero.form(d.getDate()) + '.' + global.nZero.form((d.getMonth() + 1)) + '.' + d.getFullYear(),
+        date: global.nZero.form(d.getDate()) + '.' + global.nZero.form(d.getMonth() + 1) + '.' + d.getFullYear(),
         time: global.nZero.form(d.getHours()) + ':' + global.nZero.form(d.getMinutes()) + ':' + global.nZero.form(d.getSeconds())
     }
 }
 
 function formKey(t, id) {
     let dP = t.date.split('.')
-    return (dP[2] + '_' + dP[1] + '_' + dP[0] + '.' + (t.time).replace(/\:/g, '_') + '.' + id).replace(/\s/g, '')
+    return (dP[2] + '_' + dP[1] + '_' + dP[0] + '.' + t.time.replace(/\:/g, '_') + '.' + id).replace(/\s/g, '')
 }
 
 /*

@@ -1,4 +1,5 @@
 const sn = '[DCWriter] -> '
+const mapLocation = require('../../plugins/mapLocation/')
 const Discord = require('discord.js')
 const format = require('./format')
 
@@ -12,7 +13,8 @@ const channels = {
     admin: process.env.DISCORD_CH_ADMIN,
     dump: process.env.DISCORD_CH_CONSOLE,
     maps: process.env.DISCORD_CH_MAPS,
-    playerActivity: process.env.DISCORD_CH_PLAYERACTIVITY
+    playerActivity: process.env.DISCORD_CH_PLAYERACTIVITY,
+    mines: process.env.DISCORD_CH_MINES
 }
 
 async function iterate(logFunction, dcClient, seconds = 0.005) {
@@ -51,17 +53,29 @@ async function sendMaps(dcClient) {
 
 async function sendMines(dcClient) {
     if (Object.keys(global.newEntries.mines).length <= 0) return
+    //let channel = dcClient.channels.cache.find(channel => channel.id === channels.mines)
 
     for (const e in global.newEntries.mines) {
+        global.newEntries.mines[e].file = await mapLocation.generate(
+            global.newEntries.mines[e].location.x,
+            global.newEntries.mines[e].location.y,
+            'mines_' + global.newEntries.mines[e].steamID + '_' + global.newEntries.mines[e].action + '_' + new Date().getTime() + '.jpg',
+            './app/storage/mapLocation/'
+        )
+
+        //await channel.send(new Discord.MessageEmbed(await format.mines(global.newEntries.mines[e])))
+
         if (global.newEntries.mines[e].action == 'armed')
             global.commands['mine_' + global.newEntries.mines[e].steamID] = {
                 time: global.newEntries.mines[e].time,
                 message: 'mine_armed'
             }
+
         dump[e] = {
             dump: 'mines',
             ...global.newEntries.mines[e]
         }
+
         delete global.newEntries.mines[e]
     }
 }
@@ -72,6 +86,14 @@ async function sendKills(dcClient) {
 
     for (const e in global.newEntries.kill) {
         await channel.send(new Discord.MessageEmbed(await format.kill(global.newEntries.kill[e])))
+
+        global.newEntries.kill[e].file = await mapLocation.generate(
+            global.newEntries.kill[e].Victim.ServerLocation.X,
+            global.newEntries.kill[e].Victim.ServerLocation.Y,
+            'kill_' + global.newEntries.kill[e].Victim.UserId + '_' + new Date().getTime() + '.jpg',
+            './app/storage/mapLocation/'
+        )
+
         if (!global.newEntries.kill[e].Victim.IsInGameEvent)
             global.commands['kill_' + global.newEntries.kill[e].Victim.UserId] = {
                 message: 'kill_feed',

@@ -32,7 +32,12 @@ exports.exec = async function exec(cmd) {
     let tmpCmd = cmdBuilder.getTmpCmd()
     cmdBuilder.addMessage('global', '#SetFakeName ' + cmd.user)
 
-    let msgCmds = cmd.message.toLowerCase().replace('/exec', '').trim().split(';').map(s => s.trim())
+    let msgCmds = cmd.message
+        .toLowerCase()
+        .replace('/exec', '')
+        .split(';')
+        .map(s => s.trim())
+
     for (const el of msgCmds) {
         let command = el.split(' ')[0].toLowerCase().trim()
         if (aList[cmd.steamID].canExecute[command] || aList[cmd.steamID].canExecute['#*']) cmdBuilder.addMessage('global', el)
@@ -46,7 +51,10 @@ exports.exec = async function exec(cmd) {
 
 exports.sk_legal = async function sk_legal(cmd) {
     if (!cmdBuilder.begin(cmd, 'global')) return null
-    cmdBuilder.addMessage('global', ':[Starterkit]: ・ @' + cmd.user + ' you will be teleported to the trading-zone (green circle in B2) to receive your starterkit. Make sure you are ready and not driving a vehicle.')
+    cmdBuilder.addMessage(
+        'global',
+        ':[Starterkit]: ・ @' + cmd.user + ' you will be teleported to the trading-zone (green circle in B2) to receive your starterkit. Make sure you are ready and not driving a vehicle.'
+    )
     cmdBuilder.addMessage('global', ':[Starterkit]: ・ You will get a quad to get out of the trading-zone again. If you are ready to be teleported type: /ready ')
     return cmdBuilder.fullCommand(cmd)
 }
@@ -88,7 +96,12 @@ exports.sk_illegal = async function sk_illegal(cmd) {
 exports.welcome_new = async function welcome_new(newUser) {
     cmdBuilder.begin()
     let tmpCmd = cmdBuilder.getTmpCmd()
-    cmdBuilder.addMessage('global', ' ・ Welcome to the Server @' + newUser.user + '! If you have any questions, please don\'t hesitate to contact us. You are also entitled to a starterkit! Get it with: /starterkit (in global-chat).')
+    cmdBuilder.addMessage(
+        'global',
+        ' ・ Welcome to the Server @' +
+            newUser.user +
+            "! If you have any questions, please don't hesitate to contact us. You are also entitled to a starterkit! Get it with: /starterkit (in global-chat)."
+    )
     return cmdBuilder.fullCommand(tmpCmd)
 }
 

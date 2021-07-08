@@ -24,7 +24,7 @@
             "#TeleportTo": true,
             "#SetFamePointsToAllOnline": true,
             "#ShowOtherPlayerLocations": true,
-            "#SetHealthToItemInHands":true,
+            "#SetHealthToItemInHands": true,
             "#ShowVehicleLoactions": true,
             "#ShowOtherPlayerInfo": true,
             "#DestroyAllVehicles": true,
@@ -72,7 +72,7 @@
             "#TeleportTo": true,
             "#SetFamePointsToAllOnline": true,
             "#ShowOtherPlayerLocations": true,
-            "#SetHealthToItemInHands":true,
+            "#SetHealthToItemInHands": true,
             "#ShowVehicleLoactions": true,
             "#ShowOtherPlayerInfo": true,
             "#DestroyAllVehicles": true,
@@ -120,7 +120,7 @@
             "#TeleportTo": true,
             "#SetFamePointsToAllOnline": true,
             "#ShowOtherPlayerLocations": true,
-            "#SetHealthToItemInHands":true,
+            "#SetHealthToItemInHands": true,
             "#ShowVehicleLoactions": true,
             "#ShowOtherPlayerInfo": true,
             "#DestroyAllVehicles": true,
@@ -155,6 +155,22 @@
             "#*": true
         }
     },
+    "MODERATOR": {
+        "Name": "MODXYZ",
+        "discord": "12345123451234512345",
+        "hideRankingPlaytime": false,
+        "hideRankingKills": false,
+        "useFakeNames": false,
+        "hideLogin": false,
+        "alertCommands": {
+            "#*": true
+        },
+        "hideCommands": {},
+        "canExecute": {
+            "#Ban": true,
+            "#Unban": true
+        }
+    },
     "TEMPLATE": {
         "Name": "Muster",
         "discord": "12345123451234512345",
@@ -180,7 +196,7 @@
             "#TeleportTo": true,
             "#SetFamePointsToAllOnline": true,
             "#ShowOtherPlayerLocations": true,
-            "#SetHealthToItemInHands":true,
+            "#SetHealthToItemInHands": true,
             "#ShowVehicleLoactions": true,
             "#ShowOtherPlayerInfo": true,
             "#DestroyAllVehicles": true,

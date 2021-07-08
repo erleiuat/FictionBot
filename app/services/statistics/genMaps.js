@@ -58,6 +58,7 @@ exports.buildMap = async function buildMap(list) {
     await mapLocation.generateMulti(list.dead, fileName2, filePath)
     let msg2 = new Discord.MessageEmbed({
         title: 'DEAD TRAPS',
+        description: 'Total: ' + list.dead.length,
         color: 'F3EA5F',
         type: 'image',
         files: [new Discord.MessageAttachment(filePath + fileName2, fileName2)],

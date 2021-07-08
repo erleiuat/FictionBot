@@ -3,7 +3,7 @@ const Jimp = require('jimp')
 const imgs = {}
 
 function getImgPoint(mapPoint, imgDistance = '5000') {
-    return (mapPoint - 620000) / (-1520000 / imgDistance)
+    return (mapPoint - 620000) / (-1524000 / imgDistance)
 }
 
 function imageProps(cX, cY, dimensions, bW, bH) {
@@ -27,7 +27,11 @@ async function init(base) {
         })
     if (!imgs['marker'] || imgs['base'] != base)
         await Jimp.read('./app/plugins/mapLocation/marker.png').then(img => {
-            imgs['marker'] = img
+            imgs['marker'] = {
+                file: img,
+                width: img.getWidth(),
+                height: img.getHeight()
+            }
         })
     imgs['base'] = base
 }
@@ -36,12 +40,12 @@ exports.generateMulti = async function generateFull(xys, name, path = './app/sto
     await init(base)
 
     map = imgs['map'].file.clone()
-    marker = imgs['marker'].clone()
+    marker = imgs['marker'].file.clone()
 
     for (const el of xys) {
         cX = getImgPoint(el[0], imgs['map'].width)
         cY = getImgPoint(el[1], imgs['map'].height)
-        map.composite(marker, cX - marker.getWidth() / 2, cY - marker.getHeight())
+        map.composite(marker, cX - imgs['marker'].width / 2, cY - imgs['marker'].height + 20)
     }
 
     map.write(path + name)
@@ -55,10 +59,10 @@ exports.generate = async function generate(x, y, name, path = './app/storage/map
     await init(base)
 
     map = imgs['map'].file.clone()
-    marker = imgs['marker'].clone()
+    marker = imgs['marker'].file.clone()
     cX = getImgPoint(x, imgs['map'].width)
     cY = getImgPoint(y, imgs['map'].height)
-    map.composite(marker, cX - marker.getWidth() / 2, cY - marker.getHeight())
+    map.composite(marker, cX - imgs['marker'].width / 2, cY - imgs['marker'].height + 20)
     cProp = imageProps(cX, cY, imgDimensions, imgs['map'].width, imgs['map'].height)
     map.crop(cProp[0], cProp[1], cProp[2], cProp[3])
     map.write(path + name)

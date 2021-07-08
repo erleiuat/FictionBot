@@ -11,9 +11,7 @@ const cmdHandler = require('./services/cmdhandler/cmdhandler')
 const dcHandler = require('./services/dchandler')
 const dcBot = require('./services/dcbot')
 
-
 exports.start = async function start() {
-
     /*
         Possible args:
         - dcBot     -> Discord functions for handling new Users etc.
@@ -23,25 +21,18 @@ exports.start = async function start() {
 
     let args = process.argv.slice(2).map(el => el.replace('-', '').trim())
     dcClient.on('ready', () => {
-
         global.log.debug(sn + `Logged in as ${dcClient.user.tag}!`)
 
-        if (args.includes('dcBot'))
-            startDCBot(dcClient)
+        if (args.includes('dcBot')) startDCBot(dcClient)
 
-        if (args.includes('logBot'))
-            startLogFunctions(dcClient)
+        if (args.includes('logBot')) startLogFunctions(dcClient)
 
-        if (args.includes('inGame'))
-            startIngameBot(dcClient)
-
+        if (args.includes('inGame')) startIngameBot(dcClient)
     })
 
     global.log.debug(sn + 'Login on Discord')
     dcClient.login(process.env.DISCORD_TOKEN)
-
 }
-
 
 async function startDCBot(dcClient) {
     global.log.debug(sn + 'Starting Discord-Bot')

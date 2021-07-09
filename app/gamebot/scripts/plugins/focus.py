@@ -45,7 +45,7 @@ def get():
     for proc in psutil.process_iter():
         if 'SCUM.exe' in proc.name():
             getTryFocus(proc)
-            scb.sleep(0.5)
+            scb.sleep(2)
             regForegroundWindow()
             return True
     return False

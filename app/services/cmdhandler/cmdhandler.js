@@ -206,7 +206,7 @@ async function makeBusiness() {
 }
 
 async function makeBreak() {
-    let bTimes = [30]
+    let bTimes = [15, 45]
     do {
         await global.sleep.timer(30)
 

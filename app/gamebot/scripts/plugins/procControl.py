@@ -144,4 +144,6 @@ def solveProblems():
     else:
         getReady()
         
+    scb.goScope('local')
+    scb.goScope('global')
     return focus.get()

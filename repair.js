@@ -219,7 +219,7 @@ while (!done) {
     try {
         repairBot()
         done = true
-    } catch (error) {
-        console.log(error)
+    } catch (e) {
+        console.log('SMTH WRONG')
     }
 }

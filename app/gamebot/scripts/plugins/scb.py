@@ -90,7 +90,7 @@ def getRegion(name):
 
 
 def restartPC():
-    #subprocess.call('shutdown /r /t 2')
+    subprocess.call('shutdown /r /t 2')
     raise Exception('I WOULD RESTART NOW')
 
 

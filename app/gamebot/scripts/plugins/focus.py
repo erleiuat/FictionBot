@@ -6,6 +6,7 @@ import ctypes.wintypes
 import win32gui
 import psutil
 import ctypes
+import sys
 
 
 
@@ -21,6 +22,21 @@ def foregroundWindow():
     except:
         pass
 
+def getTryFocus(proc):
+    success = False
+    while(not success):
+        try:
+            app = Application().connect(process=proc.pid)
+            app.top_window().set_focus()
+            success = True
+        except Exception as e:
+            exception_type, exception_object, exception_traceback = sys.exc_info()
+            if('not responding' in str(e).lower()):
+                scb.sleep(3)
+                continue
+            else:
+                raise Exception('Unable to focus game')
+
 
 def get():
     if(foregroundWindow() == 'scum'):
@@ -28,8 +44,7 @@ def get():
         return True
     for proc in psutil.process_iter():
         if 'SCUM.exe' in proc.name():
-            app = Application().connect(process=proc.pid)
-            app.top_window().set_focus()
+            getTryFocus(proc)
             scb.sleep(0.5)
             regForegroundWindow()
             return True

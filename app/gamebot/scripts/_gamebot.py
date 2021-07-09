@@ -32,10 +32,10 @@ class check(Thread):
                 pyautogui.click(scb.getPoint(160, 500))
                 scb.safeMouse()
                 if(busyWork):
+                    busyCheck = False
                     continue
                 procControl.solveProblems()
-                
-
+                busyCheck = False                
 
 
 class ready(Thread):
@@ -68,20 +68,9 @@ class ready(Thread):
                     'errorMessage': str(e),
                     'errorType': str(exception_type)
                 })
-                if (not focus.get()):
-                    procControl.solveProblems()
-                    scb.doPrint({'error': True})
-                    if (not focus.get()):
-                        scb.restartPC()
-                        raise Exception('Window not found')
-                botstate = scb.goReadyState()
-                scb.doPrint({
-                    'data': botstate
-                })
-                if (not botstate['chat'] or not botstate['inventory']):
-                    scb.doPrint({'error': True})
-                    scb.restartPC()
-                    raise Exception('Game not ready')
+
+                focus.get()
+                procControl.solveProblems()
 
             scb.flushPrint()
             scb.safeMouse()

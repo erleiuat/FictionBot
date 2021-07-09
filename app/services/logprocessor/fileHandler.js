@@ -9,6 +9,7 @@ exports.getLines = async function getLines(type) {
 
     for (const file of files) if (file.startsWith(type)) lines = lines.concat(await mergedLines(file))
 
+    lines.sort()
     if (!lines.length) return
     if (type == 'kill') return await kill(lines)
     if (type == 'chat') return await chat(lines)

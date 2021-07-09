@@ -82,7 +82,9 @@ def joinServer():
 
     i = 0
     while(not scb.openTab()):
-        scb.sleep(1)
+        scb.sleep(0.5)
+        pyautogui.press('esc')
+        scb.sleep(0.5)
         i = i + 1
         if(i > 60):
             scb.restartPC()

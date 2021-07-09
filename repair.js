@@ -214,4 +214,12 @@ async function repairBot() {
     return true
 }
 
-repairBot()
+let done = false
+while (!done) {
+    try {
+        repairBot()
+        done = true
+    } catch (error) {
+        console.log(error)
+    }
+}

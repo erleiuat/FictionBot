@@ -123,9 +123,9 @@ def safeClick(coords, double=False, button='left'):
         pyautogui.click(button=button)
 
 
-def goScope(scopeName):
+def goScope(scopeName, force=False):
     global currentScope
-    if(currentScope == scopeName):
+    if(not force and currentScope == scopeName):
         return True
     isThere = onScreen('img/chat/'+scopeName+'.png',sure=0.98,region=getRegion('scope'))
     i = 0

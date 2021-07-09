@@ -217,8 +217,9 @@ async function repairBot() {
 let done = false
 while (!done) {
     try {
-        repairBot()
-        done = true
+        repairBot().then(() => {
+            done = true
+        })
     } catch (e) {
         console.log('SMTH WRONG')
     }

@@ -119,10 +119,17 @@ async function repairBot() {
     global.log.debug(sn + 'Log-Cache downloaded. Processing files...')
 
     try {
-        for (const key in lines) lines[key] = JSON.parse(fs.readFileSync('./app/storage/logs/' + key + '.json'))
+        for (const key in lines) {
+            try {
+                lines[key] = JSON.parse(fs.readFileSync('./app/storage/logs/' + key + '.json'))
+            } catch (error) {
+                if (error.message.includes('JSON')) lines[key] = {}
+                else throw new Error('UNABLE TO DOWNLOAD CHACHED ' + key)
+            }
+        }
     } catch (err) {
-        global.log.debug(sn + error)
-        throw new Error(sn + 'Error: ' + error)
+        global.log.debug(sn + err)
+        throw new Error(sn + 'Error: ' + err)
     }
 
     for (const key in lines.login) {

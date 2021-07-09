@@ -218,17 +218,20 @@ async function repairBot() {
     return true
 }
 
-let i = 0
-let done = false
-while (!done) {
-    try {
-        repairBot().then(() => {
+async function start() {
+    let i = 0
+    let done = false
+    while (!done) {
+        try {
+            await repairBot()
             done = true
-        })
-    } catch (e) {
-        if (e) console.log(e)
-        console.log('SMTH WRONG')
-        if (i > 10) throw new Error('REPAIR-ERROR')
-        i++
+        } catch (e) {
+            if (e) console.log(e)
+            console.log('SMTH WRONG')
+            if (i > 10) throw new Error('REPAIR-ERROR')
+            i++
+        }
     }
 }
+
+start()

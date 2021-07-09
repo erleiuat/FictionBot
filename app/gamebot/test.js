@@ -1,28 +1,58 @@
+require('../plugins/globalLog')
 const bot = require('./gamebot')
-const winston = require('winston')
-global.log = winston.createLogger({
-  level: 'debug',
-  format: winston.format.cli(),
-  transports: [
-    new winston.transports.Console()
-  ],
-})
 
 function timer(seconds) {
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
         setTimeout(resolve, seconds * 1000)
     })
 }
 
-
 async function testIt() {
     resp = await bot.start()
+    console.time('startBot')
     if (resp.error) {
         global.log.debug('Gambot status in error!')
         if (resp.data) global.log.debug('Status checked. Chat = ' + resp.data.chat + ', Inventory = ' + resp.data.inventory)
         return false
     }
+    console.timeEnd('startBot')
+    global.log.debug(JSON.stringify(resp))
 
+    console.time('sendMsg')
+    resp = await bot.messages([
+        {
+            scope: 'local',
+            message: '1'
+        }
+    ])
+    console.timeEnd('sendMsg')
+    global.log.debug(JSON.stringify(resp))
+
+    await timer(3)
+
+    console.time('sendMsg')
+    resp = await bot.messages([
+        {
+            scope: 'local',
+            message: '2'
+        }
+    ])
+    console.timeEnd('sendMsg')
+    global.log.debug(JSON.stringify(resp))
+
+    await timer(2)
+
+    console.time('sendMsg')
+    resp = await bot.messages([
+        {
+            scope: 'local',
+            message: '3'
+        }
+    ])
+    console.timeEnd('sendMsg')
+    global.log.debug(JSON.stringify(resp))
+
+    /*
     resp = await bot.actions([{
         type: 'travel',
         properties: {
@@ -44,8 +74,7 @@ async function testIt() {
             }
         }
     }])
-
-    global.log.debug(JSON.parse(resp))
+    */
 
     /*
     resp = await bot.messages([{
@@ -175,7 +204,6 @@ async function testIt() {
 
     global.log.debug(resp)
     */
-
 }
 
 testIt()

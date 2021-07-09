@@ -1,18 +1,4 @@
-let now = new Date()
-let logTS = now.getFullYear() + '_' + (now.getMonth() + 1) + '_' + now.getDate() + '_' + now.getHours() + '_' + now.getMinutes() + '_' + now.getSeconds()
-
-const winston = require('winston')
-global.log = winston.createLogger({
-    level: 'debug',
-    format: winston.format.json(),
-    transports: [
-        new winston.transports.Console(),
-        new winston.transports.File({
-            filename: 'app/logs/log_' + logTS + '.log'
-        })
-    ]
-})
-
+require('./app/plugins/globalLog')
 const sn = '[MAIN] -> '
 
 global.log.debug('\n\n' + sn + '----------------------------------------------------------')

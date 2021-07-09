@@ -1,44 +1,7 @@
-from plugins import windowRect
+from plugins import focus
 from plugins import scb
 import webbrowser
 import pyautogui
-import win32gui
-import win32con
-import psutil
-
-
-def focus(window_name='scum'):
-    if(window_name.lower() in win32gui.GetWindowText(win32gui.GetForegroundWindow()).lower()):
-        return True
-
-    def window_dict_handler(hwnd, top_windows):
-        top_windows[hwnd] = win32gui.GetWindowText(hwnd)
-
-    try:
-        tw, expt = {}, True
-        win32gui.EnumWindows(window_dict_handler, tw)
-        for handle in tw:
-            if (window_name.lower() in tw[handle].lower()):
-                win32gui.ShowWindow(handle, win32con.SW_NORMAL)
-                win32gui.BringWindowToTop(handle)
-                win32gui.SetForegroundWindow(handle)
-                scb.sleep(0.5)
-                scb.reg(windowPosition=windowRect.get(handle))
-                scb.sleep()
-                return True
-        return False
-    except:
-        return False
-
-
-def processRunning(processName):
-    for proc in psutil.process_iter():
-        try:
-            if (processName.lower() in proc.name().lower()):
-                return psutil.Process(pid=proc.pid)
-        except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
-            pass
-    return False
 
 
 def getState():
@@ -48,20 +11,17 @@ def getState():
         'onServer': False
     }
 
-    if(processRunning('steam')):
+    if(focus.check('steam')):
         parts['steamRunning'] = True
-
-    if(processRunning('scum')):
+    if(focus.check('scum')):
         parts['gameRunning'] = True
     else:
         return parts
 
     parts['onServer'] = True
-
     if(scb.onScreen('img/scb/inventar.png', region=scb.getRegion('inventory'))):
         if(scb.onScreen('img/chat/stumm.png', region=scb.getRegion('chat'))):
             return parts
-            
     i = 0
     while(not scb.onScreen('img/scb/fortsetzen.png', bw=True, sure=0.8, region=scb.getRegion('inventory'))):
         pyautogui.press('esc')
@@ -77,6 +37,60 @@ def getState():
         pyautogui.press('t')
 
     return parts
+
+
+def startGame():
+    webbrowser.open('steam://rungameid/513710')
+    scb.sleep(30)
+
+    i = 0
+    while(not focus.get()):
+        scb.sleep(5)
+        i = i + 1
+        if(i >= 25):
+            scb.restartPC()
+
+    i = 0
+    while(not scb.onScreen('img/scb/mehrspieler.png', bw=True, sure=0.8)):
+        scb.sleep(5)
+        i = i + 1
+        if(i >= 25):
+            scb.restartPC()
+
+    scb.sleep(1)
+    joinServer()
+
+
+def joinServer():
+    scb.sleep()
+    scb.safeMouse()
+    goFortsetzen()
+
+    i = 0
+    while(not scb.onScreen('img/scb/fortsetzen.png', bw=True, sure=0.8, region=scb.getRegion('inventory'))):
+        scb.sleep(0.1)
+        pyautogui.press('esc')
+        scb.sleep(1)
+        if(scb.onScreen('img/scb/mehrspieler.png', bw=True, sure=0.8)):
+            goFortsetzen()
+        i = i + 1
+        if(i > 90):
+            scb.restartPC()
+            raise Exception('Unable to join')
+    pyautogui.press('esc')
+    scb.sleep(20)
+
+    i = 0
+    while(not scb.openTab()):
+        scb.sleep(1)
+        i = i + 1
+        if(i > 60):
+            scb.restartPC()
+            raise Exception('Unable to open tab')
+
+    getReady()
+    scb.sleep()
+    pyautogui.press('t')
 
 
 def getReady():
@@ -96,6 +110,7 @@ def getReady():
     scb.safeMouse()
     return True
 
+
 def goFortsetzen():
     needOK = scb.onScreen('img/scb/ok.png', bw=True)
     if(needOK):
@@ -108,59 +123,6 @@ def goFortsetzen():
         scb.sleep(0.05)
         scb.safeMouse()
         scb.sleep(1)
-
-
-def joinServer():
-    i = 0
-    scb.sleep()
-    scb.safeMouse()
-    goFortsetzen()
-    while(not scb.onScreen('img/scb/fortsetzen.png', bw=True, sure=0.8, region=scb.getRegion('inventory'))):
-        scb.sleep(1)
-        pyautogui.press('esc')
-        scb.sleep(1)
-        if(scb.onScreen('img/scb/mehrspieler.png', bw=True, sure=0.8)):
-            goFortsetzen()
-        i = i + 1
-        if(i > 90):
-            scb.restartPC()
-            raise Exception('Unable to join')
-
-    pyautogui.press('esc')
-    scb.sleep(20)
-    i = 0
-    while(not scb.openTab()):
-        scb.sleep(1)
-        i = i + 1
-        if(i > 120):
-            scb.restartPC()
-            raise Exception('Unable to open tab')
-
-    getReady()
-    scb.sleep()
-    pyautogui.press('t')
-
-
-def startGame():
-    webbrowser.open('steam://rungameid/513710')
-    scb.sleep(30)
-
-    i = 0
-    while(not focus('scum')):
-        scb.sleep(5)
-        i = i + 1
-        if(i >= 25):
-            scb.restartPC()
-
-    i = 0
-    while(not scb.onScreen('img/scb/mehrspieler.png', bw=True, sure=0.8)):
-        scb.sleep(5)
-        i = i + 1
-        if(i >= 25):
-            scb.restartPC()
-
-    scb.sleep(1)
-    joinServer()
 
 
 def solveProblems():
@@ -176,4 +138,4 @@ def solveProblems():
     else:
         getReady()
         
-    return focus()
+    return focus.get()

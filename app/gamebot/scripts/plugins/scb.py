@@ -90,7 +90,7 @@ def getRegion(name):
 
 
 def restartPC():
-    subprocess.call('shutdown /r /t 2')
+    #subprocess.call('shutdown /r /t 2')
     raise Exception('I WOULD RESTART NOW')
 
 
@@ -158,7 +158,7 @@ def getPosition():
 def openTab():
     i = 0
     while(not onScreen('img/scb/inventar.png', bw=True, region=getRegion('inventory'))):
-        sleep(0.05)
+        sleep(0.04)
         pyautogui.keyDown('tab')
         sleep(0.01)
         pyautogui.keyUp('tab')
@@ -168,9 +168,9 @@ def openTab():
         pyautogui.keyUp('tab')
         sleep(0.05)
         pyautogui.press('1')
-        i = i + 1
         sleep(0.1)
-        if(i > 30):
+        i = i + 1
+        if(i > 5):
             return False
     return True
 

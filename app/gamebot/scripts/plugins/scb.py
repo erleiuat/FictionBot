@@ -124,19 +124,13 @@ def goScope(scopeName):
     global currentScope
     if(currentScope == scopeName):
         return True
-    isThere = onScreen(
-        'img/chat/'+scopeName+'.png',
-        region=getRegion('scope')
-    )
+    isThere = onScreen('img/chat/'+scopeName+'.png',sure=0.98,region=getRegion('scope'))
     i = 0
     while(not isThere):
         i = i + 1
         pyautogui.press('tab')
         sleep(0.1)
-        isThere = onScreen(
-            'img/chat/'+scopeName+'.png',
-            region=getRegion('scope')
-        )
+        isThere = onScreen('img/chat/'+scopeName+'.png',sure=0.98,region=getRegion('scope'))
         if(i>10):
             raise Exception('Could not change scope')
     currentScope = scopeName
@@ -229,9 +223,9 @@ def isReady():
         'chat': False,
         'inventory': False
     }
-    if(onScreen('img/scb/inventar.png', region=getRegion('inventory'))):
+    if(onScreen('img/scb/inventar.png', sure=0.98, region=getRegion('inventory'))):
         parts['inventory'] = True
-    if(onScreen('img/chat/stumm.png', region=getRegion('chat'))):
+    if(onScreen('img/chat/stumm.png', sure=0.98, region=getRegion('chat'))):
         parts['chat'] = True
     return parts
 

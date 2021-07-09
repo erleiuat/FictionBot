@@ -1,5 +1,5 @@
 let now = new Date()
-let logTS = now.getFullYear() + '_' + now.getMonth() + 1 + '_' + now.getDate() + '_' + now.getHours() + '_' + now.getMinutes() + '_' + now.getSeconds()
+let logTS = now.getFullYear() + '_' + (now.getMonth() + 1) + '_' + now.getDate() + '_' + now.getHours() + '_' + now.getMinutes() + '_' + now.getSeconds()
 
 const winston = require('winston')
 global.log = winston.createLogger({

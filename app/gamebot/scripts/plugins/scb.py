@@ -103,14 +103,18 @@ def safeMouse():
                      props['windowPosition']['y'] + 640)
 
 
-def safeClick(coords, double=False, button='left'):
-    pyautogui.moveTo(coords)
+def safeMoveTo(coords, duration=0.001):
+    pyautogui.moveTo(coords, duration=duration)
     pyautogui.move(-5, -2, duration=0.0005)
     pyautogui.move(10, 0, duration=0.0005)
     pyautogui.move(0, 4, duration=0.0005)
     pyautogui.move(-10, 0, duration=0.0005)
     pyautogui.move(0, -4, duration=0.0005)
     pyautogui.move(5, 2, duration=0.0005)
+
+
+def safeClick(coords, double=False, button='left'):
+    safeMoveTo(coords)
     pyautogui.click(button=button)
     if(double):
         pyautogui.click(button=button)

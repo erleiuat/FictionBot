@@ -82,9 +82,9 @@ def joinServer():
 
     i = 0
     while(not scb.openTab()):
-        scb.sleep(0.5)
+        scb.sleep(0.2)
         pyautogui.press('esc')
-        scb.sleep(0.5)
+        scb.sleep(0.8)
         i = i + 1
         if(i > 60):
             scb.restartPC()
@@ -96,18 +96,19 @@ def joinServer():
 
 
 def getReady():
+    scb.sleep(1)
     ist = scb.onScreen('img/scb/invDrag.png', region=scb.getRegion('invDrag'))
     soll = scb.getPoint(955, 855)
-    scb.sleep()
+    scb.sleep(1)
     while(ist.y < (soll[1] - 50) or ist.y > (soll[1] + 50)):
-        pyautogui.moveTo(ist)
-        scb.sleep()
+        scb.safeMoveTo(ist)
+        scb.sleep(0.1)
         pyautogui.mouseDown()
-        scb.sleep()
-        pyautogui.moveTo(soll, duration=0.5)
-        scb.sleep()
+        scb.sleep(0.1)
+        scb.safeMoveTo(soll, duration=0.5)
+        scb.sleep(0.1)
         pyautogui.mouseUp()
-        scb.sleep()
+        scb.sleep(0.1)
         ist = scb.onScreen('img/scb/invDrag.png', region=scb.getRegion('invDrag'))
     scb.safeMouse()
     return True

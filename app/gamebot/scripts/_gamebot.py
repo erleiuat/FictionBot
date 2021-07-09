@@ -23,7 +23,6 @@ class check(Thread):
             busyCheck = False
             scb.sleep(10)
             if(busyWork):
-                scb.sleep(1)
                 continue
             else:
                 busyCheck = True

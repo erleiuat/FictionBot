@@ -164,7 +164,7 @@ def dress():
     ]
 
     posi = scb.getPosition()
-    scb.sendMessage('#Teleport '+posi['x']+' '+posi['y']+' 110000')
+    scb.sendMessage('#Teleport '+posi['x']+' '+posi['y']+' 150000')
     pyautogui.press('esc')
     for x in range(12):
         scb.safeClick(scb.getPoint(435, 110), double=True)
@@ -173,8 +173,8 @@ def dress():
 
     itemsList = []
     for item in items:
-        scb.sendMessage('#SpawnItem ' + item)
-        itemsList.append(('img/dress/'+item+'.png', 'img/dress/ausruesten.png', 0.6))
+        scb.sendMessage('#SpawnItem ' + item, faster=True)
+        itemsList.append(('img/dress/'+item+'.png', 'img/dress/ausruesten.png', 0.2))
 
     control.act(itemsList)
 

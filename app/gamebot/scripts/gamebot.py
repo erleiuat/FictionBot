@@ -9,7 +9,7 @@ import sys
 def startup():
     try :
         scb.reg(
-            failSafe = 0.04,
+            failSafe = 0.02,
             resolution={
                 'x': 1920,
                 'y': 1080

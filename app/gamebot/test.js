@@ -18,6 +18,34 @@ async function testIt() {
     console.timeEnd('startBot')
     global.log.debug(JSON.stringify(resp))
 
+    resp = await bot.messages([
+        {
+            scope: 'local',
+            message: '1'
+        },
+        {
+            scope: 'local',
+            message: '2'
+        },
+        {
+            scope: 'local',
+            message: '3'
+        },
+        {
+            scope: 'local',
+            message: '3'
+        }
+    ])
+    global.log.debug(JSON.stringify(resp))
+
+    resp = await bot.actions([
+        {
+            type: 'dress'
+        }
+    ])
+    global.log.debug(JSON.stringify(resp))
+
+    /*
     console.time('sendMsg')
     resp = await bot.messages([
         {
@@ -52,7 +80,7 @@ async function testIt() {
     console.timeEnd('sendMsg')
     global.log.debug(JSON.stringify(resp))
 
-    /*
+    
     resp = await bot.actions([{
         type: 'travel',
         properties: {

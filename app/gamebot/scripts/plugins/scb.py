@@ -1,6 +1,7 @@
 import win32clipboard
 import subprocess
 import pyautogui
+import clipboard
 import keyboard
 import time
 import json
@@ -95,7 +96,7 @@ def restartPC():
 
 
 def sleep(duration=0.4):
-    time.sleep(duration + props['failSafe'])
+    time.sleep(duration)
 
 
 def safeMouse():
@@ -104,6 +105,7 @@ def safeMouse():
 
 
 def safeMoveTo(coords, duration=0.001):
+    pyautogui.PAUSE = 0.000
     pyautogui.moveTo(coords, duration=duration)
     pyautogui.move(-5, -2, duration=0.0005)
     pyautogui.move(10, 0, duration=0.0005)
@@ -111,6 +113,7 @@ def safeMoveTo(coords, duration=0.001):
     pyautogui.move(-10, 0, duration=0.0005)
     pyautogui.move(0, -4, duration=0.0005)
     pyautogui.move(5, 2, duration=0.0005)
+    pyautogui.PAUSE = props['failSafe']
 
 
 def safeClick(coords, double=False, button='left'):
@@ -179,12 +182,15 @@ def isTeleport():
         raise Exception('Unable to open tab')
     pyautogui.press('t')
 
-def sendMessage(msg, read=False):
+def sendMessage(msg, read=False, faster=False):
+    clipboard.copy(msg)
     pyautogui.hotkey('ctrl','a')
     pyautogui.press('backspace')
-    sleep(0.4 - props['failSafe']*4)
-    keyboard.write(msg.encode('utf-8').decode('utf-8'), delay=0)
+    pyautogui.hotkey('ctrl','v')
+    if(not faster):
+        sleep(0.45)
     pyautogui.press('enter')
+    clipboard.copy('')
     if(msg.lower().startswith('#teleport')):
         isTeleport()
     if(read):

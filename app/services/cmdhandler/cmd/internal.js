@@ -81,7 +81,7 @@ exports.sk_ready = async function sk_ready(cmd, updateFunction) {
     cmdBuilder.addMessage('global', '#SpawnItem Lock_Item_Advanced')
     cmdBuilder.addMessage('global', '#Teleport -116453 -66401 37477')
     cmdBuilder.addMessage('global', '#SpawnVehicle BP_Quad_01_A')
-    cmdBuilder.addMessage('local', ':[Starterkit]: ・ @' + cmd.user + ' your starterkit should now be there any your Quad should be waiting for you outside.')
+    cmdBuilder.addMessage('local', ':[Starterkit]: ・ @' + cmd.user + ' your starterkit should now be there and your Quad should be waiting for you outside.')
     cmdBuilder.addMessage('global', '#Teleport -116369 -65906 37144')
     cmdBuilder.addAction('idle')
     return cmdBuilder.fullCommand(cmd)

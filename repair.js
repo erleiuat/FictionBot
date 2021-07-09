@@ -3,6 +3,7 @@ const sn = '[REPAIR] -> '
 const fs = require('fs')
 const ftp_rm = new (require('basic-ftp').Client)()
 const ftp_pp = new (require('basic-ftp').Client)()
+global.sleep = require('./app/plugins/sleep')
 global.nZero = require('./app/plugins/nzero')
 global.playerlist = {}
 const winston = require('winston')
@@ -30,6 +31,9 @@ function formDate(dateStr) {
 }
 
 async function repairBot() {
+    global.log.debug(sn + 'Starting in 5s')
+    await global.sleep.timer(5)
+
     global.log.debug(sn + 'Recreating existing files')
 
     if (fs.existsSync('./app/storage/raw_logs/'))
@@ -214,6 +218,7 @@ async function repairBot() {
     return true
 }
 
+let i = 0
 let done = false
 while (!done) {
     try {
@@ -221,6 +226,9 @@ while (!done) {
             done = true
         })
     } catch (e) {
+        if (e) console.log(e)
         console.log('SMTH WRONG')
+        if (i > 10) throw new Error('REPAIR-ERROR')
+        i++
     }
 }

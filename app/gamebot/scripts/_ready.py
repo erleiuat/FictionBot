@@ -29,7 +29,7 @@ class Ready:
         self.FOC.doIt()
         time.sleep(0.1)
         state = self.getState()
-        self.RES.printer('State: ' + state)
+        self.RES.printer('State: ' + str(state))
         if(state == 'ready'):
             self.PRC_CHAT.doClean()
             return True

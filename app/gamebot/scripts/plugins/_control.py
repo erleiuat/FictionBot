@@ -145,7 +145,6 @@ class Control:
 
 
     def join(self):
-        self.FOC.doIt()
         i = 0
         fortsetzen = self.onScreen('img/main_fortsetzen.png')
         while(fortsetzen):
@@ -167,17 +166,15 @@ class Control:
 
 
     def openAll(self):
-        self.FOC.doIt()
         i = 0
         onMapi = self.onScreen('img/mapi.png', region='mapi')
         while(not onMapi):
-            time.sleep(0.1)
+            time.sleep(0.2)
+            self.PAG.press('esc')
+            time.sleep(0.2)
             self.PAG.press('m')
-            time.sleep(0.4)
+            time.sleep(0.5)
             onMapi = self.onScreen('img/mapi.png', region='mapi')
-            if(not onMapi):
-                self.PAG.press('esc')
-                time.sleep(0.2)
             i = i + 1
             if(i > 5):
                 return False
@@ -203,6 +200,8 @@ class Control:
 
 
     def getReady(self):
+        self.FOC.doIt()
+        self.setWindow(self.FOC.getWindowProps())
         self.RES.printer('GETREADY')
         self.SCB.safeMoveTo(self.getPoint(1700,600))
         if(self.onServer()):

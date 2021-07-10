@@ -33,5 +33,6 @@ class Action:
         Path('./app/storage/maps/'+folderName).mkdir(parents=True, exist_ok=True)
         time.sleep(0.05)
         self.PAG.press('t')
+        self.CON.openAll()
         self.RES.add({'fileName': fileName, 'fullPath': fullPath})
         

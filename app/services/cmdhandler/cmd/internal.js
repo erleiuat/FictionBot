@@ -44,8 +44,7 @@ exports.exec = async function exec(cmd) {
     }
 
     cmdBuilder.addMessage('global', '#SetFakeName ・ :[FiBo]')
-    cmdBuilder.addMessage('global', '#Teleport -116369 -65906 37144')
-    cmdBuilder.addAction('idle')
+    cmdBuilder.addMessage('global', '#Teleport -117159 -66722 37129')
     return cmdBuilder.fullCommand(tmpCmd)
 }
 
@@ -62,7 +61,7 @@ exports.sk_legal = async function sk_legal(cmd) {
 exports.sk_ready = async function sk_ready(cmd, updateFunction) {
     if (!cmdBuilder.begin(cmd, 'global')) return null
     cmdBuilder.addMessage('global', ':[Starterkit]: ・ @' + cmd.user + ' you will be transported to the trading zone in a few seconds.')
-    cmdBuilder.addMessage('global', '#Teleport -117129 -66713 37065')
+    cmdBuilder.addMessage('global', '#Teleport -117159 -66722 37129')
     cmdBuilder.addMessage('global', '#TeleportToMe ' + cmd.steamID)
     cmdBuilder.addMessage('global', '#SpawnItem Backpack_01_07')
     cmdBuilder.addMessage('global', '#SpawnItem MRE_Stew 2')
@@ -82,8 +81,7 @@ exports.sk_ready = async function sk_ready(cmd, updateFunction) {
     cmdBuilder.addMessage('global', '#Teleport -116453 -66401 37477')
     cmdBuilder.addMessage('global', '#SpawnVehicle BP_Quad_01_A')
     cmdBuilder.addMessage('local', ':[Starterkit]: ・ @' + cmd.user + ' your starterkit should now be there and your Quad should be waiting for you outside.')
-    cmdBuilder.addMessage('global', '#Teleport -116369 -65906 37144')
-    cmdBuilder.addAction('idle')
+    cmdBuilder.addMessage('global', '#Teleport -117159 -66722 37129')
     return cmdBuilder.fullCommand(cmd)
 }
 

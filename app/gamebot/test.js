@@ -20,11 +20,11 @@ async function testIt() {
     resp = await bot.messages([
         {
             scope: 'local',
-            message: 'AAAA'
+            message: '#listanimals'
         }
     ])
 
-    await timer(10)
+    await timer(5)
 
     console.time('sendMsgs')
     let msgs = []

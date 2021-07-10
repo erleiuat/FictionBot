@@ -24,11 +24,10 @@ class Process:
             messages = json.loads(unquote(input()).strip())
         else:
             messages = []
-            for x in range(10):
-                messages.append({"scope":"global","message":str(x)})
-            messages.append({"scope":"local","message":"ö"})
-            messages.append({"scope":"global","message":"ä"})
-            messages.append({"scope":"local","message":"ü"})
+            messages.append({"scope":"local","message":"#listanimals"})
+            messages.append({"scope":"global","message":"#Teleport -117159 -66722 37200"})
+            messages.append({"scope":"local","message":"#Teleport -117159 -66722 37200"})
+            messages.append({"scope":"local","message":"#Teleport -117159 -66722 100000"})
         self.RES.addInput({'input': messages})
         self.PRC_CHAT.sendMulti(messages)
 

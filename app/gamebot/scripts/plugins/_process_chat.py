@@ -70,28 +70,32 @@ class Chat:
         return self.readFromClip().strip()
 
 
-    def teleport(self, prevL):
-        while(prevL == self.roundXYZ(self.send('#Location', read = True))):
-            time.sleep(0.00001)
+    def formLocation(self, telep):
+        loc = telep.lower().replace('#teleport ', '')
+        loc = loc.split(' ')
+        return str(round(float(loc[0]))) + ' ' + str(round(float(loc[1]))) + ' ' + str(round(float(loc[2])))
 
 
-    def roundXYZ(self, tpCom):
-        nStr = ''
-        parts = (tpCom.split(' ', 1)[1].replace('X=','').replace('Y=','').replace('Z=','')).split(' ')
-        for x in parts:
-            nStr = nStr + ' ' + str(round(float(x)))
-        return nStr.strip()
+    def getLocation(self):
+        loc = self.send('#Location', read = True)
+        loc = loc.split(': X=')[1]
+        loc = loc.split(' ')
+        return str(round(float(loc[0]))) + ' ' + str(round(float(loc[1][2:]))) + ' ' + str(round(float(loc[2][2:])))
 
 
     def send(self, message, read = False):
         data = True
         teleport = False
+        current = False
         if(message.lower().startswith('#teleport ')):
-            teleport = self.roundXYZ(self.send('#Location', read = True))
-            if(self.roundXYZ(message) == teleport):
+            current = self.getLocation()
+            teleport = self.formLocation(message)
+            print(teleport)
+            print(current)
+            if(current == teleport):
                 return data
         if(message.lower().startswith('#teleportto ')):
-            teleport = self.roundXYZ(self.send('#Location', read = True))
+            teleport = self.getLocation()
         self.RES.printer('SENDING MSG -> ' + message)
         self.copyToClip(message)
         self.PAG.hotkey('ctrl','v')
@@ -101,8 +105,9 @@ class Chat:
         if(read):
             data = self.read()
         elif(teleport):
-            self.teleport(teleport)
-        time.sleep(0.15)
+            while(current == self.getLocation()):
+                time.sleep(0.1)
+        time.sleep(0.05)
         return data
         self.RES.printer('SENDING MSG DONE')
 

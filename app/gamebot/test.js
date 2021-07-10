@@ -18,6 +18,55 @@ async function testIt() {
     console.timeEnd('startBot')
     global.log.debug(JSON.stringify(resp))
 
+    resp = await bot.messages([
+        {
+            scope: 'local',
+            message: '1'
+        },
+        {
+            scope: 'global',
+            message: '2'
+        },
+        {
+            scope: 'local',
+            message: '3'
+        }
+    ])
+    global.log.debug(JSON.stringify(resp))
+
+    resp = await bot.messages([
+        {
+            scope: 'local',
+            message: '#Teleport -111482.9523 -66490.3773 0'
+        },
+        {
+            scope: 'global',
+            message: '2'
+        },
+        {
+            scope: 'local',
+            message: '3'
+        }
+    ])
+    global.log.debug(resp)
+
+    resp = await bot.messages([
+        {
+            scope: 'local',
+            message: '#Teleport -118302 -67347 38549'
+        }
+    ])
+    global.log.debug(resp)
+
+    resp = await bot.actions([
+        {
+            type: 'mapshot',
+            properties: null
+        }
+    ])
+    global.log.debug(resp)
+
+    /*
     resp = await bot.actions([
         {
             type: 'light',
@@ -61,7 +110,7 @@ async function testIt() {
     ])
     global.log.debug(JSON.stringify(resp))
 
-    /*
+    
     console.time('sendMsg')
     resp = await bot.messages([
         {

@@ -24,17 +24,29 @@ exports.start = async function start() {
         global.log.debug('Gambot status in error!')
         if (botState.data) global.log.debug('Status checked. Chat = ' + resp.data.chat + ', Inventory = ' + resp.data.inventory)
         global.gameReady = false
-    } else global.gameReady = true
+    } else {
+        await bot.messages([
+            {
+                scope: 'global',
+                message: '#SetFakeName ・ :[FiBo]'
+            },
+            {
+                scope: 'global',
+                message: '#Teleport -117159 -66722 37129'
+            },
+            {
+                scope: 'global',
+                message: '#Teleport -117159 -66722 37129'
+            }
+        ])
+        global.gameReady = true
+    }
 
-    getMap()
-    makeBusiness()
-    //checkStatus()
-    makeBreak()
-    announce()
-
-    global.commands = {}
     global.newCmds = false
+    global.commands = {}
     cmdHandler()
+    announce()
+    getMap()
 }
 
 async function cmdHandler() {
@@ -61,20 +73,7 @@ async function cmdHandler() {
             else if (cmdStart == 'kill_feed') await bot.execute(await cmdsInternal['kill_feed'](cmd))
             else if (cmdStart == 'auth_log') await bot.execute(await cmdsInternal['auth_log'](cmd))
             else if (cmdStart == 'mine_armed') await bot.execute(await cmdsInternal['mine_armed'](cmd))
-            else {
-                if (cmdStart == '/break') await bot.execute(await action.doAct('eat'))
-                else if (cmdStart == '/shit') await bot.execute(await action.doAct('shit'))
-                else if (cmdStart == '/piss') await bot.execute(await action.doAct('piss'))
-                else if (cmdStart == '/business') await bot.execute(await action.doAct('business'))
-                else if (cmdStart == '/dress') await bot.execute(await action.doAct('dress'))
-                else if (cmdStart == '/idle') await bot.execute(await action.doAct('idle'))
-                else if (cmdStart == '/lightup') await bot.execute(await action.doAct('light'))
-                else if (cmdStart == '/repair') await bot.execute(await action.doAct('repair'))
-                else if (cmdStart == '/startup') await bot.execute(await action.doAct('startup'))
-                else {
-                    global.log.debug(sn + 'Unknown command: ' + cmdStart)
-                }
-            }
+            else global.log.debug(sn + 'Unknown command: ' + cmdStart)
         }
 
         global.newCmds = false
@@ -166,58 +165,6 @@ async function tReady(cmd) {
         if (!resp.error) receivesStarterkit(cmd.steamID, cmd.user)
         return resp
     } else return await bot.execute(await cmdsInternal['sk_illegal'](cmd))
-}
-
-async function checkStatus() {
-    do {
-        checkCounter++
-        await global.sleep.timer(1)
-        if (checkCounter < 120) continue
-        if (!isReady()) continue
-        global.newCmds = true
-
-        checkCounter = 0
-        global.log.debug(sn + 'Checking gamebot status')
-        resp = await bot.execute(await action.doAct('awake', true))
-
-        if (resp.error) {
-            global.gameReady = false
-            global.log.debug(sn + 'Gambot status in error!')
-            if (resp.data) global.log.debug(sn + 'Status checked. Chat = ' + resp.data.chat + ', Inventory = ' + resp.data.inventory)
-        } else global.gameReady = true
-
-        global.newCmds = false
-    } while (true)
-}
-
-async function makeBusiness() {
-    let bTimes = [1]
-    do {
-        await global.sleep.timer(30)
-
-        now = new Date()
-        if (!bTimes.includes(now.getMinutes())) continue
-        if (!isReady()) continue
-        global.newCmds = true
-        await bot.execute(await action.doAct('business', true))
-        global.newCmds = false
-        await global.sleep.timer(60)
-    } while (true)
-}
-
-async function makeBreak() {
-    let bTimes = [15, 45]
-    do {
-        await global.sleep.timer(30)
-
-        now = new Date()
-        if (!bTimes.includes(now.getMinutes())) continue
-        if (!isReady()) continue
-        global.newCmds = true
-        await bot.execute(await action.doAct('eat', true))
-        global.newCmds = false
-        await global.sleep.timer(60)
-    } while (true)
 }
 
 async function announce() {

@@ -1,61 +1,40 @@
-from plugins import procControl
-from plugins import focus
-from plugins import scb
+from plugins import _process_action
+from plugins import _process_chat
+from plugins import _respond
+from plugins import _control
+from plugins import _focus
+from plugins import _scb
+import _process
 import _gamebot
-import _action
-import sys
+import _ready
 
 
-def startup():
-    try :
-        scb.reg(
-            failSafe = 0.02,
-            resolution={
-                'x': 1920,
-                'y': 1080
-            },
-            regions={
-                'scope': (515, 490, 60, 20),
-                'loading': (1640, 960, 125, 45),
-                'inventory': (480, 0, 955, 850),
-                'chat': (30, 145, 550, 375),
-                'invDrag': (935, 0, 45, 950),
-                'map': (420, 0, 1080, 1080)
-            }
-        )
-
-        startup = False
-        if (not focus.get()):
-            startup = True
-        procControl.solveProblems()
-        botstate = scb.goReadyState()
-        scb.doPrint({
-            'data': botstate
-        })
-        if (not botstate['chat'] or not botstate['inventory']):
-            scb.doPrint({'error': True})
-            raise Exception('Game not ready')
-        if(startup):
-            _action.startup()
-
-    except Exception as e:
-        exception_type, exception_object, exception_traceback = sys.exc_info()
-        scb.doPrint({
-            'error': True,
-            'errorMessage': str(e),
-            'errorType': str(exception_type)
-        })
-        scb.flushPrint()
-        scb.restartPC()
-
-    scb.flushPrint()
+import pyautogui as PAG
+PAG.PAUSE = 0.02
+test = False
 
 
+RES = _respond.Respond(test)
+FOC = _focus.Focus(RES)
+SCB = _scb.SCB(RES, PAG)
+CON = _control.Control(RES, SCB, FOC, PAG)
+
+PRC_CHAT = _process_chat.Chat(RES, CON, SCB, PAG)
+PRC_ACTION = _process_action.Action(RES, CON, SCB, PRC_CHAT, PAG)
+PRC = _process.Process(RES, CON, PRC_CHAT, PRC_ACTION, PAG, test)
+RDY = _ready.Ready(RES, FOC, CON, PRC_CHAT)
 
 
-startup()    
-_gamebot.check()
-_gamebot.ready()
+RES.start('START')
+if(not RDY.doIt()):
+    RES.addError('Unable to get ready')
+RES.send()
 
-while True:
+if(test):
+    GB_RUN = _gamebot.RunBot(RES, CON, RDY, PRC, test)
+else:
+    GB_CHK = _gamebot.Check(RES, CON, 60)
+    GB_RUN = _gamebot.RunBot(RES, CON, RDY, PRC)
+
+while(True):
     pass

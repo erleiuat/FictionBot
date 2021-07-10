@@ -123,21 +123,6 @@ def safeClick(coords, double=False, button='left'):
         pyautogui.click(button=button)
 
 
-def goScope(scopeName, force=False):
-    global currentScope
-    if(not force and currentScope == scopeName):
-        return True
-    isThere = onScreen('img/chat/'+scopeName+'.png',sure=0.98,region=getRegion('scope'))
-    i = 0
-    while(not isThere):
-        i = i + 1
-        pyautogui.press('tab')
-        sleep(0.1)
-        isThere = onScreen('img/chat/'+scopeName+'.png',sure=0.98,region=getRegion('scope'))
-        if(i>10):
-            raise Exception('Could not change scope')
-    currentScope = scopeName
-
 
 def loading():
     sleep(1)
@@ -196,6 +181,22 @@ def sendMessage(msg, read=False, faster=False):
     if(read):
         return readMessage()
         
+
+def goScope(scopeName, force=False):
+    global currentScope
+    if(not force and currentScope == scopeName):
+        return True
+    isThere = onScreen('img/chat/'+scopeName+'.png',sure=0.98,region=getRegion('scope'))
+    i = 0
+    while(not isThere):
+        i = i + 1
+        pyautogui.press('tab')
+        sleep(0.1)
+        isThere = onScreen('img/chat/'+scopeName+'.png',sure=0.98,region=getRegion('scope'))
+        if(i>10):
+            raise Exception('Could not change scope')
+    currentScope = scopeName
+
 
 def readMessage():
     safeClick(getPoint(85, 470))

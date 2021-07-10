@@ -10,7 +10,7 @@ import _ready
 
 
 import pyautogui as PAG
-PAG.PAUSE = 0.2
+PAG.PAUSE = 0.15
 test = False
 
 

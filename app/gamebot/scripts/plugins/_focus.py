@@ -28,6 +28,7 @@ class Focus:
             pass
 
     def getTryFocus(self, proc):
+        i = 0
         success = False
         while(not success):
             try:
@@ -40,7 +41,11 @@ class Focus:
                     time.sleep(3)
                     continue
                 else:
-                    raise Exception('Unable to focus game')
+                    i = i + 1
+                    time.sleep(3)
+                    continue
+                    if(i > 10):
+                        raise Exception('Unable to focus game')
 
 
     def doIt(self):

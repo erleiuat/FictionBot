@@ -40,6 +40,10 @@ exports.start = async function start() {
             },
             {
                 scope: 'global',
+                message: '#ShowOtherPlayerInfo true'
+            },
+            {
+                scope: 'global',
                 message: " ・ I'm ready!"
             }
         ])

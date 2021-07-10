@@ -17,7 +17,6 @@ class Control:
         self.PAG = pyautogui
         self.FOC.doIt()
         time.sleep(0.05)
-        self.setWindow(self.FOC.getWindowProps())
 
 
     path = './app/gamebot/scripts/'
@@ -227,6 +226,9 @@ class Control:
             i = i + 1
             if(i > 90):
                 return False
+        
+        time.sleep(10)
+        self.setWindow(self.FOC.getWindowProps())
         i = 0
         while(not self.inMain()):
             time.sleep(1)

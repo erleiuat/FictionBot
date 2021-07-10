@@ -15,14 +15,16 @@ class Ready:
 
 
     def getState(self):
-        chat = self.CON.onScreen('img/chat_stumm.png', region='chatStumm')
-        mapi = self.CON.onScreen('img/mapi.png', region='mapi')
-        if(chat and mapi):
-            return 'ready'
-        if(chat or mapi or self.FOC.check('scum')):
-            return 'game'
         if(self.FOC.check('steam')):
+            if(self.FOC.check('scum')):
+                self.CON.setWindow(self.FOC.getWindowProps())
+                chat = self.CON.onScreen('img/chat_stumm.png', region='chatStumm')
+                mapi = self.CON.onScreen('img/mapi.png', region='mapi')
+                if(chat and mapi):
+                    return 'ready'
+                return 'game'
             return 'steam'
+        return False
         
 
     def doIt(self, repeat=True):

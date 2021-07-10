@@ -90,8 +90,6 @@ class Chat:
         if(message.lower().startswith('#teleport ')):
             current = self.getLocation()
             teleport = self.formLocation(message)
-            print(teleport)
-            print(current)
             if(current == teleport):
                 return data
         if(message.lower().startswith('#teleportto ')):

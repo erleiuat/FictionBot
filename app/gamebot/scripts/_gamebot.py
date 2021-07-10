@@ -73,7 +73,6 @@ class RunBot(Thread):
                 busyWork = True
                 while (busyCheck):
                     time.sleep(0.0001)
-
                 self.RES.start(cmd)
                 if(cmd == 'MESSAGES'):
                     self.PRC.message()

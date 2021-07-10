@@ -8,31 +8,37 @@ function timer(seconds) {
 }
 
 async function testIt() {
-    resp = await bot.start()
     console.time('startBot')
-    if (resp.error) {
+    resp = await bot.start()
+    if (resp.status == 'error') {
         global.log.debug('Gambot status in error!')
         if (resp.data) global.log.debug('Status checked. Chat = ' + resp.data.chat + ', Inventory = ' + resp.data.inventory)
         return false
     }
     console.timeEnd('startBot')
     global.log.debug(JSON.stringify(resp))
-
     resp = await bot.messages([
         {
             scope: 'local',
-            message: '1'
-        },
-        {
-            scope: 'global',
-            message: '2'
-        },
-        {
-            scope: 'local',
-            message: '3'
+            message: 'AAAA'
         }
     ])
+
+    await timer(10)
+
+    console.time('sendMsgs')
+    let msgs = []
+    for (let index = 0; index < 20; index++) {
+        msgs.push({
+            scope: 'local',
+            message: index + 1
+        })
+    }
+    resp = await bot.messages(msgs)
     global.log.debug(JSON.stringify(resp))
+    console.timeEnd('sendMsgs')
+
+    return
 
     resp = await bot.messages([
         {

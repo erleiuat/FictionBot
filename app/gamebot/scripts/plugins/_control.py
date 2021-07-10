@@ -171,8 +171,9 @@ class Control:
         i = 0
         onMapi = self.onScreen('img/mapi.png', region='mapi')
         while(not onMapi):
+            time.sleep(0.1)
             self.PAG.press('m')
-            time.sleep(0.2)
+            time.sleep(0.4)
             onMapi = self.onScreen('img/mapi.png', region='mapi')
             if(not onMapi):
                 self.PAG.press('esc')
@@ -203,6 +204,7 @@ class Control:
 
     def getReady(self):
         self.RES.printer('GETREADY')
+        self.SCB.safeMoveTo(self.getPoint(1700,600))
         if(self.onServer()):
             return self.openAll()
         if(self.inMain()):

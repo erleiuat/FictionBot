@@ -10,7 +10,7 @@ import _ready
 
 
 import pyautogui as PAG
-PAG.PAUSE = 0.02
+PAG.PAUSE = 0.05
 test = False
 
 
@@ -33,7 +33,7 @@ RES.send()
 if(test):
     GB_RUN = _gamebot.RunBot(RES, CON, RDY, PRC, test)
 else:
-    GB_CHK = _gamebot.Check(RES, CON, 60)
+    GB_CHK = _gamebot.Check(RES, CON, 10)
     GB_RUN = _gamebot.RunBot(RES, CON, RDY, PRC)
 
 while(True):

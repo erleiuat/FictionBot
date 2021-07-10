@@ -20,7 +20,7 @@ function isReady() {
 exports.start = async function start() {
     let botState = await bot.start()
 
-    if (botState.error) {
+    if (botState.status == 'error') {
         global.log.debug('Gambot status in error!')
         if (botState.data) global.log.debug('Status checked. Chat = ' + resp.data.chat + ', Inventory = ' + resp.data.inventory)
         global.gameReady = false
@@ -32,11 +32,15 @@ exports.start = async function start() {
             },
             {
                 scope: 'global',
-                message: '#Teleport -117159 -66722 37129'
+                message: '#ListAnimals'
             },
             {
                 scope: 'global',
                 message: '#Teleport -117159 -66722 37129'
+            },
+            {
+                scope: 'global',
+                message: " ・ I'm ready!"
             }
         ])
         global.gameReady = true

@@ -15,7 +15,7 @@ class SCB:
 
 
     def safeClick(self, coords, double=False, button='left'):
-        self.safeMoveTo(coords)
+        #self.safeMoveTo(coords)
         self.PAG.click(coords, button=button)
         if(double):
             self.PAG.click(coords, button=button)

@@ -1,3 +1,5 @@
+import time
+
 class Ready:
 
     RES = None
@@ -25,6 +27,7 @@ class Ready:
 
     def doIt(self, repeat=True):
         self.FOC.doIt()
+        time.sleep(0.1)
         state = self.getState()
         self.RES.printer('State: ' + state)
         if(state == 'ready'):

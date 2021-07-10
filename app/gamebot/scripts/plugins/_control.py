@@ -162,6 +162,8 @@ class Control:
             i = i + 1
             if(i > 60):
                 return False
+        
+        time.sleep(39)
         return True
 
 
@@ -176,7 +178,7 @@ class Control:
             time.sleep(0.5)
             onMapi = self.onScreen('img/mapi.png', region='mapi')
             i = i + 1
-            if(i > 5):
+            if(i > 10):
                 return False
         i = 0
         onChat = self.onScreen('img/chat_stumm.png', region='chatStumm')
@@ -187,7 +189,7 @@ class Control:
             self.PAG.press('backspace')
             onChat = self.onScreen('img/chat_stumm.png', region='chatStumm')
             i = i + 1
-            if(i > 5):
+            if(i > 20):
                 return False
         return True
 
@@ -231,5 +233,6 @@ class Control:
             i = i + 1
             if(i > 90):
                 return False
+        time.sleep(1)
         return self.getReady()
 

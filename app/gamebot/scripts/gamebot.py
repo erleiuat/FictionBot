@@ -27,7 +27,7 @@ RDY = _ready.Ready(RES, FOC, CON, PRC_CHAT)
 
 RES.start('START')
 if(not RDY.doIt()):
-    RES.addError('Unable to get ready')
+    RES.addError('Unable to get ready (MAIN)')
 RES.send()
 
 if(test):

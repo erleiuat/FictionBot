@@ -207,6 +207,9 @@ class Control:
         if(self.onServer()):
             return self.openAll()
         if(self.inMain()):
+            needOK = self.onScreen('img/main_ok.png', region='window')
+            if(needOK):
+                self.SCB.safeClick(needOK)
             if(self.goDrone()):
                 if(self.join()):
                     return self.openAll()    

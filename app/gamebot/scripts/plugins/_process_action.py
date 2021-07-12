@@ -55,41 +55,77 @@ class Action:
         self.RES.add({'fileName': fileName, 'fullPath': fullPath})
 
 
+    def transfer(self, props):
+        try:
+            self.PRC_CHAT.goScope('global')
+            self.PRC_CHAT.send(props['message']['started'])
+            playerList = self.getPlayerList()
+
+            recipient = False
+            sender = playerList[props['from']]
+
+            for player in playerList:
+                if(props['to'].lower() in player['charName'].lower()):
+                    recipient = player
+                    break
+
+            if(not recipient):
+                self.PRC_CHAT.send(props['message']['notFound'])
+                return False
+
+            if(int(sender['fame']) < int(props['amount'])):
+                self.PRC_CHAT.send(props['message']['notEnough'])
+                return False
+
+            withdraw = '#SetFamePoints ' + str(int(sender['fame']) - int(props['amount'])) + ' ' + props['from']
+            deposit = '#SetFamePoints ' + str(int(recipient['fame']) + int(props['amount'])) + ' ' + recipient['userID']
+            self.PRC_CHAT.send(withdraw)
+            self.PRC_CHAT.send(deposit)
+            self.PRC_CHAT.send(props['message']['success'])
+
+        except Exception as e:
+            exception_type, exception_object, exception_traceback = sys.exc_info()
+            self.PRC_CHAT.send(props['messages']['somethingWrong'])
+            self.RES.addError(str(e), str(exception_type))
+            self.RES.send()
+
     def travel(self, props):
-        playerList = self.getPlayerList()
+        try:
+            self.PRC_CHAT.goScope('global')
+            playerList = self.getPlayerList()
+            user = playerList[props['steamID']]
+            self.RES.add({'userInfo': user})
+    
+            if(not user):
+                self.PRC_CHAT.send(props['message']['smthWrong'])
+                return False
 
-        user = playerList[props['steamID']]
+            if(int(user['fame']) < int(props['costs'])):
+                self.PRC_CHAT.send(props['message']['notEnough'])
+                return False
 
-        self.RES.add({'userInfo': user})
-        self.PRC_CHAT.goScope('global')
-        
-        if(not user):
-            self.PRC_CHAT.send(props['message']['smthWrong'])
-            return False
+            p = self.PRC_CHAT.send('#Location '+props['steamID'], read=True)
+            playerLoc = (p[(p.find(':')+1):]).strip().split()
+            nearStation = False
+            for station in props['stations']:
+                if(float(playerLoc[0][2:]) > (station[0] - station[2]) and float(playerLoc[0][2:]) < (station[0] + station[2])):
+                    if(float(playerLoc[1][2:]) > (station[1] - station[3]) and float(playerLoc[1][2:]) < (station[1] + station[3])):
+                        nearStation = True
+            
+            if(nearStation):
+                self.PRC_CHAT.send(props['message']['good'])
+                self.PRC_CHAT.send('#SetFamePoints ' + str(int(user['fame']) - int(props['costs'])) + ' ' + props['steamID'])
+                self.PRC_CHAT.send(props['target'] + ' ' + props['steamID'], noTpCheck=True)
+            else:
+                self.PRC_CHAT.send(props['message']['noStation'])
+                return False
+            return True
 
-        if(int(user['fame']) < int(props['costs'])):
-            self.PRC_CHAT.send(props['message']['notEnough'])
-            return False
-
-        p = self.PRC_CHAT.send('#Location '+props['steamID'], read=True)
-        playerLoc = (p[(p.find(':')+1):]).strip().split()
-
-        nearStation = False
-        for station in props['stations']:
-            if(float(playerLoc[0][2:]) > (station[0] - station[2]) and float(playerLoc[0][2:]) < (station[0] + station[2])):
-                if(float(playerLoc[1][2:]) > (station[1] - station[3]) and float(playerLoc[1][2:]) < (station[1] + station[3])):
-                    nearStation = True
-        
-        if(nearStation):
-            self.PRC_CHAT.send(props['message']['good'])
-            self.PRC_CHAT.send('#SetFamePoints ' + str(int(user['fame']) - int(props['costs'])) + ' ' + props['steamID'])
-            self.PRC_CHAT.send(props['target'] + ' ' + props['steamID'], noTpCheck=True)
-        else:
-            self.PRC_CHAT.send(props['message']['noStation'])
-            return False
-
-        return True
-        
+        except Exception as e:
+            exception_type, exception_object, exception_traceback = sys.exc_info()
+            self.PRC_CHAT.send(props['messages']['smthWrong'])
+            self.RES.addError(str(e), str(exception_type))
+            self.RES.send()        
 
     def sale(self, props):
         try:

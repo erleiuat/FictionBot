@@ -11,7 +11,7 @@ import _ready
 
 import pyautogui as PAG
 PAG.PAUSE = 0.15
-test = False
+test = True
 
 
 RES = _respond.Respond(test)

@@ -12,6 +12,33 @@ async function getItemList() {
     })
 }
 
+exports.transfer = async function transfer(cmd) {
+  cmdBuilder.begin()
+  let tmpCmd = cmdBuilder.getTmpCmd()
+  let parts = cmd.message.split(' ')
+  let amount = parts[1].replace('[', '').replace(']', '')
+  let transferTo = parts[2].replace('[', '').replace(']', '')
+
+  if (!transferTo) {
+    cmdBuilder.addMessage(
+      'global',
+      ':[Transfer]: ・ @' +
+        cmd.user +
+        ' Use this format: /transfer [amount] [user]'
+    )
+    return cmdBuilder.fullCommand(tmpCmd)
+  }
+
+  cmdBuilder.addAction('transfer', {
+    from: cmd.steamID,
+    to: transferTo,
+    amount: amount,
+    messages: {}
+  })
+
+  return cmdBuilder.fullCommand(tmpCmd)
+}
+
 exports.shop_item = async function shop_item(cmd) {
   cmdBuilder.begin()
   let tmpCmd = cmdBuilder.getTmpCmd()

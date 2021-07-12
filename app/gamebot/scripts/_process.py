@@ -38,6 +38,22 @@ class Process:
         else:
             actions = []
             actions.append({
+                "type":"transfer",
+                "properties": {
+                    'from': '76561198058320009',
+                    'to': 'ScumFiction',
+                    'amount': '1',
+                    'messages': {
+                        'notEnough': ':[Transfer]: ・ @Test You don\'t have enough famepoints for this transaction.',
+                        'notFound': ':[Transfer]: ・ @Test I couldn\'t find the recipient with that name. Make sure to tell the name as it is spelled in chat.',
+                        'success': ':[Transfer]: ・ @Test Your transaction was successful.',
+                        'started': ':[Transfer]: ・ @Test Transaction started. Please wait...',
+                        'somethingWrong': ':[Transfer]: ・ Something went wrong. Please try again.'
+                    }
+                }
+            })
+            """
+            actions.append({
                 "type":"sale",
                 "properties":{
                     "userID": "76561198058320009",
@@ -58,13 +74,16 @@ class Process:
                     }
                 }
             })
+            """
 
         self.RES.addInput({'input': actions})
 
         for action in actions:
             if(action['type'] == 'mapshot'):
                 self.PRC_ACTION.mapshot()
-            if(action['type'] == 'sale'):
+            elif(action['type'] == 'sale'):
                 self.PRC_ACTION.sale(action['properties'])
-            if(action['type'] == 'travel'):
+            elif(action['type'] == 'travel'):
                 self.PRC_ACTION.travel(action['properties'])
+            elif(action['type'] == 'transfer'):
+                self.PRC_ACTION.transfer(action['properties'])

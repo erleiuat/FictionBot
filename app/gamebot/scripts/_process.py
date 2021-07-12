@@ -42,7 +42,7 @@ class Process:
                 "properties":{
                     "userID": "76561198058320009",
                     "shop": [-117159, -66722, 2000, 2000],
-                    'teleport': '#Teleport -117159 -66722 37129',
+                    'teleport': '#Teleport -117122 -66734 37070',
                     "item": {
                         'spawn_command': '#SpawnItem Egg',
                         "price": "1", 

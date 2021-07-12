@@ -45,7 +45,7 @@ exports.shop_item = async function shop_item(cmd) {
     return cmdBuilder.fullCommand(tmpCmd)
   }
 
-  let teleport = '#Teleport -117159 -66722 37129'
+  let teleport = '#Teleport -117122 -66734 37070'
   if (item.spawn_location == 'outside')
     teleport = '#Teleport -116077 -66395 37065'
 

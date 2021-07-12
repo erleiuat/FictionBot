@@ -24,6 +24,23 @@ class Action:
         self.PRC_CHAT = PRC_CHAT
 
 
+    def getPlayerList(self):
+        playerList = {}
+        pList = self.PRC_CHAT.send("#ListPlayers", read=True)
+        pList = pList.split('\n')
+        pList.pop(0)
+        for el in pList:
+            elP = el.split('              ')
+            uid = elP[0][3:].strip()
+            playerList[uid] = {
+                'userID': uid,
+                'steamName': elP[1].strip(),
+                'charName': elP[2].strip(),
+                'fame': elP[3].strip()
+            }
+        return playerList
+
+
     def mapshot(self):
         self.PAG.press('esc')
         now = datetime.now()
@@ -37,6 +54,42 @@ class Action:
         self.CON.openAll()
         self.RES.add({'fileName': fileName, 'fullPath': fullPath})
 
+
+    def travel(self, props):
+        playerList = self.getPlayerList()
+
+        user = playerList[props['steamID']]
+
+        self.RES.add({'userInfo': user})
+        self.PRC_CHAT.goScope('local')
+        
+        if(not user):
+            self.PRC_CHAT.send(props['messages']['smthWrong'])
+            return False
+
+        if(user['fame'] < props['costs']):
+            self.PRC_CHAT.send(props['messages']['notEnough'])
+            return False
+
+        p = self.PRC_CHAT.send('#Location '+props['userID'], read=True)
+        playerLoc = (p[(p.find(':')+1):]).strip().split()
+
+        nearStation = False
+        for station in props['stations']:
+            if(float(playerLoc[0][2:]) > (station[0] - station[2]) and float(playerLoc[0][2:]) < (station[0] + station[2])):
+                if(float(playerLoc[1][2:]) > (station[1] - station[3]) and float(playerLoc[1][2:]) < (station[1] + station[3])):
+                    nearStation = True
+        
+        if(nearStation):
+            self.PRC_CHAT.send(props['messages']['good'])
+            self.PRC_CHAT.send('#SetFamePoints ' + str(user['fame'] - props['costs']) + ' ' + props['steamID'])
+            self.PRC_CHAT.send(props['target'] + ' ' + props['steamID'])
+        else:
+            self.PRC_CHAT.send(props['messages']['noStation'])
+            return False
+
+        return True
+        
 
     def sale(self, props):
         try:
@@ -54,20 +107,7 @@ class Action:
                 self.PRC_CHAT.send(props['messages']['notNearShop'])
                 return
 
-            playerList = {}
-            pList = self.PRC_CHAT.send("#ListPlayers", read=True)
-            pList = pList.split('\n')
-            pList.pop(0)
-            for el in pList:
-                elP = el.split('              ')
-                uid = elP[0][3:].strip()
-                playerList[uid] = {
-                    'userID': uid,
-                    'steamName': elP[1].strip(),
-                    'charName': elP[2].strip(),
-                    'fame': elP[3].strip()
-                }
-
+            playerList = self.getPlayerList()
             player = playerList[props['userID']]
             
             if(int(player['fame']) < int(props['item']['price_fame'])):

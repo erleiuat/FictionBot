@@ -66,3 +66,5 @@ class Process:
                 self.PRC_ACTION.mapshot()
             if(action['type'] == 'sale'):
                 self.PRC_ACTION.sale(action['properties'])
+            if(action['type'] == 'travel'):
+                self.PRC_ACTION.travel(action['properties'])

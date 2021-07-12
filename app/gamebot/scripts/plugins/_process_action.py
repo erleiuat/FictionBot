@@ -85,7 +85,7 @@ class Action:
 
         except Exception as e:
             exception_type, exception_object, exception_traceback = sys.exc_info()
-            self.PRC_CHAT.send(props['messages']['somethingWrong'])
+            self.PRC_CHAT.send(props['message']['somethingWrong'])
             self.RES.addError(str(e), str(exception_type))
             self.RES.send()
 

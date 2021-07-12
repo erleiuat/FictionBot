@@ -47,8 +47,8 @@ class Action:
         folderName = now.strftime('%Y_%m_%d')
         fileName = now.strftime('%Y_%m_%d.%H_%M_%S')+'.png'
         fullPath = './app/storage/maps/'+folderName+'/'+fileName
-        self.PAG.screenshot(fullPath, region=self.CON.getRegion('map'))
         Path('./app/storage/maps/'+folderName).mkdir(parents=True, exist_ok=True)
+        self.PAG.screenshot(fullPath, region=self.CON.getRegion('map'))
         time.sleep(0.05)
         self.PAG.press('t')
         self.CON.openAll()

@@ -64,9 +64,9 @@ class Action:
             recipient = False
             sender = playerList[props['from']]
 
-            for player in playerList:
-                if(props['to'].lower() in player['charName'].lower()):
-                    recipient = player
+            for el in playerList:
+                if(props['to'].lower() in playerList['el']['charName'].lower()):
+                    recipient = playerList['el']
                     break
 
             if(not recipient):

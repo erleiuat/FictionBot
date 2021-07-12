@@ -37,9 +37,32 @@ class Process:
             actions = json.loads(unquote(input()).strip())
         else:
             actions = []
-            actions.append({"type":"mapshot","properties":"#Teleport -118302 -67347 38549"})
+            actions.append({
+                "type":"sale",
+                "properties":{
+                    "userID": "76561198058320009",
+                    "shop": [-117159, -66722, 2000, 2000],
+                    'teleport': '#Teleport -117159 -66722 37129',
+                    "item": {
+                        'spawn_command': '#SpawnItem Egg',
+                        "price": "1", 
+                        "price_fame": "1", 
+                        "location": "inside"
+                    },
+                    'messages': {
+                        'notNearShop':':[Shop]: ・ @Test you need to be near the shop to buy things.',
+                        'notEnoughMoney':':[Shop]: ・ @Test you need at least xyz Famepoints to buy this.',
+                        'startSale':':[Shop]: ・ @Test your purchase of Bla for xyz Famepoints starts now.',
+                        'endSale':':[Shop]: ・ @Test you successfully bought bla for xyz Famepoints!',
+                        'somethingWrong': ':[Shop]: ・ Something went wrong. Please try again.'
+                    }
+                }
+            })
+
         self.RES.addInput({'input': actions})
 
         for action in actions:
             if(action['type'] == 'mapshot'):
                 self.PRC_ACTION.mapshot()
+            if(action['type'] == 'sale'):
+                self.PRC_ACTION.sale(action['properties'])

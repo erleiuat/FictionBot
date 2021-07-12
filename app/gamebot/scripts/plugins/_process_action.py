@@ -89,6 +89,7 @@ class Action:
             self.RES.addError(str(e), str(exception_type))
             self.RES.send()
 
+
     def travel(self, props):
         try:
             self.PRC_CHAT.goScope('global')

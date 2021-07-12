@@ -67,7 +67,7 @@ class Action:
             self.PRC_CHAT.send(props['messages']['smthWrong'])
             return False
 
-        if(user['fame'] < props['costs']):
+        if(int(user['fame']) < int(props['costs'])):
             self.PRC_CHAT.send(props['messages']['notEnough'])
             return False
 

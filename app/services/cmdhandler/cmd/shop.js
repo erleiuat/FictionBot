@@ -33,7 +33,7 @@ exports.transfer = async function transfer(cmd) {
     from: cmd.steamID,
     to: transferTo,
     amount: amount,
-    messages: {
+    message: {
       notEnough:
         ':[Transfer]: ・ @' +
         cmd.user +

@@ -43,7 +43,7 @@ class Process:
                     'from': '76561198058320009',
                     'to': 'ScumFiction',
                     'amount': '1',
-                    'messages': {
+                    'message': {
                         'notEnough': ':[Transfer]: ・ @Test You don\'t have enough famepoints for this transaction.',
                         'notFound': ':[Transfer]: ・ @Test I couldn\'t find the recipient with that name. Make sure to tell the name as it is spelled in chat.',
                         'success': ':[Transfer]: ・ @Test Your transaction was successful.',

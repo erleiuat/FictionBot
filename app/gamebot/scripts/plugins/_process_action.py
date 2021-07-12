@@ -61,7 +61,7 @@ class Action:
         user = playerList[props['steamID']]
 
         self.RES.add({'userInfo': user})
-        self.PRC_CHAT.goScope('local')
+        self.PRC_CHAT.goScope('global')
         
         if(not user):
             self.PRC_CHAT.send(props['message']['smthWrong'])
@@ -82,7 +82,7 @@ class Action:
         
         if(nearStation):
             self.PRC_CHAT.send(props['message']['good'])
-            self.PRC_CHAT.send('#SetFamePoints ' + str(user['fame'] - props['costs']) + ' ' + props['steamID'])
+            self.PRC_CHAT.send('#SetFamePoints ' + str(int(user['fame']) - int(props['costs'])) + ' ' + props['steamID'])
             self.PRC_CHAT.send(props['target'] + ' ' + props['steamID'])
         else:
             self.PRC_CHAT.send(props['message']['noStation'])

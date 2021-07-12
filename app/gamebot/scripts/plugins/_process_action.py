@@ -83,7 +83,7 @@ class Action:
         if(nearStation):
             self.PRC_CHAT.send(props['message']['good'])
             self.PRC_CHAT.send('#SetFamePoints ' + str(int(user['fame']) - int(props['costs'])) + ' ' + props['steamID'])
-            self.PRC_CHAT.send(props['target'] + ' ' + props['steamID'])
+            self.PRC_CHAT.send(props['target'] + ' ' + props['steamID'], noTpCheck=True)
         else:
             self.PRC_CHAT.send(props['message']['noStation'])
             return False
@@ -119,7 +119,7 @@ class Action:
             itemSpawner = props['item']['spawn_command']
             self.PRC_CHAT.goScope('local')
             self.PRC_CHAT.send(props['teleport'])
-            self.PRC_CHAT.send('#TeleportToMe ' + props['userID'])
+            self.PRC_CHAT.send('#TeleportToMe ' + props['userID'], noTpCheck=True)
             self.PRC_CHAT.send(famePointSetter)
             self.PRC_CHAT.send(itemSpawner)
             self.PRC_CHAT.send(props['messages']['endSale'])

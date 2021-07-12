@@ -33,7 +33,24 @@ exports.transfer = async function transfer(cmd) {
     from: cmd.steamID,
     to: transferTo,
     amount: amount,
-    messages: {}
+    messages: {
+      notEnough:
+        ':[Transfer]: ・ @' +
+        cmd.user +
+        " You don't have enough famepoints for this transaction.",
+      notFound:
+        ':[Transfer]: ・ @' +
+        cmd.user +
+        " I couldn't find the recipient with that name. Make sure to tell the name as it is spelled in chat.",
+      success:
+        ':[Transfer]: ・ @' + cmd.user + ' Your transaction was successful.',
+      started:
+        ':[Transfer]: ・ @' + cmd.user + ' Transaction started. Please wait...',
+      somethingWrong:
+        ':[Transfer]: ・ @' +
+        cmd.user +
+        ' Something went wrong. Please try again.'
+    }
   })
 
   return cmdBuilder.fullCommand(tmpCmd)

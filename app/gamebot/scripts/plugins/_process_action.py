@@ -1,6 +1,7 @@
 from datetime import datetime
 from pathlib import Path
 import time
+import sys
 
 
 class Action:
@@ -39,6 +40,8 @@ class Action:
 
     def sale(self, props):
         try:
+            self.PRC_CHAT.goScope('local')
+            self.PRC_CHAT.send(props['messages']['startSale'])
             p = self.PRC_CHAT.send('#Location '+props['userID'], read=True)
             playerLoc = (p[(p.find(':')+1):]).strip().split()
             nearShop = False
@@ -75,7 +78,6 @@ class Action:
             famePointSetter = '#SetFamePoints '+ str(int(player['fame']) - int(props['item']['price_fame'])) + ' ' + props['userID']
             itemSpawner = props['item']['spawn_command']
             self.PRC_CHAT.goScope('local')
-            self.PRC_CHAT.send(props['messages']['startSale'])
             self.PRC_CHAT.send(props['teleport'])
             self.PRC_CHAT.send('#TeleportToMe ' + props['userID'])
             self.PRC_CHAT.send(famePointSetter)

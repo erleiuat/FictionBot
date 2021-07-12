@@ -34,7 +34,6 @@ exports.start = async function start() {
       )
     global.gameReady = false
   } else {
-    /*
     await bot.messages([
       {
         scope: 'global',
@@ -57,7 +56,6 @@ exports.start = async function start() {
         message: " ・ I'm ready!"
       }
     ])
-    */
     global.gameReady = true
   }
 

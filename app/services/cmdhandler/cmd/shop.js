@@ -114,5 +114,7 @@ exports.shop_item = async function shop_item(cmd) {
     }
   })
 
+  cmdBuilder.addMessage('global', '#Teleport -117122 -66734 37070')
+
   return cmdBuilder.fullCommand(tmpCmd)
 }

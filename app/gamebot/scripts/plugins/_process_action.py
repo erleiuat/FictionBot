@@ -71,7 +71,7 @@ class Action:
             self.PRC_CHAT.send(props['messages']['notEnough'])
             return False
 
-        p = self.PRC_CHAT.send('#Location '+props['userID'], read=True)
+        p = self.PRC_CHAT.send('#Location '+props['steamID'], read=True)
         playerLoc = (p[(p.find(':')+1):]).strip().split()
 
         nearStation = False

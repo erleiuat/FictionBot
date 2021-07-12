@@ -9,7 +9,7 @@ async function consoleMsg(msg) {
     global.commands[msg.id] = {
       message: 'console_msg',
       user: msg.author.username,
-      content: msg.content
+      content: msg.content.trim()
     }
     await msg.delete()
   }
@@ -28,7 +28,7 @@ async function chatMsg(msg) {
     global.commands[msg.id] = {
       message: 'console_msg',
       user: '[Discord] ' + msg.author.username,
-      content: msg.content
+      content: msg.content.trim()
     }
     await msg.delete()
   }

@@ -82,6 +82,35 @@ exports.shop_item = async function shop_item(cmd) {
         ' for ' +
         item.price_fame +
         ' Famepoints!'
+    },
+    messages: {
+      notNearShop:
+        ':[Shop]: ・ @' +
+        cmd.user +
+        ' you need to be near the shop to buy things.',
+      notEnoughMoney:
+        ':[Shop]: ・ @' +
+        cmd.user +
+        ' you need at least ' +
+        item.price_fame +
+        ' Famepoints to buy this.',
+      startSale:
+        ':[Shop]: ・ @' +
+        cmd.user +
+        ' your purchase of ' +
+        item.name +
+        ' for ' +
+        item.price_fame +
+        ' Famepoints starts now.',
+      endSale:
+        ':[Shop]: ・ @' +
+        cmd.user +
+        ' you successfully bought ' +
+        item.name +
+        ' for ' +
+        item.price_fame +
+        ' Famepoints!',
+      somethingWrong: ':[Shop]: ・ Something went wrong. Please try again.'
     }
   })
 

@@ -212,9 +212,8 @@ exports.chat = async function chat(entry) {
   else if (uName.startsWith('・ :[FiBo]')) {
     color = '00FFFF'
     uName = '[FiBo] (FictionBot)'
-  } else if (uName.startsWith('[DC]')) {
+  } else if (uName.startsWith('[Discord]')) {
     color = '7289DA'
-    uName = uName.replace('[DC]', '[Discord]')
   }
   return {
     color: color,

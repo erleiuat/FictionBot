@@ -101,7 +101,7 @@ exports.shop_item = async function shop_item(cmd) {
         item.name +
         ' for ' +
         item.price_fame +
-        ' Famepoints starts now.',
+        " Famepoints starts shortly. You will be teleported to your Item when it's done.",
       endSale:
         ':[Shop]: ・ @' +
         cmd.user +

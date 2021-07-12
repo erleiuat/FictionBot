@@ -45,7 +45,6 @@ exports.start = async function start() {
       },
       {
         scope: 'global',
-        -117122 -66734 37070
         message: '#Teleport -117122 -66734 37070'
       },
       {

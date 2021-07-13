@@ -1,13 +1,9 @@
 require('./app/plugins/globalLog')
 const sn = '[MAIN] -> '
 
-global.log.debug(
-  '\n\n' + sn + '----------------------------------------------------------'
-)
+global.log.debug('\n\n' + sn + '----------------------------------------------------------')
 global.log.debug(sn + 'Welcome to FictionBot 2.0!')
-global.log.debug(
-  sn + '----------------------------------------------------------'
-)
+global.log.debug(sn + '----------------------------------------------------------')
 
 global.log.debug(sn + 'Starting directory: ' + process.cwd())
 try {
@@ -27,13 +23,9 @@ process.on('unhandledRejection', err => {
   process.exit(1)
 })
 
-global.log.debug(
-  sn + '----------------------------------------------------------'
-)
+global.log.debug(sn + '----------------------------------------------------------')
 global.log.debug(sn + 'Bot initialized, starting processes')
-global.log.debug(
-  sn + '----------------------------------------------------------\n'
-)
+global.log.debug(sn + '----------------------------------------------------------\n')
 
 require('dotenv').config()
 global.admins = require('./app/plugins/admins')
@@ -58,6 +50,9 @@ global.newEntries = {
   kill: {},
   maps: {}
 }
+
+botMessages = require('./botMessages')
+global.bot = botMessages.bot
 
 const bot = require('./app/bot')
 bot.start()

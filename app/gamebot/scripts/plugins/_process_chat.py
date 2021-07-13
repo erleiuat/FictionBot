@@ -83,17 +83,15 @@ class Chat:
         return str(round(float(loc[0]))) + ' ' + str(round(float(loc[1][2:]))) + ' ' + str(round(float(loc[2][2:])))
 
 
-    def send(self, message, read = False, noTpCheck=False):
+    def send(self, message, read = False):
         data = True
         teleport = False
         current = False
-        if(not noTpCheck and message.lower().startswith('#teleport ')):
+        if(message.lower().startswith('#teleport ') and 'scumfiction' in message.lower()):
             current = self.getLocation()
-            teleport = self.formLocation(message)
+            teleport = self.formLocation(message.lower().replace('scumfiction', '').strip())
             if(current == teleport):
                 return data
-        if(not noTpCheck and message.lower().startswith('#teleportto ')):
-            teleport = self.getLocation()
         self.RES.printer('SENDING MSG -> ' + message)
         self.copyToClip(message)
         self.PAG.hotkey('ctrl','v')

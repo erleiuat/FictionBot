@@ -1,0 +1,67 @@
+--
+
+
+**Global-Chat only:**
+
+🔵 `/ping`
+Check if FictionBot is online (he should respond you quite quickly)
+
+🔵 `/help`
+List basic commands ingame
+
+🔵 `/starterkit`
+Get information on how to receive your starterkit (possible only once)
+
+🔵 `/voteday`
+Start a voting to change time to 07:00 AM
+
+🔵 `/votenight`
+Start a voting to change time to 10:00 PM
+
+🔵 `/votesun`
+Start a voting to change the weather to sunny
+
+🔵 `/online`
+Show how many players are currently online (only approximate, since the info comes from battlemetrics and can be delayed)
+
+🔵 `/restart`
+Show a countdown to the next restart
+
+🔵 `/joke`
+Tell a random joke (we do not take responsibility for offensive jokes, because they come from an external site)
+
+🔵 `/time`
+Show the current ingame-time (also only approximate, since from battlemetrics)
+
+
+--
+{{SPLIT}}
+--
+
+
+**Global-, Local- and Squad-Chat:**
+
+🔵 `/buyitem [keyword]`
+Buy an item from the shop (https://shop.scumfiction.com) 
+**CAUTION:** The sale starts immediately and will withdraw famepoints!
+
+Example: `/buyitem tool_box_small`   
+Learn more on how the shop works here: https://shop.scumfiction.com/so_how_does_this_crap_work_tho
+
+🔵 `/transfer [famepoints] [player]`
+Transfer a specific amount of your famepoints to another player
+**CAUTION:** Make sure to spell the players name correctly! Otherwise it could be transfered to the wrong one (ideally copy the name directly from the chat) 
+
+Example: `/transfer 100 MaxMuster_69`
+
+🔵 `/fasttravel stations`
+List currently available FastTravel-Stations (also on the images below)
+
+🔵 `/fasttravel [station]`
+Travel to a FastTravel-Station
+Note: You need to be at an FastTravel-Station to travel to another. A trip will cost you 10 Famepoints
+
+Example: `/fasttravel d0`
+
+
+--

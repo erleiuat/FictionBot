@@ -7,7 +7,7 @@ exports.console_msg = async function console_msg(cmd) {
   cmdBuilder.addMessage('global', '#SetFakeName ' + cmd.user)
   let cmds = cmd.content.split(';')
   for (const cmd of cmds) cmdBuilder.addMessage('global', cmd.trim())
-  cmdBuilder.addMessage('global', '#SetFakeName ・ :[FiBo]')
+  cmdBuilder.addMessage('global', global.bot.fName)
 
   return cmdBuilder.fullCommand(tmpCmd)
 }
@@ -15,17 +15,13 @@ exports.console_msg = async function console_msg(cmd) {
 exports.mine_armed = async function mine_armed(cmd) {
   cmdBuilder.begin()
   let tmpCmd = cmdBuilder.getTmpCmd()
-  cmdBuilder.addMessage(
-    'global',
-    ':[Traps]: ・ If you have just placed a trap, please note that this is only allowed in and immediately around your Base. Remove the mine if this is not the case.'
-  )
+  cmdBuilder.addMessage('global', global.bot.in.traps)
   return cmdBuilder.fullCommand(tmpCmd)
 }
 
 exports.spawn = async function spawn(cmd) {
   cmd.message =
-    '#Teleport -116077 -66395 37065; ' +
-    cmd.message.replace('/spawn', '').trim()
+    global.bot.pos.outside + '; ' + cmd.message.replace('/spawn', '').trim()
   return await this.exec(cmd)
 }
 
@@ -52,8 +48,8 @@ exports.exec = async function exec(cmd) {
       cmdBuilder.addMessage('global', el)
   }
 
-  cmdBuilder.addMessage('global', '#SetFakeName ・ :[FiBo]')
-  cmdBuilder.addMessage('global', '#Teleport -117122 -66734 37070')
+  cmdBuilder.addMessage('global', global.bot.fName)
+  cmdBuilder.addMessage('global', global.bot.pos.idle)
   return cmdBuilder.fullCommand(tmpCmd)
 }
 
@@ -61,14 +57,9 @@ exports.sk_legal = async function sk_legal(cmd) {
   if (!cmdBuilder.begin(cmd, 'global')) return null
   cmdBuilder.addMessage(
     'global',
-    ':[Starterkit]: ・ @' +
-      cmd.user +
-      ' you will be teleported to the trading-zone (green circle in B2) to receive your starterkit. Make sure you are ready and not driving a vehicle.'
+    global.bot.in.sKit.start1.replace('{user}', cmd.user)
   )
-  cmdBuilder.addMessage(
-    'global',
-    ':[Starterkit]: ・ You will get a quad to get out of the trading-zone again. If you are ready to be teleported type: /ready '
-  )
+  cmdBuilder.addMessage('global', global.bot.in.sKit.start2)
   return cmdBuilder.fullCommand(cmd)
 }
 
@@ -76,12 +67,13 @@ exports.sk_ready = async function sk_ready(cmd, updateFunction) {
   if (!cmdBuilder.begin(cmd, 'global')) return null
   cmdBuilder.addMessage(
     'global',
-    ':[Starterkit]: ・ @' +
-      cmd.user +
-      ' you will be transported to the trading zone in a few seconds.'
+    global.bot.in.sKit.start3.replace('{user}', cmd.user)
   )
-  cmdBuilder.addMessage('global', '#Teleport -117122 -66734 37070')
-  cmdBuilder.addMessage('global', '#TeleportToMe ' + cmd.steamID)
+  cmdBuilder.addMessage(
+    'global',
+    global.bot.pPos.inside.replace('{userID}', cmd.steamID)
+  )
+  cmdBuilder.addMessage('global', global.bot.pos.idle)
   cmdBuilder.addMessage('global', '#SpawnItem Backpack_01_07')
   cmdBuilder.addMessage('global', '#SpawnItem MRE_Stew 2')
   cmdBuilder.addMessage('global', '#SpawnItem MRE_CheeseBurger 2')
@@ -97,15 +89,13 @@ exports.sk_ready = async function sk_ready(cmd, updateFunction) {
   cmdBuilder.addMessage('global', '#SpawnItem Car_Repair_Kit')
   cmdBuilder.addMessage('global', '#SpawnItem Lock_Item_Basic')
   cmdBuilder.addMessage('global', '#SpawnItem Lock_Item_Advanced')
-  cmdBuilder.addMessage('global', '#Teleport -116453 -66401 37477')
+  cmdBuilder.addMessage('global', global.bot.pos.outside)
   cmdBuilder.addMessage('global', '#SpawnVehicle BP_Quad_01_A')
   cmdBuilder.addMessage(
     'local',
-    ':[Starterkit]: ・ @' +
-      cmd.user +
-      ' your starterkit should now be there and your Quad should be waiting for you outside.'
+    global.bot.in.sKit.done.replace('{user}', cmd.user)
   )
-  cmdBuilder.addMessage('global', '#Teleport -117122 -66734 37070')
+  cmdBuilder.addMessage('global', global.bot.pos.idle)
   return cmdBuilder.fullCommand(cmd)
 }
 
@@ -113,21 +103,25 @@ exports.sk_illegal = async function sk_illegal(cmd) {
   if (!cmdBuilder.begin(cmd, 'global')) return null
   cmdBuilder.addMessage(
     'global',
-    ':[Starterkit]: ・ @' +
-      cmd.user +
-      ' you should have already received your starterkit ;) If not, please contact support.'
+    global.bot.in.sKit.illegal.replace('{user}', cmd.user)
   )
   return cmdBuilder.fullCommand(cmd)
 }
 
-exports.welcome_new = async function welcome_new(newUser) {
+exports.welcome_new = async function welcome_new(cmd) {
   cmdBuilder.begin()
   let tmpCmd = cmdBuilder.getTmpCmd()
   cmdBuilder.addMessage(
     'global',
-    ' ・ Welcome to the Server @' +
-      newUser.user +
-      "! If you have any questions, please don't hesitate to contact us. You are also entitled to a starterkit! Get it with: /starterkit (in global-chat)."
+    global.bot.pPos.firstJoin.replace('{userID}', cmd.steamID)
+  )
+  cmdBuilder.addMessage(
+    'global',
+    global.bot.in.firstJoin.fPoints.replace('{userID}', cmd.steamID)
+  )
+  cmdBuilder.addMessage(
+    'global',
+    global.bot.in.firstJoin.welcome.replace('{user}', cmd.user)
   )
   return cmdBuilder.fullCommand(tmpCmd)
 }
@@ -136,7 +130,9 @@ exports.auth_log = async function auth_log(cmd) {
   cmdBuilder.begin()
   cmdBuilder.addMessage(
     'global',
-    ' ・ >> ' + cmd.user + ' ' + cmd.text + ' << ・ '
+    global.bot.in.auth.log
+      .replace('{user}', cmd.user)
+      .replace('{msg}', cmd.text)
   )
   return cmdBuilder.fullCommand(cmd)
 }
@@ -145,7 +141,9 @@ exports.kill_feed = async function kill_feed(cmd) {
   cmdBuilder.begin()
   cmdBuilder.addMessage(
     'global',
-    ':[Killfeed]: ・ ' + cmd.killer + ' killed ' + cmd.victim
+    global.bot.in.kill
+      .replace('{user1}', cmd.killer)
+      .replace('{user2}', cmd.victim)
   )
   return cmdBuilder.fullCommand(cmd)
 }

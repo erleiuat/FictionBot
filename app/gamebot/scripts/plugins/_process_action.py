@@ -58,7 +58,7 @@ class Action:
     def transfer(self, props):
         try:
             self.PRC_CHAT.goScope('global')
-            self.PRC_CHAT.send(props['message']['started'])
+            self.PRC_CHAT.send(props['messages']['started'])
             playerList = self.getPlayerList()
 
             recipient = False
@@ -70,22 +70,22 @@ class Action:
                     break
 
             if(not recipient):
-                self.PRC_CHAT.send(props['message']['notFound'])
+                self.PRC_CHAT.send(props['messages']['notFound'])
                 return False
 
             if(int(sender['fame']) < int(props['amount'])):
-                self.PRC_CHAT.send(props['message']['notEnough'])
+                self.PRC_CHAT.send(props['messages']['notEnough'])
                 return False
 
             withdraw = '#SetFamePoints ' + str(int(sender['fame']) - int(props['amount'])) + ' ' + props['from']
             deposit = '#SetFamePoints ' + str(int(recipient['fame']) + int(props['amount'])) + ' ' + recipient['userID']
             self.PRC_CHAT.send(withdraw)
             self.PRC_CHAT.send(deposit)
-            self.PRC_CHAT.send(props['message']['success'])
+            self.PRC_CHAT.send(props['messages']['success'])
 
         except Exception as e:
             exception_type, exception_object, exception_traceback = sys.exc_info()
-            self.PRC_CHAT.send(props['message']['somethingWrong'])
+            self.PRC_CHAT.send(props['messages']['somethingWrong'])
             self.RES.addError(str(e), str(exception_type))
             self.RES.send()
 
@@ -98,11 +98,11 @@ class Action:
             self.RES.add({'userInfo': user})
     
             if(not user):
-                self.PRC_CHAT.send(props['message']['smthWrong'])
+                self.PRC_CHAT.send(props['messages']['somethingWrong'])
                 return False
 
             if(int(user['fame']) < int(props['costs'])):
-                self.PRC_CHAT.send(props['message']['notEnough'])
+                self.PRC_CHAT.send(props['messages']['notEnough'])
                 return False
 
             p = self.PRC_CHAT.send('#Location '+props['steamID'], read=True)
@@ -114,17 +114,17 @@ class Action:
                         nearStation = True
             
             if(nearStation):
-                self.PRC_CHAT.send(props['message']['good'])
+                self.PRC_CHAT.send(props['messages']['good'])
                 self.PRC_CHAT.send('#SetFamePoints ' + str(int(user['fame']) - int(props['costs'])) + ' ' + props['steamID'])
-                self.PRC_CHAT.send(props['target'] + ' ' + props['steamID'], noTpCheck=True)
+                self.PRC_CHAT.send(props['target'])
             else:
-                self.PRC_CHAT.send(props['message']['noStation'])
+                self.PRC_CHAT.send(props['messages']['noStation'])
                 return False
             return True
 
         except Exception as e:
             exception_type, exception_object, exception_traceback = sys.exc_info()
-            self.PRC_CHAT.send(props['messages']['smthWrong'])
+            self.PRC_CHAT.send(props['messages']['somethingWrong'])
             self.RES.addError(str(e), str(exception_type))
             self.RES.send()        
 
@@ -156,7 +156,7 @@ class Action:
             itemSpawner = props['item']['spawn_command']
             self.PRC_CHAT.goScope('local')
             self.PRC_CHAT.send(props['teleport'])
-            self.PRC_CHAT.send('#TeleportToMe ' + props['userID'], noTpCheck=True)
+            self.PRC_CHAT.send(props['teleportUser'])
             self.PRC_CHAT.send(famePointSetter)
             self.PRC_CHAT.send(itemSpawner)
             self.PRC_CHAT.send(props['messages']['endSale'])

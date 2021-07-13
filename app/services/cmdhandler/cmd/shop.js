@@ -20,12 +20,7 @@ exports.transfer = async function transfer(cmd) {
   let transferTo = parts[2].replace('[', '').replace(']', '')
 
   if (!transferTo) {
-    cmdBuilder.addMessage(
-      'global',
-      ':[Transfer]: ・ @' +
-        cmd.user +
-        ' Use this format: /transfer [amount] [user]'
-    )
+    cmdBuilder.addMessage('global', global.bot.shop.trans.form.replace('{user}', cmd.user))
     return cmdBuilder.fullCommand(tmpCmd)
   }
 
@@ -33,23 +28,12 @@ exports.transfer = async function transfer(cmd) {
     from: cmd.steamID,
     to: transferTo,
     amount: amount,
-    message: {
-      notEnough:
-        ':[Transfer]: ・ @' +
-        cmd.user +
-        " You don't have enough famepoints for this transaction.",
-      notFound:
-        ':[Transfer]: ・ @' +
-        cmd.user +
-        " I couldn't find the recipient with that name. Make sure to tell the name as it is spelled in chat.",
-      success:
-        ':[Transfer]: ・ @' + cmd.user + ' Your transaction was successful.',
-      started:
-        ':[Transfer]: ・ @' + cmd.user + ' Transaction started. Please wait...',
-      somethingWrong:
-        ':[Transfer]: ・ @' +
-        cmd.user +
-        ' Something went wrong. Please try again.'
+    messages: {
+      notEnough: global.bot.shop.trans.notEnough.replace('{user}', cmd.user),
+      notFound: global.bot.shop.trans.notFound.replace('{user}', cmd.user),
+      success: global.bot.shop.trans.success.replace('{user}', cmd.user),
+      started: global.bot.shop.trans.started.replace('{user}', cmd.user),
+      somethingWrong: global.bot.shop.trans.somethingWrong.replace('{user}', cmd.user)
     }
   })
 
@@ -64,12 +48,7 @@ exports.shop_item = async function shop_item(cmd) {
   let itemKey = cmd.message.split(' ')[1]
 
   if (!itemKey || !itemKey.trim()) {
-    cmdBuilder.addMessage(
-      'global',
-      ':[Shop]: ・ @' +
-        cmd.user +
-        ' you need to tell me what Item you want to buy.'
-    )
+    cmdBuilder.addMessage('global', global.bot.shop.noItem.replace('{user}', cmd.user))
     return cmdBuilder.fullCommand(tmpCmd)
   }
 
@@ -82,16 +61,16 @@ exports.shop_item = async function shop_item(cmd) {
     }
 
   if (!item || !item.spawn_command) {
-    cmdBuilder.addMessage(
-      'global',
-      ':[Shop]: ・ @' + cmd.user + " I don't know this item."
-    )
+    cmdBuilder.addMessage('global', global.bot.shop.unknownItem.replace('{user}', cmd.user))
     return cmdBuilder.fullCommand(tmpCmd)
   }
 
-  let teleport = '#Teleport -117122 -66734 37070'
-  if (item.spawn_location == 'outside')
-    teleport = '#Teleport -116077 -66395 37065'
+  let teleport = global.bot.pos.idle
+  let teleportUser = global.bot.pPos.inside.replace('{userID}', cmd.steamID)
+  if (item.spawn_location == 'outside') {
+    teleport = global.bot.pos.outside
+    teleportUser = global.bot.pPos.outside.replace('{userID}', cmd.steamID)
+  }
 
   cmdBuilder.addAction('sale', {
     userID: cmd.steamID,
@@ -99,66 +78,17 @@ exports.shop_item = async function shop_item(cmd) {
     shop: [-116688, -66384, 1000, 1000],
     item: item,
     teleport: teleport,
+    teleportUser: teleportUser,
     messages: {
-      notNearShop:
-        ':[Shop]: ・ @' +
-        cmd.user +
-        ' you need to be near the shop to buy things.',
-      notEnoughMoney:
-        ':[Shop]: ・ @' +
-        cmd.user +
-        ' you need at least ' +
-        item.price_fame +
-        ' Famepoints to buy this.',
-      startSale:
-        ':[Shop]: ・ @' +
-        cmd.user +
-        ' your purchase of ' +
-        item.name +
-        ' for ' +
-        item.price_fame +
-        ' Famepoints starts now.',
-      endSale:
-        ':[Shop]: ・ @' +
-        cmd.user +
-        ' you successfully bought ' +
-        item.name +
-        ' for ' +
-        item.price_fame +
-        ' Famepoints!'
-    },
-    messages: {
-      notNearShop:
-        ':[Shop]: ・ @' +
-        cmd.user +
-        ' you need to be near the shop to buy things.',
-      notEnoughMoney:
-        ':[Shop]: ・ @' +
-        cmd.user +
-        ' you need at least ' +
-        item.price_fame +
-        ' Famepoints to buy this.',
-      startSale:
-        ':[Shop]: ・ @' +
-        cmd.user +
-        ' your purchase of ' +
-        item.name +
-        ' for ' +
-        item.price_fame +
-        " Famepoints starts shortly. You will be teleported to your Item when it's done.",
-      endSale:
-        ':[Shop]: ・ @' +
-        cmd.user +
-        ' you successfully bought ' +
-        item.name +
-        ' for ' +
-        item.price_fame +
-        ' Famepoints!',
-      somethingWrong: ':[Shop]: ・ Something went wrong. Please try again.'
+      notNearShop: global.bot.shop.notNearShop.replace('{user}', cmd.user),
+      notEnoughMoney: global.bot.shop.notEnoughMoney.replace('{user}', cmd.user).replace('{fame}', item.price_fame),
+      startSale: global.bot.shop.startSale.replace('{user}', cmd.user).replace('{fame}', item.price_fame).replace('{item}', item.name),
+      endSale: global.bot.shop.endSale.replace('{user}', cmd.user).replace('{fame}', item.price_fame).replace('{item}', item.name),
+      somethingWrong: global.bot.shop.somethingWrong
     }
   })
 
-  cmdBuilder.addMessage('global', '#Teleport -117122 -66734 37070')
+  cmdBuilder.addMessage('global', global.bot.pos.idle)
 
   return cmdBuilder.fullCommand(tmpCmd)
 }

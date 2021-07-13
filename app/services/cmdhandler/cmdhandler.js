@@ -25,19 +25,13 @@ exports.start = async function start() {
 
   if (botState.status == 'error') {
     global.log.debug('Gambot status in error!')
-    if (botState.data)
-      global.log.debug(
-        'Status checked. Chat = ' +
-          resp.data.chat +
-          ', Inventory = ' +
-          resp.data.inventory
-      )
+    if (botState.data) global.log.debug('Status checked. Chat = ' + resp.data.chat + ', Inventory = ' + resp.data.inventory)
     global.gameReady = false
   } else {
     await bot.messages([
       {
         scope: 'global',
-        message: '#SetFakeName ・ :[FiBo]'
+        message: global.bot.fName
       },
       {
         scope: 'global',
@@ -45,7 +39,7 @@ exports.start = async function start() {
       },
       {
         scope: 'global',
-        message: '#Teleport -117122 -66734 37070'
+        message: global.bot.pos.idle
       },
       {
         scope: 'global',
@@ -53,7 +47,7 @@ exports.start = async function start() {
       },
       {
         scope: 'global',
-        message: " ・ I'm ready!"
+        message: global.bot.start.ready
       }
     ])
     global.gameReady = true
@@ -69,7 +63,7 @@ exports.start = async function start() {
 async function cmdHandler() {
   do {
     await global.sleep.timer(0.005)
-    if (!isReady()) continue
+    //if (!isReady()) continue
     if (Object.keys(global.commands).length < 1) continue
     global.newCmds = true
 
@@ -81,28 +75,18 @@ async function cmdHandler() {
       let cmdStart = cmd.message.split(' ')[0].toLowerCase()
       global.log.debug(sn + 'Processing command: ' + cmdStart)
 
-      if (cmdsPublic.list[cmdStart])
-        await bot.execute(await cmdsPublic[cmdsPublic.list[cmdStart]](cmd))
+      if (cmdsPublic.list[cmdStart]) await bot.execute(await cmdsPublic[cmdsPublic.list[cmdStart]](cmd))
       else if (cmdStart == '/ready') await tReady(cmd)
       else if (cmdStart == '/starterkit') await tStarterkit(cmd)
-      else if (cmdStart == '/exec')
-        await bot.execute(await cmdsInternal['exec'](cmd))
-      else if (cmdStart == '/spawn')
-        await bot.execute(await cmdsInternal['spawn'](cmd))
-      else if (cmdStart == '/buyitem')
-        await bot.execute(await cmdsShop['shop_item'](cmd))
-      else if (cmdStart == '/transfer')
-        await bot.execute(await cmdsShop['transfer'](cmd))
-      else if (cmdStart == 'welcome_new')
-        await bot.execute(await cmdsInternal['welcome_new'](cmd))
-      else if (cmdStart == 'console_msg')
-        await bot.execute(await cmdsInternal['console_msg'](cmd))
-      else if (cmdStart == 'kill_feed')
-        await bot.execute(await cmdsInternal['kill_feed'](cmd))
-      else if (cmdStart == 'auth_log')
-        await bot.execute(await cmdsInternal['auth_log'](cmd))
-      else if (cmdStart == 'mine_armed')
-        await bot.execute(await cmdsInternal['mine_armed'](cmd))
+      else if (cmdStart == '/exec') await bot.execute(await cmdsInternal['exec'](cmd))
+      else if (cmdStart == '/spawn') await bot.execute(await cmdsInternal['spawn'](cmd))
+      else if (cmdStart == '/buyitem') await bot.execute(await cmdsShop['shop_item'](cmd))
+      else if (cmdStart == '/transfer') await bot.execute(await cmdsShop['transfer'](cmd))
+      else if (cmdStart == 'welcome_new') await bot.execute(await cmdsInternal['welcome_new'](cmd))
+      else if (cmdStart == 'console_msg') await bot.execute(await cmdsInternal['console_msg'](cmd))
+      else if (cmdStart == 'kill_feed') await bot.execute(await cmdsInternal['kill_feed'](cmd))
+      else if (cmdStart == 'auth_log') await bot.execute(await cmdsInternal['auth_log'](cmd))
+      else if (cmdStart == 'mine_armed') await bot.execute(await cmdsInternal['mine_armed'](cmd))
       else global.log.debug(sn + 'Unknown command: ' + cmdStart)
     }
 
@@ -130,18 +114,8 @@ async function getMap() {
       global.newEntries.maps[imgInfo.fileName] = {
         ...imgInfo.data,
         time: {
-          date:
-            global.nZero.form(d.getDate()) +
-            '.' +
-            global.nZero.form(d.getMonth() + 1) +
-            '.' +
-            d.getFullYear(),
-          time:
-            global.nZero.form(d.getHours()) +
-            ':' +
-            global.nZero.form(d.getMinutes()) +
-            ':' +
-            global.nZero.form(d.getSeconds())
+          date: global.nZero.form(d.getDate()) + '.' + global.nZero.form(d.getMonth() + 1) + '.' + d.getFullYear(),
+          time: global.nZero.form(d.getHours()) + ':' + global.nZero.form(d.getMinutes()) + ':' + global.nZero.form(d.getSeconds())
         }
       }
       global.log.debug(sn + 'Added map for processing')
@@ -168,10 +142,7 @@ async function ftpCon() {
 async function loadStatus(file) {
   try {
     await ftpCon()
-    await ftp.downloadTo(
-      './app/storage/' + file,
-      process.env.RM_CMD_FTP_DIR + file
-    )
+    await ftp.downloadTo('./app/storage/' + file, process.env.RM_CMD_FTP_DIR + file)
     ftp.close()
     return JSON.parse(fs.readFileSync('./app/storage/' + file))
   } catch (error) {
@@ -186,15 +157,9 @@ async function receivesStarterkit(steamID, name) {
       name: name,
       stamp: new Date().getTime()
     }
-    fs.writeFileSync(
-      './app/storage/starterkits.json',
-      JSON.stringify(hasStarterkit)
-    )
+    fs.writeFileSync('./app/storage/starterkits.json', JSON.stringify(hasStarterkit))
     await ftpCon()
-    await ftp.uploadFrom(
-      './app/storage/starterkits.json',
-      process.env.RM_CMD_FTP_DIR + 'starterkits.json'
-    )
+    await ftp.uploadFrom('./app/storage/starterkits.json', process.env.RM_CMD_FTP_DIR + 'starterkits.json')
   } catch (error) {
     throw new Error(error)
   }
@@ -203,8 +168,7 @@ async function receivesStarterkit(steamID, name) {
 async function tStarterkit(cmd) {
   if (cmd.type.toLowerCase() != 'global') return null
   hasStarterkit = await loadStatus('starterkits.json')
-  if (!hasStarterkit[cmd.steamID])
-    return await bot.execute(await cmdsInternal['sk_legal'](cmd))
+  if (!hasStarterkit[cmd.steamID]) return await bot.execute(await cmdsInternal['sk_legal'](cmd))
   else return await bot.execute(await cmdsInternal['sk_illegal'](cmd))
 }
 

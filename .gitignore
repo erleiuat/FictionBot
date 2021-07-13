@@ -104,6 +104,7 @@ dist
 .tern-port
 
 app/storage/maps/
+app/storage/starterkits.json
 app/storage/mapLocation/
  Byte-compiled / optimized / DLL files
 __pycache__/

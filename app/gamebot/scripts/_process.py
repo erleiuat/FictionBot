@@ -23,11 +23,8 @@ class Process:
         if(not self.test):
             messages = json.loads(unquote(input()).strip())
         else:
-            messages = []
-            messages.append({"scope":"local","message":"#listanimals"})
-            messages.append({"scope":"global","message":"#Teleport -117159 -66722 37200"})
-            messages.append({"scope":"local","message":"#Teleport -117159 -66722 37200"})
-            messages.append({"scope":"local","message":"#Teleport -117159 -66722 100000"})
+            messages = self.testMessages
+            
         self.RES.addInput({'input': messages})
         self.PRC_CHAT.sendMulti(messages)
 
@@ -36,45 +33,7 @@ class Process:
         if(not self.test):
             actions = json.loads(unquote(input()).strip())
         else:
-            actions = []
-            actions.append({
-                "type":"transfer",
-                "properties": {
-                    'from': '76561198058320009',
-                    'to': 'ScumFiction',
-                    'amount': '1',
-                    'message': {
-                        'notEnough': ':[Transfer]: ・ @Test You don\'t have enough famepoints for this transaction.',
-                        'notFound': ':[Transfer]: ・ @Test I couldn\'t find the recipient with that name. Make sure to tell the name as it is spelled in chat.',
-                        'success': ':[Transfer]: ・ @Test Your transaction was successful.',
-                        'started': ':[Transfer]: ・ @Test Transaction started. Please wait...',
-                        'somethingWrong': ':[Transfer]: ・ Something went wrong. Please try again.'
-                    }
-                }
-            })
-            """
-            actions.append({
-                "type":"sale",
-                "properties":{
-                    "userID": "76561198058320009",
-                    "shop": [-117159, -66722, 2000, 2000],
-                    'teleport': '#Teleport -117122 -66734 37070',
-                    "item": {
-                        'spawn_command': '#SpawnItem Egg',
-                        "price": "1", 
-                        "price_fame": "1", 
-                        "location": "inside"
-                    },
-                    'messages': {
-                        'notNearShop':':[Shop]: ・ @Test you need to be near the shop to buy things.',
-                        'notEnoughMoney':':[Shop]: ・ @Test you need at least xyz Famepoints to buy this.',
-                        'startSale':':[Shop]: ・ @Test your purchase of Bla for xyz Famepoints starts now.',
-                        'endSale':':[Shop]: ・ @Test you successfully bought bla for xyz Famepoints!',
-                        'somethingWrong': ':[Shop]: ・ Something went wrong. Please try again.'
-                    }
-                }
-            })
-            """
+            actions = self.testActions
 
         self.RES.addInput({'input': actions})
 
@@ -87,3 +46,27 @@ class Process:
                 self.PRC_ACTION.travel(action['properties'])
             elif(action['type'] == 'transfer'):
                 self.PRC_ACTION.transfer(action['properties'])
+
+
+    testActions = {
+        "type":"transfer",
+        "properties": {
+            'from': '76561198058320009',
+            'to': 'ScumFiction',
+            'amount': '1',
+            'message': {
+                'notEnough': ':[Transfer]: ・ @Test You don\'t have enough famepoints for this transaction.',
+                'notFound': ':[Transfer]: ・ @Test I couldn\'t find the recipient with that name. Make sure to tell the name as it is spelled in chat.',
+                'success': ':[Transfer]: ・ @Test Your transaction was successful.',
+                'started': ':[Transfer]: ・ @Test Transaction started. Please wait...',
+                'somethingWrong': ':[Transfer]: ・ Something went wrong. Please try again.'
+            }
+        }
+    }
+
+    testMessages = [
+        {"scope":"local","message":"#listanimals"},
+        {"scope":"global","message":"#Teleport -117159 -66722 37200"},
+        {"scope":"local","message":"#Teleport -117159 -66722 37200"},
+        {"scope":"local","message":"#Teleport -117159 -66722 100000"}
+    ]

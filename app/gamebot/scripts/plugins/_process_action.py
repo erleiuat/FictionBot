@@ -81,11 +81,11 @@ class Action:
             deposit = '#SetFamePoints ' + str(int(recipient['fame']) + int(props['amount'])) + ' ' + recipient['userID']
 
             self.RES.add({
-                'transactionInfo': {
-                    'senderBefore': '' + str(int(sender['fame']),
-                    'recipientBefore': '' + str(int(recipient['fame']),
-                    'withdraw': withdraw,
-                    'deposit': deposit
+                "transactionInfo": {
+                    "senderBefore": str(int(sender['fame'])),
+                    "recipientBefore": str(int(recipient['fame'])),
+                    "withdraw": withdraw,
+                    "deposit": deposit
                 }
             })
 

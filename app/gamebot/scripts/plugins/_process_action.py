@@ -82,8 +82,8 @@ class Action:
 
             self.RES.add({
                 'transactionInfo': {
-                    'senderBefore': str(int(sender['fame']),
-                    'recipientBefore': str(int(recipient['fame']),
+                    'senderBefore': '' + str(int(sender['fame']),
+                    'recipientBefore': '' + str(int(recipient['fame']),
                     'withdraw': withdraw,
                     'deposit': deposit
                 }

@@ -197,8 +197,8 @@ class Control:
         self.FOC.doIt()
         if(self.onScreen('img/mapi.png', region='mapi')):
             if(self.onScreen('img/chat_stumm.png', region='chatStumm')):
-                self.SCB.press('esc')
-                self.SCB.press('t')
+                self.PAG.press('esc')
+                self.PAG.press('t')
                 return True
         return False
 

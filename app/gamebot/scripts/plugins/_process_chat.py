@@ -52,7 +52,6 @@ class Chat:
 
 
     def doClean(self):
-        self.PAG.click(self.CON.getPoint(250, 500))
         self.PAG.hotkey('ctrl','a')
         self.PAG.press('backspace')
         win32clipboard.OpenClipboard()
@@ -106,7 +105,6 @@ class Chat:
 
 
     def sendMulti(self, messages):
-        self.PAG.click(self.CON.getPoint(250, 500))
         for message in messages:
             self.goScope(str(message['scope']))
             self.send(str(message['message']))

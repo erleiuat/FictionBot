@@ -146,7 +146,8 @@ class Action:
             i = i + 1
             time.sleep(0.05)
             resp = self.PRC_CHAT.read()
-        if(resp.lower().startswith('spawned')) return True
+        if(resp.lower().startswith('spawned')):
+            return True
         return False
 
 

@@ -58,11 +58,11 @@ exports.bot = {
   },
   pub: {
     travel: {
-      info: ':[Travel]: ・ @{user}: Every trip costs 10 Famepoints. Available FastTravel-Stations: D0, B2, Z0, A3, D4',
+      info: ':[Travel]: ・ @{user}: Every trip costs 5 Famepoints. Available FastTravel-Stations: D0, B2, Z0, A3, D4',
       unknownLoc: ":[Travel]: ・ @{user}: I couldn't recognize the station you want to go to.",
-      notEnough: ':[Travel]: ・ @{user}: You need to have 10 famepoints for this trip.',
+      notEnough: ':[Travel]: ・ @{user}: You need to have 5 famepoints for this trip.',
       noStation: ":[Travel]: ・ @{user}: You aren't near any Fasttravel station.",
-      start: ':[Travel]: ・ @{user}: Your trip will start shortly. It will cost you 10 famepoints.',
+      start: ':[Travel]: ・ @{user}: Your trip will start shortly. It will cost you 5 famepoints.',
       somethingWrong: ':[Travel]: ・ @{user}: Something went wrong. Please try again.'
     },
     vote: {

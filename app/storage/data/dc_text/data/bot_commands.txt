@@ -72,7 +72,7 @@ List currently available FastTravel-Stations (also on the images below)
 
 ➡️ `/fasttravel [station]`
 Travel to a FastTravel-Station
-Note: You need to be at an FastTravel-Station to travel to another. A trip will cost you 10 Famepoints
+Note: You need to be at an FastTravel-Station to travel to another. A trip will cost you 5 Famepoints
 
 Example: `/fasttravel d0`
 

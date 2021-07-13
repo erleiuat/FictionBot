@@ -65,7 +65,7 @@ exports.travel = async function travel(cmd) {
   cmdBuilder.addAction('travel', {
     steamID: cmd.steamID,
     target: target + ' ' + cmd.steamID,
-    costs: 10,
+    costs: 5,
     stations: [
       [-669327, 387796, 1000, 1000],
       [-116775, -66744, 1000, 1000],

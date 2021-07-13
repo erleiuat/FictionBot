@@ -66,7 +66,7 @@ Transfer a specific amount of your famepoints to another player
 Example: `/transfer 100 MaxMuster_69`
 
 
-➡️ `/fasttravel stations`
+➡️ `/fasttravel info`
 List currently available FastTravel-Stations (also on the images below)
 
 

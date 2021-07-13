@@ -54,8 +54,8 @@ exports.travel = async function travel(cmd) {
   else if (station == 'z0') target = '#Teleport -829491 -837658 5690'
   else if (station == 'a3') target = '#Teleport 101034 -492350 9982'
   else if (station == 'd4') target = '#Teleport 430079 477843 10546'
-  else if (station == 'stations') {
-    cmdBuilder.addMessage('global', global.bot.pub.travel.stations.replace('{user}', cmd.user))
+  else if (station == 'info' || station == 'infos') {
+    cmdBuilder.addMessage('global', global.bot.pub.travel.info.replace('{user}', cmd.user))
     return cmdBuilder.fullCommand(cmd)
   } else {
     cmdBuilder.addMessage('global', global.bot.pub.travel.unknownLoc.replace('{user}', cmd.user))

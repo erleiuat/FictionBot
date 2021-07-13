@@ -58,7 +58,7 @@ exports.bot = {
   },
   pub: {
     travel: {
-      stations: ':[Travel]: ・ @{user}: Available FastTravel-Stations: D0, B2, Z0, A3, D4',
+      info: ':[Travel]: ・ @{user}: Every trip costs 10 Famepoints. Available FastTravel-Stations: D0, B2, Z0, A3, D4',
       unknownLoc: ":[Travel]: ・ @{user}: I couldn't recognize the station you want to go to.",
       notEnough: ':[Travel]: ・ @{user}: You need to have 10 famepoints for this trip.',
       noStation: ":[Travel]: ・ @{user}: You aren't near any Fasttravel station.",

@@ -34,7 +34,9 @@ class Chat:
             i = i + 1
             if(i > 10):
                 raise Exception('Could not change scope')
+                return False
         self.currentScope = scope
+        return True
 
 
     def copyToClip(self, txt):
@@ -62,9 +64,11 @@ class Chat:
 
     def read(self):
         self.PAG.click(self.CON.getPoint(150, 470))
+        time.sleep(0.05)
         self.PAG.hotkey('ctrl','a')
         self.PAG.hotkey('ctrl', 'c')
         self.PAG.click(self.CON.getPoint(250, 500))
+        time.sleep(0.05)
         return self.readFromClip().strip()
 
 

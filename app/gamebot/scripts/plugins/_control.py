@@ -198,7 +198,9 @@ class Control:
         if(self.onScreen('img/mapi.png', region='mapi')):
             if(self.onScreen('img/chat_stumm.png', region='chatStumm')):
                 self.PAG.press('esc')
+                time.sleep(0.05)
                 self.PAG.press('t')
+                time.sleep(0.05)
                 return True
         return False
 

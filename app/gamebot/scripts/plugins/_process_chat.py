@@ -23,7 +23,6 @@ class Chat:
     def goScope(self, scope, force = False):
         if(not force and self.currentScope == scope):
             return True
-        self.PAG.click(self.CON.getPoint(140, 500))
         scopeImg = 'chat_local.png'
         if(scope == 'global'):
             scopeImg = 'chat_global.png'
@@ -53,7 +52,7 @@ class Chat:
 
 
     def doClean(self):
-        self.PAG.click(self.CON.getPoint(140, 500))
+        self.PAG.click(self.CON.getPoint(250, 500))
         self.PAG.hotkey('ctrl','a')
         self.PAG.press('backspace')
         win32clipboard.OpenClipboard()
@@ -63,10 +62,10 @@ class Chat:
 
 
     def read(self):
-        self.PAG.click(self.CON.getPoint(140, 470))
+        self.PAG.click(self.CON.getPoint(150, 470))
         self.PAG.hotkey('ctrl','a')
         self.PAG.hotkey('ctrl', 'c')
-        self.PAG.click(self.CON.getPoint(140, 500))
+        self.PAG.click(self.CON.getPoint(250, 500))
         return self.readFromClip().strip()
 
 
@@ -107,7 +106,7 @@ class Chat:
 
 
     def sendMulti(self, messages):
-        self.PAG.click(self.CON.getPoint(140, 500))
+        self.PAG.click(self.CON.getPoint(250, 500))
         for message in messages:
             self.goScope(str(message['scope']))
             self.send(str(message['message']))

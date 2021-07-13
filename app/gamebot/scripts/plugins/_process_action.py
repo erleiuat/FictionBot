@@ -79,6 +79,16 @@ class Action:
 
             withdraw = '#SetFamePoints ' + str(int(sender['fame']) - int(props['amount'])) + ' ' + props['from']
             deposit = '#SetFamePoints ' + str(int(recipient['fame']) + int(props['amount'])) + ' ' + recipient['userID']
+
+            self.RES.add({
+                'transactionInfo': {
+                    'senderBefore': str(int(sender['fame']),
+                    'recipientBefore': str(int(recipient['fame']),
+                    'withdraw': withdraw,
+                    'deposit': deposit
+                }
+            })
+
             self.PRC_CHAT.send(withdraw)
             self.PRC_CHAT.send(deposit)
             self.PRC_CHAT.send(props['messages']['success'])
@@ -93,6 +103,7 @@ class Action:
     def travel(self, props):
         try:
             self.PRC_CHAT.goScope('global')
+            self.PRC_CHAT.send(props['messages']['start'])
             playerList = self.getPlayerList()
             user = playerList[props['steamID']]
             self.RES.add({'userInfo': user})
@@ -114,7 +125,6 @@ class Action:
                         nearStation = True
             
             if(nearStation):
-                self.PRC_CHAT.send(props['messages']['good'])
                 self.PRC_CHAT.send('#SetFamePoints ' + str(int(user['fame']) - int(props['costs'])) + ' ' + props['steamID'])
                 self.PRC_CHAT.send(props['target'])
             else:
@@ -126,14 +136,26 @@ class Action:
             exception_type, exception_object, exception_traceback = sys.exc_info()
             self.PRC_CHAT.send(props['messages']['somethingWrong'])
             self.RES.addError(str(e), str(exception_type))
-            self.RES.send()        
+            self.RES.send()  
+
+
+    def spawn(self, command):
+        i = 0
+        resp = self.PRC_CHAT.send(itemSpawner, read=True)
+        while(not resp.lower().startswith('spawned') and i < 20):
+            i = i + 1
+            time.sleep(0.05)
+            resp = self.PRC_CHAT.read()
+        if(resp.lower().startswith('spawned')) return True
+        return False
+
 
     def sale(self, props):
         try:
             self.PRC_CHAT.goScope('local')
             self.PRC_CHAT.send(props['messages']['startSale'])
             p = self.PRC_CHAT.send('#Location '+props['userID'], read=True)
-            playerLoc = (p[(p.find(':')+1):]).strip().split()
+            playerLoc = (p[(p.find(': ')+1):]).strip().split()
             nearShop = False
             if(float(playerLoc[0][2:]) > (props['shop'][0] - props['shop'][2]) and float(playerLoc[0][2:]) < (props['shop'][0] + props['shop'][2])):
                 if(float(playerLoc[1][2:]) > (props['shop'][1] - props['shop'][3]) and float(playerLoc[1][2:]) < (props['shop'][1] + props['shop'][3])):
@@ -154,11 +176,16 @@ class Action:
 
             famePointSetter = '#SetFamePoints '+ str(int(player['fame']) - int(props['item']['price_fame'])) + ' ' + props['userID']
             itemSpawner = props['item']['spawn_command']
+
             self.PRC_CHAT.goScope('local')
             self.PRC_CHAT.send(props['teleport'])
             self.PRC_CHAT.send(props['teleportUser'])
             self.PRC_CHAT.send(famePointSetter)
-            self.PRC_CHAT.send(itemSpawner)
+            self.PRC_CHAT.send(props['messages']['pleaseWait'])
+            while(not self.spawn(itemSpawner) and i < 10):
+                self.PRC_CHAT.send(props['messages']['pleaseWait'])
+                time.sleep(2)
+                i = i + 1
             self.PRC_CHAT.send(props['messages']['endSale'])
 
         except Exception as e:

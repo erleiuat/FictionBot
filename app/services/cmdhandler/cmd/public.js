@@ -76,7 +76,7 @@ exports.travel = async function travel(cmd) {
     messages: {
       notEnough: global.bot.pub.travel.notEnough.replace('{user}', cmd.user),
       noStation: global.bot.pub.travel.noStation.replace('{user}', cmd.user),
-      good: global.bot.pub.travel.good.replace('{user}', cmd.user),
+      start: global.bot.pub.travel.start.replace('{user}', cmd.user),
       somethingWrong: global.bot.pub.travel.somethingWrong.replace('{user}', cmd.user)
     }
   })
@@ -97,6 +97,7 @@ exports.help = async function help(cmd) {
   cmdBuilder.addMessage('global', global.bot.pub.help.m1.replace('{user}', cmd.user))
   cmdBuilder.addMessage('global', global.bot.pub.help.m2)
   cmdBuilder.addMessage('global', global.bot.pub.help.m3)
+  cmdBuilder.addMessage('global', global.bot.pub.help.m4)
   return cmdBuilder.fullCommand(cmd)
 }
 
@@ -154,7 +155,7 @@ exports.time = async function time(cmd) {
 
   let time = '<unavailable>'
   if (global.ingameTime) time = global.ingameTime
-  cmdBuilder.addMessage('global', global.bot.pub.online.replace('{time}', time))
+  cmdBuilder.addMessage('global', global.bot.pub.time.replace('{time}', time))
   return cmdBuilder.fullCommand(cmd)
 }
 

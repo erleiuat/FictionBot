@@ -80,6 +80,7 @@ exports.shop_item = async function shop_item(cmd) {
     teleport: teleport,
     teleportUser: teleportUser,
     messages: {
+      pleaseWait: global.bot.shop.pleaseWait.replace('{user}', cmd.user),
       notNearShop: global.bot.shop.notNearShop.replace('{user}', cmd.user),
       notEnoughMoney: global.bot.shop.notEnoughMoney.replace('{user}', cmd.user).replace('{fame}', item.price_fame),
       startSale: global.bot.shop.startSale.replace('{user}', cmd.user).replace('{fame}', item.price_fame).replace('{item}', item.name),

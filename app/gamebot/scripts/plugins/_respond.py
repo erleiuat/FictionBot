@@ -74,7 +74,8 @@ class Respond:
                 'status': self.status,
                 'command': self.command,
                 'message': self.errorMessage,
-                'type': self.errorType
+                'type': self.errorType,
+                'data': self.data
             }))
         if(self.sPrint):
             print('\n')

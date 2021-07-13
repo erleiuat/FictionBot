@@ -33,7 +33,7 @@ exports.bot = {
     sKit: {
       illegal: ':[Starterkit]: ・ @{user} you should have already received your starterkit ;) If not, please contact support.',
       start1: ':[Starterkit]: ・ @{user} you will be teleported to the trading-zone (green circle in B2) to receive your starterkit. Make sure you are ready and not driving a vehicle.',
-      start2: ':[Starterkit]: ・ You will get a quad to get out of the trading-zone again. If you are ready to be teleported type: /ready ',
+      start2: ':[Starterkit]: ・ Type "/ready" when you are ready. You will get a quad to get out of the trading-zone again.',
       start3: ':[Starterkit]: ・ @{user} you will be transported to the trading zone in a few seconds.',
       done: ':[Starterkit]: ・ @{user} your starterkit should now be there and your Quad should be waiting for you outside.'
     }
@@ -47,6 +47,7 @@ exports.bot = {
       started: ':[Transfer]: ・ @{user} Transaction started. Please wait...',
       somethingWrong: ':[Transfer]: ・ @{user} Something went wrong. Please try again.'
     },
+    pleaseWait: ':[Shop]: ・ @{user} Please be patient, your item should be there shortly.',
     noItem: ':[Shop]: ・ @{user} you need to tell me what Item you want to buy.',
     unknownItem: ":[Shop]: ・ @{user} I don't know this item.",
     notNearShop: ':[Shop]: ・ @{user} you need to be near the shop to buy things.',
@@ -57,11 +58,11 @@ exports.bot = {
   },
   pub: {
     travel: {
-      stations: ':[Travel]: ・ @{user}: Available stations: D0, B2, Z0, A3, D4',
+      stations: ':[Travel]: ・ @{user}: Available FastTravel-Stations: D0, B2, Z0, A3, D4',
       unknownLoc: ":[Travel]: ・ @{user}: I couldn't recognize the station you want to go to.",
       notEnough: ':[Travel]: ・ @{user}: You need to have 10 famepoints for this trip.',
       noStation: ":[Travel]: ・ @{user}: You aren't near any Fasttravel station.",
-      good: ':[Travel]: ・ @{user}: Your trip will start shortly. It will cost you 10 famepoints.',
+      start: ':[Travel]: ・ @{user}: Your trip will start shortly. It will cost you 10 famepoints.',
       somethingWrong: ':[Travel]: ・ @{user}: Something went wrong. Please try again.'
     },
     vote: {
@@ -72,7 +73,8 @@ exports.bot = {
     help: {
       m1: ':[Help]: ・ @{user}: Available commands (if bot is online):',
       m2: ':[Help]: ・ /voteday, /votesun, /online, /restart, /joke, /starterkit, /time',
-      m3: ':[Help]: ・ (Most will only work in GLOBAL Chat! Press "TAB" to change chatroom)'
+      m3: ':[Help]: ・ (Most will only work in GLOBAL Chat! Press "TAB" to change chatroom)',
+      m4: ':[Help]: ・ To see more commands check Discord: https://discord.gg/pZtw7NPdrZ'
     },
     joke: ':[Joke]: ・ {joke}',
     ping: ':[BadaBong]: ・ Pong right back at you @{user} ;)',

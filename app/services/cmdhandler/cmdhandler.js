@@ -176,7 +176,7 @@ async function tReady(cmd) {
   hasStarterkit = await loadStatus('starterkits.json')
   if (!hasStarterkit[cmd.steamID]) {
     let resp = await bot.execute(await cmdsInternal['sk_ready'](cmd))
-    if (!resp.error) receivesStarterkit(cmd.steamID, cmd.user)
+    if (resp && !resp.error) receivesStarterkit(cmd.steamID, cmd.user)
     return resp
   } else return await bot.execute(await cmdsInternal['sk_illegal'](cmd))
 }

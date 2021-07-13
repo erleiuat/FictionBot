@@ -141,7 +141,7 @@ class Action:
 
     def spawn(self, command):
         i = 0
-        resp = self.PRC_CHAT.send(itemSpawner, read=True)
+        resp = self.PRC_CHAT.send(command, read=True)
         while(not resp.lower().startswith('spawned') and i < 20):
             i = i + 1
             time.sleep(0.05)

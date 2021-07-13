@@ -194,6 +194,7 @@ class Control:
 
 
     def isItReady(self):
+        self.FOC.doIt()
         if(self.onScreen('img/mapi.png', region='mapi')):
             if(self.onScreen('img/chat_stumm.png', region='chatStumm')):
                 self.SCB.press('esc')

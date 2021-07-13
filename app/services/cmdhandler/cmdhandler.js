@@ -63,7 +63,7 @@ exports.start = async function start() {
 async function cmdHandler() {
   do {
     await global.sleep.timer(0.005)
-    //if (!isReady()) continue
+    if (!isReady()) continue
     if (Object.keys(global.commands).length < 1) continue
     global.newCmds = true
 

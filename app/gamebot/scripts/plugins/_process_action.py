@@ -30,13 +30,18 @@ class Action:
         pList = pList.split('\n')
         pList.pop(0)
         for el in pList:
-            elP = el.split('              ')
-            uid = elP[0][3:].strip()
+            elProps = el.split('            ')
+            pProps = []
+            for prop in elProps:
+                prop.strip()
+                if(len(prop) >= 1):
+                    pProps.append(prop)
+            uid = pProps[0][3:].strip()
             playerList[uid] = {
                 'userID': uid,
-                'steamName': elP[1].strip(),
-                'charName': elP[2].strip(),
-                'fame': elP[3].strip()
+                'steamName': pProps[1].strip(),
+                'charName': pProps[2].strip(),
+                'fame': pProps[3].strip()
             }
         return playerList
 

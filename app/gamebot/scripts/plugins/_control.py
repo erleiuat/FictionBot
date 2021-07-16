@@ -87,7 +87,7 @@ class Control:
 
 
     def restart(self):
-        #subprocess.call('shutdown /r /t 2')
+        subprocess.call('shutdown /r /t 2')
         self.RES.printer('I WOULD RESTART NOW')
 
 

@@ -22,9 +22,12 @@ class Ready:
                 mapi = self.CON.onScreen('img/mapi.png', region='mapi')
                 if(chat and mapi):
                     return 'ready'
-                return 'game'
-            return 'steam'
-        return False
+                else:
+                    return 'game'
+            else:
+                return 'steam'
+        else:
+            return False
         
 
     def doIt(self, repeat=True):

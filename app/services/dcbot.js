@@ -2,6 +2,8 @@ const sn = '[DISCORD-BOT] -> '
 const fetch = require('node-fetch')
 const dadJokes = false
 
+global.doSend = true
+
 async function doFetch(url) {
   return await fetch(url, {
     method: 'Get'

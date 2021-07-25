@@ -67,6 +67,9 @@ async function clearchat(msg) {
 }
 
 async function setLang(msg) {
+  let rNew = msg.channel.guild.roles.cache.find(
+    role => role.id === process.env.DISCORD_ROLE_NEWCOMER
+  )
   let rEnglish = msg.channel.guild.roles.cache.find(
     role => role.id === process.env.DISCORD_ROLE_LANG_ENG
   )
@@ -78,6 +81,7 @@ async function setLang(msg) {
   )
 
   if (msg.content.toLowerCase().trim().includes('english')) {
+    msg.member.roles.remove(rNew)
     msg.member.roles.remove(rGerman)
     msg.member.roles.add(rPlayer)
     msg.member.roles.add(rEnglish)
@@ -85,6 +89,7 @@ async function setLang(msg) {
     msg.content.toLowerCase().trim().includes('german') ||
     msg.content.toLowerCase().trim().includes('deutsch')
   ) {
+    msg.member.roles.remove(rNew)
     msg.member.roles.remove(rEnglish)
     msg.member.roles.add(rPlayer)
     msg.member.roles.add(rGerman)

@@ -110,7 +110,7 @@ exports.start = async function start(dcClient) {
   })
 
   dcClient.on('guildMemberAdd', guildMember => {
-    guildMember.add(
+    guildMember.roles.add(
       guildMember.guild.roles.cache.find(role => role.id == process.env.DISCORD_ROLE_NEWCOMER)
     )
   })

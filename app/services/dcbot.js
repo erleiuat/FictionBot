@@ -100,28 +100,22 @@ function imBot(channel, msg) {
 exports.start = async function start(dcClient) {
   dcClient.on('message', async msg => {
     if (msg.content.toLowerCase().startsWith('!clearchat')) clearchat(msg)
-    else if (msg.content.toLowerCase().startsWith('!buildserver'))
-      buildServer(dcClient, msg)
+    else if (msg.content.toLowerCase().startsWith('!buildserver')) buildServer(dcClient, msg)
     else if (msg.channel.id == process.env.DISCORD_CH_LANGUAGE) setLang(msg)
     else if (dadJokes && msg.author.id !== process.env.DISCORD_BOT_ID) {
       if (msg.content.toLowerCase().includes("i'm"))
-        imBot(
-          msg.channel,
-          msg.content.substring(msg.content.toLowerCase().indexOf("i'm") + 4)
-        )
+        imBot(msg.channel, msg.content.substring(msg.content.toLowerCase().indexOf("i'm") + 4))
       else if (msg.content.toLowerCase().includes('i am'))
-        imBot(
-          msg.channel,
-          msg.content.substring(msg.content.toLowerCase().indexOf('i am') + 5)
-        )
+        imBot(msg.channel, msg.content.substring(msg.content.toLowerCase().indexOf('i am') + 5))
       else if (msg.content.toLowerCase().includes('ich bin'))
-        imBot(
-          msg.channel,
-          msg.content.substring(
-            msg.content.toLowerCase().indexOf('ich bin') + 8
-          )
-        )
+        imBot(msg.channel, msg.content.substring(msg.content.toLowerCase().indexOf('ich bin') + 8))
     }
+  })
+
+  dcClient.on('guildMemberAdd', guildMember => {
+    guildMember.addRole(
+      guildMember.guild.roles.find(role => role.id == process.env.DISCORD_ROLE_NEWCOMER)
+    )
   })
 
   buildServer(dcClient, false)

@@ -43,6 +43,10 @@ Tell a random joke (we do not take responsibility for offensive jokes, because t
 Show the current ingame-time (also only approximate, since from battlemetrics)
 
 
+➡️ `/anonymize`
+Anonymize the notifications when you join or leave the game (Undo with the same command)
+
+
 -
 {{SPLIT}}
 -
